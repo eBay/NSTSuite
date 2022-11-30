@@ -144,6 +144,7 @@
 				<configuration>
 					<source>${maven.compiler.version}</source>
 					<target>${maven.compiler.version}</target>
+					<release>${maven.compiler.version}</release>
 					<failOnWarning>true</failOnWarning>
 					<showWarnings>true</showWarnings>
 					<compilerArgs>
