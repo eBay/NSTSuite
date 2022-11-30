@@ -26,7 +26,7 @@ jobs:
           artifacts: "${{ github.workspace }}/NST/target/*.jar"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to the Maven Central Repository
-        run: mvn -f NST/pom.xml --no-transfer-progress --batch-mode deploy -pl NST
+        run: mvn --no-transfer-progress --batch-mode deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}

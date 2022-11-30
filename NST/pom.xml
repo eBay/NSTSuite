@@ -48,6 +48,15 @@
 	<build>
 		<plugins>
 		
+		    <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>${deploy.plugin.version}</version>
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+			</plugin>
+		
 			<!-- Maven release plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
