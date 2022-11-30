@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  title: With One Of
+  description: >-
+    With One Of
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /WithOneOf:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Apple'
+                  - $ref: '#/components/schemas/Banana'
+                  - $ref: '#/components/schemas/Pear'
+components:
+  schemas:
+    Apple:
+      type: object
+      properties:
+        seeds:
+          type: integer
+        flavor:
+          type: string
+    Banana:
+      type: object
+      properties:
+        color:
+          type: string
+        size:
+          type: integer
+    Pear:
+      type: object
+      properties:
+        ripe:
+          type: boolean
+        organic:
+          type: boolean

@@ -1,0 +1,75 @@
+{
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"prefix": {
+			"type": "string"
+		},
+		"dict": {
+			"type": "string"
+		},
+		"res": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"sug": {
+					"description": "suggestion",
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"categories": {
+					"type": "array",
+					"items": {
+						"type": "array"
+					}
+				},
+				"aspects": {
+					"type": "array",
+					"items": {
+						"type": "array"
+					}
+				},
+				"ghostText": {
+					"type": "string"
+				},
+				"td": {
+					"description": "trafficDrivers",
+					"type": "array",
+					"items": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"stores": {
+					"type": "array",
+					"items": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				},
+				"prefetch": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"additionalProperties": false,
+						"properties": {
+							"keyword": {
+								"type": "string"
+							},
+							"category": {
+								"type": "integer"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"$schema": "http://json-schema.org/draft-04/schema#"
+}

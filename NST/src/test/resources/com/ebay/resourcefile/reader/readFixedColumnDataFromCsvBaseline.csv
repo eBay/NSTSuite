@@ -1,0 +1,4 @@
+SERVICE,API,NAVIGATION,ENTRY,IMPORTS,MEMBER_FIELDS
+checkout,EnterCheckoutSession,enterCheckoutSession.navigateToCheckout();,"enterCheckoutSession.enterCheckout();
+enterCheckoutSession.doNextThing();",import com.test.EnterCheckoutSession;,EnterCheckoutSession enterCheckoutSession = new EnterCheckoutSession();
+checkout,SetPayment,,,,

@@ -1,0 +1,49 @@
+{
+  "type" : "object",
+  "properties" : {
+    "seeds" : {
+      "anyOf" : [ {
+        "$ref" : "#/definitions/option1"
+      }, {
+        "$ref" : "#/definitions/option2"
+      } ]
+    }
+  },
+  "definitions" : {
+    "Apple" : {
+      "type" : "object",
+      "properties" : {
+        "seeds" : {
+          "anyOf" : [ {
+            "$ref" : "#/definitions/option1"
+          }, {
+            "$ref" : "#/definitions/option2"
+          } ]
+        }
+      }
+    },
+    "option1" : {
+      "type" : "object",
+      "properties" : {
+        "first" : {
+          "type" : "string"
+        },
+        "second" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "option2" : {
+      "type" : "object",
+      "properties" : {
+        "first" : {
+          "type" : "string"
+        },
+        "second" : {
+          "type" : "boolean"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

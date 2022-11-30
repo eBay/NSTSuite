@@ -1,0 +1,1 @@
+{ "type": "object", "additionalProperties": false, "additionalProperties": false,"properties": { "first": { "type": "string" }, "second": { "type": "string" } }, "$schema": "http://json-schema.org/draft-04/schema#" }

@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  title: Nullable Additional Properties
+  description: >-
+    Nullable Additional Properties
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /NullableAdditionalProperties:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        apple:
+          type: object
+          additionalProperties:
+            type: string
+            nullable: true

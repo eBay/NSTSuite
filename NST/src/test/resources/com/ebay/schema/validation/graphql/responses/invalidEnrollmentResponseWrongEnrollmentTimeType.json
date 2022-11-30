@@ -1,0 +1,8 @@
+{
+	"enrollmentStatus": "ENROLLED",
+	"didUserPassRISK": true,
+	"enrollmentTime": 1,
+	"enrollmentLocales": [
+		"US", "UK", "DE"
+	]
+}

@@ -1,0 +1,1 @@
+{ "anyOf": [ { "type": "object", "additionalProperties": false, "additionalProperties": false,"properties": { "typeAValueA": { "type": "string" } } }, { "type": "object", "additionalProperties": false, "additionalProperties": false,"properties": { "typeBValueB": { "type": "string" } } } ], "$schema": "http://json-schema.org/draft-04/schema#" }

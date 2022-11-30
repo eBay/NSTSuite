@@ -1,0 +1,5 @@
+serviceName,environment,host
+checkout,prod,https://checkout.com
+checkout,qa,https://checkout.qa.com
+pinsvc,prod,https://pinsvc.com
+pinsvc,qa,https://pinsvc.qa.com

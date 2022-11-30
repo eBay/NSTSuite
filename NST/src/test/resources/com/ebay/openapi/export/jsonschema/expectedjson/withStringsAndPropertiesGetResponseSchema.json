@@ -1,0 +1,39 @@
+{
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "maxLength" : 10,
+      "minLength" : 1,
+      "type" : "string"
+    },
+    "color" : {
+      "type" : "string",
+      "enum" : [ "red", "green" ]
+    },
+    "farmer" : {
+      "pattern" : "^[A-Z]*$",
+      "type" : "string"
+    }
+  },
+  "definitions" : {
+    "Apple" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "maxLength" : 10,
+          "minLength" : 1,
+          "type" : "string"
+        },
+        "color" : {
+          "type" : "string",
+          "enum" : [ "red", "green" ]
+        },
+        "farmer" : {
+          "pattern" : "^[A-Z]*$",
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

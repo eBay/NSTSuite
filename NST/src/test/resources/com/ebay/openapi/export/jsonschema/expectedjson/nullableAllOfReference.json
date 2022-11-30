@@ -1,0 +1,39 @@
+{
+  "type": ["object", "null"],
+  "properties": {
+    "banana": {
+      "type": "integer"
+    },
+    "apple": {
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "Response": {
+      "type": ["object", "null"],
+      "properties": {
+        "banana": {
+          "type": "integer"
+        },
+        "apple": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ExtraType": {
+      "type": "object",
+      "properties": {
+        "apple": {
+          "type": "string"
+        },
+        "banana": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "additionalProperties": false
+}

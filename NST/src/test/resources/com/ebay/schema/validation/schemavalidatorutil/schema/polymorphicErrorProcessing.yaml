@@ -1,0 +1,56 @@
+openapi: 3.0.0
+info:
+  title: Complex anyOf polymorphic schema
+  description: >-
+    Complex anyOf polymorphic schema
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /rootLevelPolymorphism:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RootLevelPolymorphism'
+  /leafLevelPolymorphism:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeafLevelPolymorphism'
+components:
+  schemas:
+    RootLevelPolymorphism:
+      anyOf:
+        - $ref: '#/components/schemas/typeA'
+        - $ref: '#/components/schemas/typeB'
+    LeafLevelPolymorphism:
+      type: object
+      properties:
+        person:
+          type: object
+          properties:
+            details:
+              anyOf:
+                - $ref: '#/components/schemas/typeA'
+                - $ref: '#/components/schemas/typeB'
+    typeA:
+      type: object
+      properties:
+        name:
+          type: string
+    typeB:
+      type: object
+      properties:
+        age:
+          type: integer

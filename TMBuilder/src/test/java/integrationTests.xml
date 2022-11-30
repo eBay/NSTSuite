@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="NST Unit and Integration Test Suite" verbose="1">
+	<test name="NST Unit and Integration Tests">
+
+		<packages>
+			<package name="com.ebay.constants" />
+			<package name="com.ebay.jsonpath" />
+			<package name="com.ebay.test.util" />
+			<package name="com.ebay.tool.*" />
+		</packages>
+	</test>
+	
+</suite> 

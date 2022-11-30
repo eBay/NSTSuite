@@ -1,0 +1,28 @@
+{
+  "oneOf" : [ {
+    "$ref" : "#/definitions/typeA"
+  }, {
+    "$ref" : "#/definitions/typeB"
+  } ],
+  "definitions" : {
+    "typeA" : {
+      "required" : [ "typeAValueA" ],
+      "type" : "object",
+      "properties" : {
+        "typeAValueA" : {
+          "type" : "string"
+        }
+      }
+    },
+    "typeB" : {
+      "required" : [ "typeBValueB" ],
+      "type" : "object",
+      "properties" : {
+        "typeBValueB" : {
+          "type" : "number"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

@@ -1,0 +1,19 @@
+{
+  "type" : "object",
+  "properties" : {
+    "a" : {
+      "type" : "string"
+    },
+    "b" : {
+      "type" : "integer"
+    },
+    "c" : {
+      "type" : "array",
+      "items" : {
+        "type" : "boolean"
+      }
+    }
+  },
+  "definitions" : { },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

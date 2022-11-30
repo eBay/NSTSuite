@@ -1,0 +1,58 @@
+{
+  "fileFormatVersion": "TMBuilder v2.0.1",
+  "sourceSchemaFilePath": "../../../../../resources/canada-holidays.yaml",
+  "exportFilePath": "ExampleResponseModel.java",
+  "validationSets": [
+    {
+      "validationSetName": "coreValidation",
+      "data": [
+        {
+          "treePathToNode": [
+            {
+              "treeUserObjectIdentifier": "$",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "holiday",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "id",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonIntegerType",
+              "treeNodeIndex": 3
+            }
+          ],
+          "serializedUserObject": "rO0ABXNyADpjb20uZWJheS50b29sLnRoaW5tb2RlbGdlbi5qc29uc2NoZW1hLnR5cGUuSnNvbkludGVnZXJUeXBlIgQBiCb85XMCAAB4cgA3Y29tLmViYXkudG9vbC50aGlubW9kZWxnZW4uanNvbnNjaGVtYS50eXBlLkpzb25CYXNlVHlwZbtBOoQlDYTIAgAFWgAOc2tpcEluSnNvblBhdGhMABBqc29uUGF0aE5vZGVOYW1ldAASTGphdmEvbGFuZy9TdHJpbmc7TAAIbm9kZVR5cGVxAH4AAkwAEHBhdGhUb0pQQ2hlY2tNYXB0ABNMamF2YS91dGlsL0hhc2hNYXA7TAAQcHJlc2VudGF0aW9uTmFtZXEAfgACeHAAdAACaWR0AAdpbnRlZ2Vyc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAF0AAwkLmhvbGlkYXkuaWRzcgAiY29tLmViYXkuanNvbnBhdGguVE1KUEludGVnZXJDaGVjawAAAAAAAAANAgAAeHIAIGNvbS5lYmF5Lmpzb25wYXRoLkpQSW50ZWdlckNoZWNrSpBXyglWGhECAAFMAA1leHBlY3RlZFZhbHVldAATTGphdmEvbGFuZy9JbnRlZ2VyO3hwc3IAEWphdmEubGFuZy5JbnRlZ2VyEuKgpPeBhzgCAAFJAAV2YWx1ZXhyABBqYXZhLmxhbmcuTnVtYmVyhqyVHQuU4IsCAAB4cAAAAA94cQB+AAU\u003d"
+        },
+        {
+          "treePathToNode": [
+            {
+              "treeUserObjectIdentifier": "$",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "holiday",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "nameEn",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonStringType",
+              "treeNodeIndex": 5
+            }
+          ],
+          "serializedUserObject": "rO0ABXNyADljb20uZWJheS50b29sLnRoaW5tb2RlbGdlbi5qc29uc2NoZW1hLnR5cGUuSnNvblN0cmluZ1R5cGU/+AfFIkAPoAIAAVsAB2VudW1TZXR0ABNbTGphdmEvbGFuZy9TdHJpbmc7eHIAN2NvbS5lYmF5LnRvb2wudGhpbm1vZGVsZ2VuLmpzb25zY2hlbWEudHlwZS5Kc29uQmFzZVR5cGW7QTqEJQ2EyAIABVoADnNraXBJbkpzb25QYXRoTAAQanNvblBhdGhOb2RlTmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO0wACG5vZGVUeXBlcQB+AANMABBwYXRoVG9KUENoZWNrTWFwdAATTGphdmEvdXRpbC9IYXNoTWFwO0wAEHByZXNlbnRhdGlvbk5hbWVxAH4AA3hwAHQABm5hbWVFbnQABlN0cmluZ3NyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAx3CAAAABAAAAABdAAQJC5ob2xpZGF5Lm5hbWVFbnNyACFjb20uZWJheS5qc29ucGF0aC5UTUpQU3RyaW5nQ2hlY2sAAAAAAAAAAQIAAHhyAB9jb20uZWJheS5qc29ucGF0aC5KUFN0cmluZ0NoZWNr6UCa4qd55TMCAAdMAA1jb250YWluc1ZhbHVlcQB+AANMABFlcXVhbHNPbmVPZlZhbHVlc3QAEExqYXZhL3V0aWwvTGlzdDtMAAtleGFjdExlbmd0aHQAE0xqYXZhL2xhbmcvSW50ZWdlcjtMAA1leHBlY3RlZFZhbHVlcQB+AANMAA5tYXRjaGVzUGF0dGVybnEAfgADTAAZbWF4aW11bU51bWJlck9mQ2hhcmFjdGVyc3EAfgAOTAAZbWluaW11bU51bWJlck9mQ2hhcmFjdGVyc3EAfgAOeHBwcHB0AApDYW5hZGEgRGF5cHBweHEAfgAGdXIAE1tMamF2YS5sYW5nLlN0cmluZzut0lbn6R17RwIAAHhwAAAAAA\u003d\u003d"
+        }
+      ]
+    }
+  ],
+  "payload": {
+    "path": "/api/v1/holidays/{holidayId}",
+    "method": "GET",
+    "responseCode": "200",
+    "contentType": "application/json"
+  }
+}

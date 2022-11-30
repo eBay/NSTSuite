@@ -1,0 +1,59 @@
+{
+  "required": [
+    "three",
+    "one",
+    "two"
+  ],
+  "type": "object",
+  "properties": {
+    "three": {
+      "type": "boolean"
+    },
+    "one": {
+      "type": "integer"
+    },
+    "two": {
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "Response": {
+      "required": [
+        "three",
+        "one",
+        "two"
+      ],
+      "type": "object",
+      "properties": {
+        "three": {
+          "type": "boolean"
+        },
+        "one": {
+          "type": "integer"
+        },
+        "two": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Root": {
+      "required": [
+        "one",
+        "two"
+      ],
+      "type": "object",
+      "properties": {
+        "one": {
+          "type": "integer"
+        },
+        "two": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "additionalProperties": false
+}

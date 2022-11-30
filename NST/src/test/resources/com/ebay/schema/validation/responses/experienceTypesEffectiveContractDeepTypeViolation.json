@@ -1,0 +1,71 @@
+{
+  "modules": {
+    "appleModule": {
+      "type": "Gala",
+      "size": 0,
+      "cost": {
+        "value": 0,
+        "convertedFromValue": 0,
+        "convertedFromCurrency": "AED",
+        "currency": "AED"
+      },
+      "meta": {
+        "name": "string",
+        "sid": "string"
+      }
+    },
+    "bananaModule": {
+      "meta": {
+        "name": "string",
+        "sid": "string",
+        "trackingList": [
+          {
+            "eventFamily": "string",
+            "eventAction": "string",
+            "actionKind": "string",
+            "actionKinds": [
+              "string"
+            ],
+            "operationId": "string",
+            "flushImmediately": false,
+            "eventProperty": {
+              "additionalProp1": 1,
+              "additionalProp2": "string",
+              "additionalProp3": "string"
+            },
+            "clientImpressionPageId": "string"
+          }
+        ]
+      },
+      "_type": "string",
+      "imported": true,
+      "description": {
+        "textSpans": [
+          {
+            "text": "string",
+            "action": {
+              "type": "NAV",
+              "name": "string",
+              "params": {
+                "additionalProp1": "string",
+                "additionalProp2": "string",
+                "additionalProp3": "string"
+              },
+              "accessibilityText": "string"
+            },
+            "accessibilityText": "string",
+            "icon": "string",
+            "tooltip": "string",
+            "_type": "string"
+          }
+        ]
+      },
+      "cost": {
+        "value": 0,
+        "convertedFromValue": 0,
+        "convertedFromCurrency": "AED",
+        "currency": "AED"
+      }
+    }
+  }
+}

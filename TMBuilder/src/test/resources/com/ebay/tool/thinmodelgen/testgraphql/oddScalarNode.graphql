@@ -1,0 +1,102 @@
+"""Does a thing"""
+type Query {
+    matchingProducts(input: MatchingProductsInput!): MatchingProductsOutput
+}
+
+
+"""Input Object for stuff"""
+input MatchingProductsInput{
+    """Image features"""
+    imageFeatures: ImageFeatures!
+    """category"""
+    category: String!
+    """First line of multi-line comment
+    second line of multi-line comment"""
+    fieldGroups: [String!]
+    """Blah blah blah"""
+    matchingConfiguration: CustomMatchingConfiguration
+    """More blah blah blah"""
+    filteringConfiguration: FilteringConfiguration
+
+}
+
+"""Output Object"""
+type MatchingProductsOutput{
+    """no matches found - the list will be null"""
+    matchingProducts: [MatchingProduct!]
+}
+
+"""Status of the request"""
+enum MatchingRequestStatus{
+    SUCCESS,
+    NO_MATCH_FOUND,
+    FAILURE
+}
+
+"""Configuration"""
+input CustomMatchingConfiguration{
+    """Match Threshold"""
+    threshold: Int
+    """Limit for a number of matching products"""
+    limit: Int
+
+}
+"""Filtering Configuration"""
+input FilteringConfiguration{
+    """List of properties"""
+    names: [String!]
+    """Max list size"""
+    maxListSize: Int
+}
+
+"""Representation of an image"""
+input ImageFeatures{
+    """Key Points"""
+    keyPoints: [ImageFeaturesKeyPoint!]!
+    """Descriptors"""
+    descriptors: [ImageFeaturesDescriptor!]!
+}
+
+"""Image Features"""
+input ImageFeaturesKeyPoint{
+    """Key Point"""
+    keyPoint: [Float!]!
+}
+
+"""Image Features"""
+input ImageFeaturesDescriptor{
+    """Descriptor"""
+    descriptor: [Int]!
+}
+
+"""Matching product data"""
+type MatchingProduct{
+    """title"""
+    title: String!
+    """aspects"""
+    aspects: [MatchingAspect!]!
+    """Product images"""
+    images: [Image!]
+}
+"""Aspect"""
+type MatchingAspect{
+    """Some ID"""
+    id: ID!
+    """The name of the aspect"""
+    aspectName: String!
+    """The values of the aspect"""
+    aspectValues: [String!]
+}
+"""image"""
+type Image {
+    """Height of the image."""
+    height: Int
+
+    """
+    URL to download the image.
+    """
+    url: String
+
+    """Width of the image"""
+    width: Int
+}

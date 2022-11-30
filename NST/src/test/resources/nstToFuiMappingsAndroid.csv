@@ -1,0 +1,7 @@
+SERVICE,API,PLATFORM_REQUEST_TYPE,NAVIGATION,ENTRY,IMPORTS,MEMBER_FIELDS
+checkout,AddAddress,,"// Navigate to: add a shipping address in xo
+// SECOND LINE","// Enter: add a shipping address in xo
+// SECOND LINE",,
+checkout,ChangeAddress,,// Navigate to: change a shipping address in xo,// Enter: change a shipping address in xo,,
+checkout,EditAddress,,// Navigate to: edit a shipping address in xo,// Enter: edit a shipping address in xo,,
+checkout,EnterCheckout,enter-checkout,enterCheckoutSession.navigateToCheckout();,enterCheckoutSession.enterCheckout();,import com.test.EnterCheckoutSession;,EnterCheckoutSession enterCheckoutSession = new EnterCheckoutSession();

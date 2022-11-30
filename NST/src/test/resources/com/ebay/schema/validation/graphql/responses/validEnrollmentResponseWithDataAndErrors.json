@@ -1,0 +1,10 @@
+{
+	"data": {
+		"enrollmentStatus": "ENROLLED",
+		"didUserPassRISK": true,
+		"enrollmentTime": "08/15/2022 14:51:14",
+		"enrollmentLocales": [
+			"US", "UK", "DE"
+		]
+	}
+}

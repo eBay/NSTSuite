@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  title: Large Test Schema
+  description: >-
+    Large test schema.
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /dosomething:
+    get:
+      summary: Silly API
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoSomethingResponse'
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+    Dairy:
+      type: string
+      enum:
+        - MILK
+        - CHEESE
+        - ICE CREAM
+    Diet:
+      type: object
+      properties:
+        dairy:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dairy'
+        grains:
+          type: array
+          items:
+            $ref: '#/components/schemas/Grains'
+    DoSomethingResponse:
+      type: object
+      properties:
+        somethingA:
+          $ref: '#/components/schemas/SomethingA'
+        somethingB:
+          $ref: '#/components/schemas/SomethingB'
+        somethingC:
+          $ref: '#/components/schemas/SomethingC'
+    Grains:
+      type: string
+      enum:
+        - BREAD
+        - CEREAL
+        - COOKIE
+    Person:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+        height:
+          type: integer
+        weight:
+          type: integer
+        address:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+    SomethingA:
+      type: object
+      properties:
+        sports:
+          type: object
+          properties:
+            identifier:
+              anyOf:
+                - type: integer
+                - type: string
+    SomethingB:
+      type: object
+      properties:
+        diet:
+          $ref: '#/components/schemas/Diet'
+    SomethingC:
+      type: object
+      properties:
+        people:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'

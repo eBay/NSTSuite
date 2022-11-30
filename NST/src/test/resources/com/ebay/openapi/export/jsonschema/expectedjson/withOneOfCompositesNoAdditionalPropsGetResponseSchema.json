@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/definitions/Apple"
+    },
+    {
+      "$ref": "#/definitions/Banana"
+    },
+    {
+      "$ref": "#/definitions/Manzana"
+    }
+  ],
+  "definitions": {
+    "Response": {
+      "type": "object",
+      "oneOf": [
+        {
+          "$ref": "#/definitions/Apple"
+        },
+        {
+          "$ref": "#/definitions/Banana"
+        },
+        {
+          "$ref": "#/definitions/Manzana"
+        }
+      ]
+    },
+    "Apple": {
+      "type": "object",
+      "properties": {
+        "seeds": {
+          "type": "integer"
+        },
+        "flavor": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Fruit": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Manzana": {
+      "$ref": "#/definitions/Apple"
+    },
+    "Banana": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "price": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}

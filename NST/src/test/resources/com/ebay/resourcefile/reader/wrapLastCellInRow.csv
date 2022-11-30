@@ -1,0 +1,3 @@
+SERVICE,API,NAVIGATION,ENTRY,IMPORTS,MEMBER_FIELDS
+checkout,EnterCheckoutSession,,,,"@Rule
+public final ActivityTestRule<FragmentActivity> activity = new ActivityTestRule<>(FragmentActivity.class, true, false);"

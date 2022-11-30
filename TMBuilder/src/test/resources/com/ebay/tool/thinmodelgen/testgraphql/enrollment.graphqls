@@ -1,0 +1,82 @@
+extend type Query {
+    isUserEnrolled(userEnrolledInput: UserEnrolledInput): EnrollmentStatusOutput
+}
+
+extend type Mutation {
+    # external
+    "Pre-enroll user"
+    preEnrollVaultUser: PreEnrollmentOutput
+    # external
+    "Complete user enrollment"
+    completeUserEnrollment(completeUserInput: CompleteUserInput): EnrollmentOutput
+    # internal
+    "Un-enrolling user from enrollment"
+    unEnrollUser: EnrollmentStatusOutput
+}
+
+# Input for CompleteUserEnrollment Mutation
+"Input for CompleteUserEnrollment Mutation"
+input CompleteUserInput {
+    "referenceId for Identity"
+    refId: ID!
+}
+
+# Input for IsUserEnrolled
+"Input for IsUserEnrolled Mutation"
+input UserEnrolledInput {
+    "legacyUserId of user"
+    userId: ID
+    "siteId"
+    siteId: Int
+    "check user's  status at account level if set to true"
+    accountLevelEnrollment: Boolean!
+}
+"Interface for  token"
+interface Token {
+    enrollmentStatus: EnrollmentStatusEnum!
+    preEnrolled: Boolean
+}
+
+# Output for isUserEnrolled
+"Output type for isUserEnrolled"
+type EnrollmentStatusOutput {
+    "current enrollment status of  user"
+    enrollmentStatus: EnrollmentStatusEnum!
+    "has  user successfully passed risk checks"
+    didUserPassRISK: Boolean
+    "time of user's enrollment into "
+    enrollmentTime: String
+    "sites where user is enrolled"
+    enrollmentLocales: [String]
+}
+
+"Output type for  pre-enrollment"
+type PreEnrollmentOutput implements Token {
+    "current enrollment status of  user"
+    enrollmentStatus: EnrollmentStatusEnum!
+    "is the user preEnrolled into "
+    preEnrolled: Boolean
+    "referenceId for Identity"
+    refId: ID
+    "Identity URL for web"
+    stepUpUrl: String
+}
+
+"Output type for  enrollment"
+type EnrollmentOutput implements Token{
+    "current enrollment status of  user"
+    enrollmentStatus: EnrollmentStatusEnum!
+    "is the user preEnrolled into "
+    preEnrolled: Boolean
+    "is the user fully authenticated for  enrollment"
+    userAuthenticated: Boolean
+}
+
+#  user enrollment statuses
+"""Possibles statuses of a Enrollment for a given user"""
+enum EnrollmentStatusEnum {
+    """User status is enrolled"""
+    ENROLLED
+    """User status is not enrolled"""
+    NOT_ENROLLED
+}

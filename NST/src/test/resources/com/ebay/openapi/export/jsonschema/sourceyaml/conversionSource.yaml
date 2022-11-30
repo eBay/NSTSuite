@@ -1,0 +1,686 @@
+openapi: 3.0.0
+info:
+  title: Example Service
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/samplesvc/v1
+  description: Dev
+paths:
+  /ebay/history:
+    get:
+      tags:
+      - History
+      summary: Get information about eBay history.
+      description: Get chronological history about the history of eBay.
+      parameters:
+      - name: eventId
+        in: query
+        description: Specific event ID to retrieve
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+        example: 12345
+      - name: Accept-Language
+        in: header
+        description: Accept language
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: en-US
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetHistoryResponse'
+      security:
+      - user_scope_auth:
+        - https://api.ebay.com/oauth/scope/experience@public
+    put:
+      tags:
+      - History
+      summary: Change eBay history.
+      description: Modify a history record.
+      parameters:
+      - name: Accept-Language
+        in: header
+        description: specifics
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: en-US
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateHistoryRequest'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateHistoryResponse'
+      security:
+      - user_scope_auth:
+        - https://api.ebay.com/oauth/scope/experience@public
+    post:
+      tags:
+      - History
+      summary: Add eBay history.
+      description: Add an event to the history of eBay. This will become part of the
+        overall history event list.
+      parameters:
+      - name: Accept-Language
+        in: header
+        description: specifics
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: en-US
+      requestBody:
+        description: Payload to add an event.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddHistoryRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddHistoryResponse'
+      security:
+      - user_scope_auth:
+        - https://api.ebay.com/oauth/scope/experience@public
+components:
+  schemas:
+    AddHistoryRequest:
+      allOf:
+      - $ref: '#/components/schemas/HistoryDate'
+      - required:
+        - eventDetails
+        type: object
+        properties:
+          eventDetails:
+            type: string
+          eventType:
+            $ref: '#/components/schemas/eventType'
+    UpdateHistoryRequest:
+      allOf:
+      - $ref: '#/components/schemas/HistoryDate'
+      - required:
+        - eventDetails
+        - eventId
+        type: object
+        properties:
+          eventId:
+            type: integer
+            format: int64
+          eventDetails:
+            type: string
+          eventType:
+            $ref: '#/components/schemas/eventType'
+    UpdateHistoryResponse:
+      type: object
+      properties:
+        presentities:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/IPresentity'
+        modules:
+          type: object
+          properties:
+            updateEvent:
+              $ref: '#/components/schemas/HistoryEventModule'
+        moduleFragments:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IModuleFragment'
+        meta:
+          $ref: '#/components/schemas/ServiceMeta'
+        diagnostics:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    AddHistoryResponse:
+      type: object
+      properties:
+        presentities:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/IPresentity'
+        modules:
+          type: object
+          properties:
+            newEvent:
+              $ref: '#/components/schemas/HistoryEventModule'
+        moduleFragments:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IModuleFragment'
+        meta:
+          $ref: '#/components/schemas/ServiceMeta'
+        diagnostics:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    GetHistoryResponse:
+      type: object
+      properties:
+        presentities:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/IPresentity'
+        modules:
+          type: object
+          properties:
+            history:
+              $ref: '#/components/schemas/HistoryEventsModule'
+        moduleFragments:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IModuleFragment'
+        meta:
+          $ref: '#/components/schemas/ServiceMeta'
+        diagnostics:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    HistoryEventsModule:
+      type: object
+      properties:
+        history:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryEventWithId'
+    HistoryEventModule:
+      type: object
+      properties:
+        history:
+          $ref: '#/components/schemas/HistoryEventWithId'
+    HistoryDate:
+      required:
+      - day
+      - month
+      - year
+      type: object
+      properties:
+        year:
+          type: integer
+        month:
+          maximum: 12
+          minimum: 1
+          type: integer
+        day:
+          maximum: 31
+          minimum: 1
+          type: integer
+    eventType:
+      type: string
+      enum:
+      - MILESTONE
+      - QUARTERLY_REPORT
+      - FEATURE_RELEASE
+      - PERSONEL_CHANGE
+      - NEWS
+    HistoryEvent:
+      allOf:
+      - $ref: '#/components/schemas/HistoryDate'
+      - required:
+        - details
+        type: object
+        properties:
+          eventType:
+            $ref: '#/components/schemas/eventType'
+          details:
+            $ref: '#/components/schemas/TextualDisplay'
+    HistoryEventWithId:
+      allOf:
+      - $ref: '#/components/schemas/HistoryEvent'
+      - required:
+        - eventId
+        type: object
+        properties:
+          eventId:
+            type: integer
+            format: int64
+    IUxAtomicElementType:
+      type: object
+      properties:
+        _type:
+          type: string
+    IUxElementType:
+      type: object
+      properties:
+        _type:
+          type: string
+    IModule:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/ModuleMeta'
+        _type:
+          type: string
+    BaseExperienceResponse:
+      type: object
+      properties:
+        presentities:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/IPresentity'
+        modules:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IModule'
+        moduleFragments:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IModuleFragment'
+        meta:
+          $ref: '#/components/schemas/ServiceMeta'
+        diagnostics:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    IPresentity:
+      type: object
+      properties:
+        id:
+          type: string
+        action:
+          $ref: '#/components/schemas/Action'
+        presentityId:
+          type: string
+        _type:
+          type: string
+    Action:
+      type: object
+      properties:
+        URL:
+          type: string
+        type:
+          $ref: '#/components/schemas/ActionType'
+        name:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: string
+        clientPresentationMetadata:
+          type: object
+          additionalProperties:
+            type: string
+        trackingList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tracking'
+        accessibilityText:
+          type: string
+        signInRequired:
+          type: boolean
+          default: false
+        answersRequestHeader:
+          type: string
+        tracking:
+          $ref: '#/components/schemas/Tracking'
+        trackingPropagator:
+          $ref: '#/components/schemas/TrackingPropagator'
+        _type:
+          type: string
+    ActionType:
+      type: string
+      enum:
+      - NAV
+      - OPERATION
+      - WEBVIEW
+    Tracking:
+      type: object
+      properties:
+        eventFamily:
+          type: string
+        eventAction:
+          type: string
+        actionKind:
+          type: string
+        actionKinds:
+          type: array
+          items:
+            type: string
+        operationId:
+          type: string
+        flushImmediately:
+          type: boolean
+          default: false
+        eventProperty:
+          type: object
+          additionalProperties:
+            type: string
+        clientImpressionPageId:
+          type: string
+    TrackingPropagator:
+      type: object
+      properties:
+        hostExperienceOperationId:
+          type: string
+    ModuleMeta:
+      type: object
+      properties:
+        name:
+          type: string
+        sid:
+          type: string
+        trackingList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tracking'
+        presentityTracking:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/Tracking'
+        presentityTrackingList:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tracking'
+        roiTracking:
+          $ref: '#/components/schemas/RoiTracking'
+        versionHash:
+          type: string
+        instanceId:
+          type: string
+        dataSource:
+          type: string
+        answerIdentification:
+          $ref: '#/components/schemas/AnswerIdentification'
+    RoiTracking:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+    Image:
+      type: object
+      properties:
+        title:
+          type: string
+        imageId:
+          type: string
+        imageIdType:
+          $ref: '#/components/schemas/ImageIdType'
+        URL:
+          type: string
+        originalSize:
+          $ref: '#/components/schemas/ImageSize'
+        action:
+          $ref: '#/components/schemas/Action'
+    ImageIdType:
+      type: string
+      enum:
+      - MD5_HASH
+      - ZOOM_GUID
+    ImageSize:
+      type: object
+      properties:
+        height:
+          type: integer
+          format: int32
+        width:
+          type: integer
+          format: int32
+    AnswerIdentification:
+      type: object
+      properties:
+        instanceId:
+          type: string
+        provider:
+          type: string
+        sojournerModuleId:
+          type: string
+        scenario:
+          type: string
+        uxComponentGroup:
+          type: string
+    IModuleFragment:
+      type: object
+      properties:
+        _type:
+          type: string
+    ServiceMeta:
+      type: object
+      properties:
+        pageTitle:
+          type: string
+        sequence:
+          type: array
+          items:
+            type: string
+        trackingList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tracking'
+        pageTemplate:
+          $ref: '#/components/schemas/PageTemplate'
+        screenFlowDestination:
+          $ref: '#/components/schemas/Action'
+        requestParameters:
+          type: object
+          additionalProperties:
+            type: string
+        consequent:
+          $ref: '#/components/schemas/Action'
+    PageTemplate:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/NamedPositionTemplate'
+      - type: object
+        properties:
+          regions:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/Region'
+    NamedPositionTemplate:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Template'
+      - type: object
+        properties:
+          namedPositions:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/Position'
+    Template:
+      type: object
+      properties:
+        templateId:
+          type: string
+        alias:
+          type: string
+        _type:
+          type: string
+    Position:
+      type: object
+      properties:
+        positionId:
+          type: string
+        accessibilityText:
+          type: string
+        _type:
+          type: string
+    Region:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/TemplatePosition'
+      - type: object
+        properties:
+          layouts:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/Layout'
+    TemplatePosition:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Position'
+      - type: object
+        properties:
+          templates:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/Template'
+    Layout:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/SequencedPositionTemplate'
+      - type: object
+        properties:
+          meta:
+            $ref: '#/components/schemas/LayoutMeta'
+          name:
+            type: string
+    SequencedPositionTemplate:
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Template'
+      - type: object
+        properties:
+          positions:
+            type: array
+            items:
+              $ref: '#/components/schemas/Position'
+    LayoutMeta:
+      type: object
+      properties:
+        trackingList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tracking'
+    TextualDisplay:
+      type: object
+      properties:
+        textSpans:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextSpan'
+        accessibilityText:
+          type: string
+        action:
+          $ref: '#/components/schemas/Action'
+        convertedFrom:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextSpan'
+        preAccessibilityClippedText:
+          type: string
+        postAccessibilityClippedText:
+          type: string
+        contentKey:
+          type: string
+        _type:
+          type: string
+    TextSpan:
+      type: object
+      properties:
+        text:
+          type: string
+        styles:
+          type: array
+          items:
+            $ref: '#/components/schemas/StyleEnum'
+        template:
+          type: string
+        action:
+          $ref: '#/components/schemas/Action'
+        accessibilityText:
+          type: string
+        icon:
+          type: string
+        tooltip:
+          type: string
+        _type:
+          type: string
+    StyleEnum:
+      type: string
+      enum:
+      - STRIKETHROUGH
+      - EMPHASIS
+      - HIGHLIGHT
+      - POSITIVE
+      - NEGATIVE
+      - SUPERSCRIPT
+      - SUBSCRIPT
+      - BOLD
+      - ITALIC
+      - DEFAULT
+      - PROMOTED
+      - PSEUDOLINK
+      - SECONDARY
+  securitySchemes:
+    user_scope_auth:
+      type: oauth2
+      description: The security definitions for this API. Please check individual
+        operations for applicable scopes.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.ebay.com/identity/v1/oauth2/token
+          scopes:
+            https://api.ebay.com/oauth/scope/experience@public: This scope would allow
+              user access to an operation.
+x-ebay-model-injection:
+  GetHistoryResponseModuleInjection:
+    json-path:
+    - $.components.schemas.GetHistoryResponse.properties.modules
+    inject-schema:
+      type: object
+      properties:
+        history:
+          $ref: '#/components/schemas/HistoryEventsModule'
+  AddHistoryResponseModuleInjection:
+    json-path:
+    - $.components.schemas.AddHistoryResponse.properties.modules
+    inject-schema:
+      type: object
+      properties:
+        newEvent:
+          $ref: '#/components/schemas/HistoryEventModule'
+  UpdateHistoryResponseModuleInjection:
+    json-path:
+    - $.components.schemas.UpdateHistoryResponse.properties.modules
+    inject-schema:
+      type: object
+      properties:
+        updateEvent:
+          $ref: '#/components/schemas/HistoryEventModule'

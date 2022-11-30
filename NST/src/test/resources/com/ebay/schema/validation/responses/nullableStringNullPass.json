@@ -1,0 +1,9 @@
+{
+	"notNullObject": {
+		"a": "good"
+	},
+	"nullableObject": {
+		"b": "good"
+	},
+	"stringTypeCanBeNull": null
+}

@@ -1,0 +1,34 @@
+{
+  "modules": {
+    "specialData": {
+      "_type": "foo",
+      "nullableText": "bar",
+      "enabled": true,
+      "outputSelector": "DEFAULT",
+      "iconSet": [
+        {
+          "name": "one",
+          "accessibilityText": "this is one",
+          "url": "http://one.com"
+        },
+        {
+          "name": "two",
+          "accessibilityText": "this is two",
+          "url": "http://two.com"
+        }
+      ],
+      "regExValue": "134502934932"
+    },
+    "summary": {
+      "name": "AA",
+      "accessibilityText": "this is AA",
+      "url": "http://aa.com",
+      "width": 32,
+      "height": 32
+    }
+  },
+  "generics": {
+    "_type": "OPTIONA",
+    "info": 55
+  }
+}

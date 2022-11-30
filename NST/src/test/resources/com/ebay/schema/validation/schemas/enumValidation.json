@@ -1,0 +1,1 @@
+{ "type": "object", "additionalProperties": false, "additionalProperties": false,"properties": { "enumVal": { "type": "string", "enum": [ "ONE", "TWO", "THEE" ] } }, "$schema": "http://json-schema.org/draft-04/schema#" }

@@ -1,0 +1,17 @@
+{
+	"data": {
+		"enrollmentStatus": null,
+		"didUserPassRISK": true,
+		"enrollmentTime": "08/15/2022 14:51:14",
+		"enrollmentLocales": [
+			"US", "UK", "DE"
+		]
+	},
+	"errors": [
+    	{
+      		"message": "Enrollment status cannot be null. Odd we are reporting our own error in the response!",
+      		"locations": [{ "line": 6, "column": 7 }],
+      		"path": ["hero", "heroFriends", 1, "name"]
+    	}
+	]
+}

@@ -1,0 +1,31 @@
+{
+  "type" : "object",
+  "properties" : {
+    "colors" : {
+      "maxItems" : 4,
+      "minItems" : 2,
+      "uniqueItems" : true,
+      "type" : "array",
+      "items" : {
+        "type" : "string"
+      }
+    }
+  },
+  "definitions" : {
+    "Apple" : {
+      "type" : "object",
+      "properties" : {
+        "colors" : {
+          "maxItems" : 4,
+          "minItems" : 2,
+          "uniqueItems" : true,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

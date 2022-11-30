@@ -1,0 +1,37 @@
+openapi: 3.0.0
+info:
+  title: With Strings And Properties
+  description: >-
+    With Strings And Properties
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /WithStringsAndProperties:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Apple'
+components:
+  schemas:
+    Apple:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 10
+          minLength: 1
+        color:
+          type: string
+          enum: 
+            - red
+            - green
+        farmer:
+          type: string
+          pattern: "^[A-Z]*$"

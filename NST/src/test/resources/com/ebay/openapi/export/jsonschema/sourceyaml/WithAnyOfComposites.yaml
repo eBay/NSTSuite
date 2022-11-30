@@ -1,0 +1,56 @@
+openapi: 3.0.0
+info:
+  title: With Any Of
+  description: >-
+    With Any Of
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /WithAnyOfComposites:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+components:
+  schemas:
+    Response:
+      type: object
+      anyOf:
+        - $ref: '#/components/schemas/Apple'
+        - $ref: '#/components/schemas/Banana'
+        - $ref: '#/components/schemas/Manzana'
+
+    Fruit:
+      type: object
+      properties:
+        price:
+          type: number
+    Apple:
+      allOf:
+        - $ref: "#/components/schemas/Fruit"
+        - type: object
+          properties:
+            seeds:
+              type: integer
+            flavor:
+              type: string
+    Banana:
+      allOf:
+        - $ref: "#/components/schemas/Fruit"
+        - type: object
+          properties:
+            color:
+              type: string
+            size:
+              type: integer
+    Manzana:
+      $ref: "#/components/schemas/Apple"
+

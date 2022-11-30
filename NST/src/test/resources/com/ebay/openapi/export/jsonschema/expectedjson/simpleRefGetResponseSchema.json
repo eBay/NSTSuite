@@ -1,0 +1,22 @@
+{
+  "type" : "object",
+  "properties" : {
+    "apple" : {
+      "$ref" : "#/definitions/Apple"
+    }
+  },
+  "definitions" : {
+    "Response" : {
+      "type" : "object",
+      "properties" : {
+        "apple" : {
+          "$ref" : "#/definitions/Apple"
+        }
+      }
+    },
+    "Apple" : {
+      "type" : "string"
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

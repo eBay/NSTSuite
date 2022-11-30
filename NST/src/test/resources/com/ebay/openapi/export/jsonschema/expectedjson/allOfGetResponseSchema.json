@@ -1,0 +1,38 @@
+{
+  "allOf" : [ {
+    "$ref" : "#/definitions/Root"
+  }, {
+    "type" : "object",
+    "properties" : {
+      "three" : {
+        "type" : "boolean"
+      }
+    }
+  } ],
+  "definitions" : {
+    "Response" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Root"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "three" : {
+            "type" : "boolean"
+          }
+        }
+      } ]
+    },
+    "Root" : {
+      "type" : "object",
+      "properties" : {
+        "one" : {
+          "type" : "integer"
+        },
+        "two" : {
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

@@ -1,0 +1,25 @@
+{
+  "type" : "object",
+  "properties" : {
+    "apple" : {
+      "type" : "object",
+      "additionalProperties" : {
+        "type" : [ "string", "null" ]
+      }
+    }
+  },
+  "definitions" : {
+    "Response" : {
+      "type" : "object",
+      "properties" : {
+        "apple" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : [ "string", "null" ]
+          }
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

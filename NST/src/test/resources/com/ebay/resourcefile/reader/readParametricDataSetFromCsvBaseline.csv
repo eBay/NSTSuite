@@ -1,0 +1,3 @@
+username,password,site,userType,environment,useCases,paypalAccount,paypalpassword,ignore
+testuser,word,US,seller,QA,QA,nothin@test.com,nothingTest,no
+otheruser,pass,US,seller,PROD,PROD,nothing@test.com,nothingTest,no

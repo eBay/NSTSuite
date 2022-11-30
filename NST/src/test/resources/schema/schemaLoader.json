@@ -1,0 +1,162 @@
+{
+          "type": "object",
+          "required": [
+            "modules",
+            "generics"
+          ],
+          "additionalProperties": false,
+"properties": {
+            "modules": {
+              "type": "object",
+              "required": [
+                "summary"
+              ],
+              "additionalProperties": false,
+"properties": {
+                "specialData": {
+                  "type": "object",
+                  "additionalProperties": false,
+"properties": {
+                    "_type": {
+                      "type": "string"
+                    },
+                    "nullableText": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true
+                    },
+                    "outputSelector": {
+                      "type": "string",
+                      "enum": [
+                        "ELIGIBILITY",
+                        "DEFAULT",
+                        "FULL"
+                      ]
+                    },
+                    "iconSet": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "name",
+                          "url"
+                        ],
+                        "additionalProperties": false,
+"properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Icon name - @see{@link CommonIconEnum}"
+                          },
+                          "accessibilityText": {
+                            "type": "string",
+                            "description": "Accessibility text, Optional."
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "URL for the icon to load."
+                          }
+                        }
+                      }
+                    },
+                    "regExValue": {
+                      "type": "string",
+                      "pattern": "^[0-9]*$",
+                      "minLength": 8
+                    }
+                  }
+                },
+                "summary": {
+                  "type": "object",
+                  "required": [
+                    "height",
+                    "name",
+                    "url",
+                    "width"
+                  ],
+                  "description": "Contains details about the dimensions of an image.",
+                  "additionalProperties": false,
+"properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Icon name - @see{@link CommonIconEnum}"
+                    },
+                    "accessibilityText": {
+                      "type": "string",
+                      "description": "Accessibility text, Optional."
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "URL for the icon to load."
+                    },
+                    "width": {
+                      "type": "number",
+                      "description": "Height of an image in px.",
+                      "minimum": 0,
+                      "maximum": 100
+                    },
+                    "height": {
+                      "type": "number",
+                      "description": "Width of an image in px.",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  }
+                }
+              }
+            },
+            "generics": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": [
+                    "_type"
+                  ],
+                  "additionalProperties": false,
+"properties": {
+                    "_type": {
+                      "type": "string",
+                      "enum": [
+                        "OPTIONA"
+                      ]
+                    },
+                    "info": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 100
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": [
+                    "_type"
+                  ],
+                  "additionalProperties": false,
+"properties": {
+                    "_type": {
+                      "type": "string",
+                      "enum": [
+                        "OPTIONB"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ]
+            },
+            "stringValuePair": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          },
+          "$schema": "http://json-schema.org/draft-04/schema#"
+        }

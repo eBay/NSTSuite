@@ -1,0 +1,45 @@
+{
+  "type" : "object",
+  "properties" : {
+    "seeds" : {
+      "multipleOf" : 2,
+      "type" : "integer"
+    },
+    "sizeInclusive" : {
+      "maximum" : 3,
+      "minimum" : 1,
+      "type" : "integer"
+    },
+    "sizeExclusive" : {
+      "maximum" : 3,
+      "exclusiveMaximum" : true,
+      "minimum" : 1,
+      "exclusiveMinimum" : true,
+      "type" : "integer"
+    }
+  },
+  "definitions" : {
+    "Apple" : {
+      "type" : "object",
+      "properties" : {
+        "seeds" : {
+          "multipleOf" : 2,
+          "type" : "integer"
+        },
+        "sizeInclusive" : {
+          "maximum" : 3,
+          "minimum" : 1,
+          "type" : "integer"
+        },
+        "sizeExclusive" : {
+          "maximum" : 3,
+          "exclusiveMaximum" : true,
+          "minimum" : 1,
+          "exclusiveMinimum" : true,
+          "type" : "integer"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

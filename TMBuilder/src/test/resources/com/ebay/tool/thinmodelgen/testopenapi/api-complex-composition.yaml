@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: No components
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /test:
+    get:
+      summary: placeholder summary
+      description: >-
+        Placeholder description
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseResponse'
+components:
+  schemas:
+    BaseResponse:
+      type: object
+      properties:
+        item1:
+          $ref: '#/components/schemas/Item1'
+        item2:
+          $ref: '#/components/schemas/Item2'
+        item3:
+          $ref: '#/components/schemas/Item3'
+        OneOfComposition:
+          $ref: '#/components/schemas/OneOfComposition'
+        AllOfComposition:
+          $ref: '#/components/schemas/AllOfComposition'
+        AnyOfComposition:
+          $ref: '#/components/schemas/AnyOfComposition'
+        ArrayOneOf:
+          $ref: '#/components/schemas/ArrayOneOf'
+        ArrayAnyOf:
+          $ref: '#/components/schemas/ArrayAnyOf'
+        ArrayOfString:
+          $ref: '#/components/schemas/ArrayOfString'
+        ArrayOfInteger:
+          $ref: '#/components/schemas/ArrayOfInteger'
+        ArrayOfObject:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item1'
+    Item1:
+      type: object
+      required:
+        - intField
+      properties:
+        intField:
+          type: integer
+    Item2:
+      type: object
+      required:
+        - stringField
+      properties:
+        stringField:
+          type: string
+    Item3:
+      type: object
+      required:
+        - boolField
+      properties:
+        boolField:
+          type: boolean
+    OneOfComposition:
+      type: object
+      properties:
+        oneOfModel:
+          oneOf:
+            - $ref: '#/components/schemas/Item1'
+            - $ref: '#/components/schemas/Item2'
+            - $ref: '#/components/schemas/Item3'
+    AllOfComposition:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Item1'
+        - type: object
+          properties:
+            value:
+              type: integer
+    AnyOfComposition:
+      type: object
+      properties:
+        anyOfModel:
+          anyOf:
+            - type: string
+            - type: integer
+            - type: boolean
+            - $ref: '#/components/schemas/Item1'
+            - $ref: '#/components/schemas/Item2'
+            - $ref: '#/components/schemas/Item3'
+    ArrayOneOf:
+      type: array
+      items:
+        oneOf:
+          - type: string
+          - type: integer
+          - type: boolean
+          - $ref: '#/components/schemas/Item1'
+    ArrayAnyOf:
+      type: array
+      items:
+        anyOf:
+          - type: string
+          - type: integer
+          - type: boolean
+          - $ref: '#/components/schemas/Item1'
+    ArrayOfString:
+      type: array
+      items:
+        type: string
+    ArrayOfInteger:
+      type: array
+      items:
+        type: integer

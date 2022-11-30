@@ -1,0 +1,19 @@
+{
+  "type" : "object",
+  "properties" : {
+  	"name" : {
+  	  "type" : "string"
+  	}
+  },
+  "definitions" : {
+    "Response" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

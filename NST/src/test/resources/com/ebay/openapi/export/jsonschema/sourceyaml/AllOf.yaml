@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: All Of
+  description: >-
+    All Of
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /AllOf:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+components:
+  schemas:
+    Response:
+      allOf:
+        - $ref: '#/components/schemas/Root'
+        - type: object
+          properties:
+            three:
+              type: boolean
+    Root:
+      type: object
+      properties:
+        one:
+          type: integer
+        two:
+          type: string

@@ -1,0 +1,3 @@
+SERVICE,API,NAVIGATION,ENTRY,IMPORTS,MEMBER_FIELDS
+checkout,EnterCheckoutSession,,,,
+checkout,EnterCheckoutSession,,,,last

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="NST Unit Test Suite" verbose="1">
+	<test name="NST Unit Tests">
+		<packages>
+			<package name="com.ebay.builder.*" />
+			<package name="com.ebay.jsonpath.*" />
+			<package name="com.ebay.nst.*" />
+			<package name="com.ebay.openapi.*" />
+			<package name="com.ebay.runtime.*" />
+			<package name="com.ebay.service.*" />
+			<package name="com.ebay.utility.*" />
+		</packages>
+	</test>
+</suite> 

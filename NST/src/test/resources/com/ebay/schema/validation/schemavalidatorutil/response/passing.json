@@ -1,0 +1,57 @@
+{
+  "somethingA": {
+    "sports": {
+      "identifier": "Cubs"
+    }
+  },
+  "somethingB": {
+    "diet": {
+      "dairy": [
+        "MILK",
+        "CHEESE"
+      ],
+      "grains": [
+        "BREAD",
+        "COOKIE"
+      ]
+    }
+  },
+  "somethingC": {
+    "people": [
+      {
+        "name": "Mother",
+        "age": 42,
+        "height": 5,
+        "weight": 150,
+        "address": [
+          {
+            "addressLine1": "1400 SW 5th Ave",
+            "addressLine2": "STE 10",
+            "city": "Portland",
+            "state": "Oregon"
+          }
+        ]
+      },
+      {
+        "name": "Uncle",
+        "age": 62,
+        "height": 6,
+        "weight": 200,
+        "address": [
+          {
+            "addressLine1": "1400 SW 5th Ave",
+            "addressLine2": "STE 10",
+            "city": "Portland",
+            "state": "Oregon"
+          },
+          {
+            "addressLine1": "900 SW 3rd Ave",
+            "city": "San Jose",
+            "state": "California",
+            "country": "USA"
+          }
+        ]
+      }
+    ]
+  }
+}

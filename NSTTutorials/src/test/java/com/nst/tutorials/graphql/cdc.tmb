@@ -1,0 +1,156 @@
+{
+  "fileFormatVersion": "TMBuilder v2.0.0",
+  "sourceSchemaFilePath": "../../../../../resources/com/nst/tutorials/graphql/cdcschema.graphql",
+  "exportFilePath": "ExampleGraphQLResponseModel.java",
+  "validationSets": [
+    {
+      "validationSetName": "coreValidation",
+      "data": [
+        {
+          "treePathToNode": [
+            {
+              "treeUserObjectIdentifier": "$",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "data",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "explore",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "ssms",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "hits",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 1
+            },
+            {
+              "treeUserObjectIdentifier": "total",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonIntegerType",
+              "treeNodeIndex": 0
+            }
+          ],
+          "serializedUserObject": "rO0ABXNyADpjb20uZWJheS50b29sLnRoaW5tb2RlbGdlbi5qc29uc2NoZW1hLnR5cGUuSnNvbkludGVnZXJUeXBlIgQBiCb85XMCAAB4cgA3Y29tLmViYXkudG9vbC50aGlubW9kZWxnZW4uanNvbnNjaGVtYS50eXBlLkpzb25CYXNlVHlwZbtBOoQlDYTIAgAFWgAOc2tpcEluSnNvblBhdGhMABBqc29uUGF0aE5vZGVOYW1ldAASTGphdmEvbGFuZy9TdHJpbmc7TAAIbm9kZVR5cGVxAH4AAkwAEHBhdGhUb0pQQ2hlY2tNYXB0ABNMamF2YS91dGlsL0hhc2hNYXA7TAAQcHJlc2VudGF0aW9uTmFtZXEAfgACeHAAdAAFdG90YWx0AAdpbnRlZ2Vyc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAF0AB4kLmRhdGEuZXhwbG9yZS5zc21zLmhpdHMudG90YWxzcgAiY29tLmViYXkuanNvbnBhdGguVE1KUEludGVnZXJDaGVjawAAAAAAAAANAgAAeHIAIGNvbS5lYmF5Lmpzb25wYXRoLkpQSW50ZWdlckNoZWNrSpBXyglWGhECAAFMAA1leHBlY3RlZFZhbHVldAATTGphdmEvbGFuZy9JbnRlZ2VyO3hwcHhxAH4ABQ\u003d\u003d"
+        },
+        {
+          "treePathToNode": [
+            {
+              "treeUserObjectIdentifier": "$",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "data",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "explore",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "ssms",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "hits",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 1
+            },
+            {
+              "treeUserObjectIdentifier": "edges",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonArrayType",
+              "treeNodeIndex": 2
+            },
+            {
+              "treeUserObjectIdentifier": "edges",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "node",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 1
+            },
+            {
+              "treeUserObjectIdentifier": "gene_aa_change",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonArrayType",
+              "treeNodeIndex": 1
+            },
+            {
+              "treeUserObjectIdentifier": "gene_aa_change",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonStringType",
+              "treeNodeIndex": 0
+            }
+          ],
+          "serializedUserObject": "rO0ABXNyADljb20uZWJheS50b29sLnRoaW5tb2RlbGdlbi5qc29uc2NoZW1hLnR5cGUuSnNvblN0cmluZ1R5cGU/+AfFIkAPoAIAAVsAB2VudW1TZXR0ABNbTGphdmEvbGFuZy9TdHJpbmc7eHIAN2NvbS5lYmF5LnRvb2wudGhpbm1vZGVsZ2VuLmpzb25zY2hlbWEudHlwZS5Kc29uQmFzZVR5cGW7QTqEJQ2EyAIABVoADnNraXBJbkpzb25QYXRoTAAQanNvblBhdGhOb2RlTmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO0wACG5vZGVUeXBlcQB+AANMABBwYXRoVG9KUENoZWNrTWFwdAATTGphdmEvdXRpbC9IYXNoTWFwO0wAEHByZXNlbnRhdGlvbk5hbWVxAH4AA3hwAXQADmdlbmVfYWFfY2hhbmdldAAGU3RyaW5nc3IAEWphdmEudXRpbC5IYXNoTWFwBQfawcMWYNEDAAJGAApsb2FkRmFjdG9ySQAJdGhyZXNob2xkeHA/QAAAAAAADHcIAAAAEAAAAAF0ADgkLmRhdGEuZXhwbG9yZS5zc21zLmhpdHMuZWRnZXNbKl0ubm9kZS5nZW5lX2FhX2NoYW5nZVsqXXNyACdjb20uZWJheS5qc29ucGF0aC5UTUpQTGlzdE9mU3RyaW5nQ2hlY2sAAAAAAAAAAQIAAHhyACVjb20uZWJheS5qc29ucGF0aC5KUExpc3RPZlN0cmluZ0NoZWNri/D6tWKwwuMCAAdMABBhbGxFeHBlY3RlZFZhbHVlcQB+AANMAA5jb250YWluc1ZhbHVlc3QAEExqYXZhL3V0aWwvTGlzdDtMAAtleGFjdExlbmd0aHQAE0xqYXZhL2xhbmcvSW50ZWdlcjtMAA5leHBlY3RlZFZhbHVlc3EAfgANTAAPbGltaXRlZFRvVmFsdWVzcQB+AA1MAAltYXhMZW5ndGhxAH4ADkwACW1pbkxlbmd0aHEAfgAOeHBwcHBwcHBweHQABlNjYWxhcnVyABNbTGphdmEubGFuZy5TdHJpbmc7rdJW5+kde0cCAAB4cAAAAAA\u003d"
+        },
+        {
+          "treePathToNode": [
+            {
+              "treeUserObjectIdentifier": "$",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "data",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "explore",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "ssms",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "hits",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 1
+            },
+            {
+              "treeUserObjectIdentifier": "edges",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonArrayType",
+              "treeNodeIndex": 2
+            },
+            {
+              "treeUserObjectIdentifier": "edges",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 0
+            },
+            {
+              "treeUserObjectIdentifier": "node",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType",
+              "treeNodeIndex": 1
+            },
+            {
+              "treeUserObjectIdentifier": "ssm_id",
+              "treeUserObjectClassName": "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonStringType",
+              "treeNodeIndex": 5
+            }
+          ],
+          "serializedUserObject": "rO0ABXNyADljb20uZWJheS50b29sLnRoaW5tb2RlbGdlbi5qc29uc2NoZW1hLnR5cGUuSnNvblN0cmluZ1R5cGU/+AfFIkAPoAIAAVsAB2VudW1TZXR0ABNbTGphdmEvbGFuZy9TdHJpbmc7eHIAN2NvbS5lYmF5LnRvb2wudGhpbm1vZGVsZ2VuLmpzb25zY2hlbWEudHlwZS5Kc29uQmFzZVR5cGW7QTqEJQ2EyAIABVoADnNraXBJbkpzb25QYXRoTAAQanNvblBhdGhOb2RlTmFtZXQAEkxqYXZhL2xhbmcvU3RyaW5nO0wACG5vZGVUeXBlcQB+AANMABBwYXRoVG9KUENoZWNrTWFwdAATTGphdmEvdXRpbC9IYXNoTWFwO0wAEHByZXNlbnRhdGlvbk5hbWVxAH4AA3hwAHQABnNzbV9pZHQABlN0cmluZ3NyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmDRAwACRgAKbG9hZEZhY3RvckkACXRocmVzaG9sZHhwP0AAAAAAAAx3CAAAABAAAAABdAAtJC5kYXRhLmV4cGxvcmUuc3Ntcy5oaXRzLmVkZ2VzWypdLm5vZGUuc3NtX2lkc3IAJ2NvbS5lYmF5Lmpzb25wYXRoLlRNSlBMaXN0T2ZTdHJpbmdDaGVjawAAAAAAAAABAgAAeHIAJWNvbS5lYmF5Lmpzb25wYXRoLkpQTGlzdE9mU3RyaW5nQ2hlY2uL8Pq1YrDC4wIAB0wAEGFsbEV4cGVjdGVkVmFsdWVxAH4AA0wADmNvbnRhaW5zVmFsdWVzdAAQTGphdmEvdXRpbC9MaXN0O0wAC2V4YWN0TGVuZ3RodAATTGphdmEvbGFuZy9JbnRlZ2VyO0wADmV4cGVjdGVkVmFsdWVzcQB+AA1MAA9saW1pdGVkVG9WYWx1ZXNxAH4ADUwACW1heExlbmd0aHEAfgAOTAAJbWluTGVuZ3RocQB+AA54cHBwcHBwcHB4cQB+AAZ1cgATW0xqYXZhLmxhbmcuU3RyaW5nO63SVufpHXtHAgAAeHAAAAAA"
+        }
+      ]
+    }
+  ],
+  "payload": {
+    "graphQLOperation": "QUERY",
+    "graphQLOperationName": "explore"
+  }
+}

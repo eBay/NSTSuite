@@ -1,0 +1,45 @@
+{
+  "anyOf" : [ {
+    "$ref" : "#/definitions/Apple"
+  }, {
+    "$ref" : "#/definitions/Banana"
+  }, {
+    "$ref" : "#/definitions/Pear"
+  } ],
+  "definitions" : {
+    "Apple" : {
+      "type" : "object",
+      "properties" : {
+        "seeds" : {
+          "type" : "integer"
+        },
+        "flavor" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Banana" : {
+      "type" : "object",
+      "properties" : {
+        "color" : {
+          "type" : "string"
+        },
+        "size" : {
+          "type" : "integer"
+        }
+      }
+    },
+    "Pear" : {
+      "type" : "object",
+      "properties" : {
+        "ripe" : {
+          "type" : "boolean"
+        },
+        "organic" : {
+          "type" : "boolean"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

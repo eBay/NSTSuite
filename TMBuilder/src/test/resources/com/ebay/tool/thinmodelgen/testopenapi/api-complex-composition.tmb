@@ -1,0 +1,16 @@
+{
+  "fileFormatVersion": "TMBuilder v1.0.0",
+  "sourceSchemaFilePath": "src/test/resources/com/ebay/tool/thinmodelgen/testopenapi/api-complex-composition.yaml",
+  "validationSets": [
+    {
+      "validationSetName": "coreValidation",
+      "data": []
+    }
+  ],
+  "payload": {
+    "path": "/test",
+    "method": "GET",
+    "responseCode": "200",
+    "contentType": "application/json"
+  }
+}

@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: No Refs
+  description: >-
+    No Ref
+  version: 1.0.0
+servers:
+  - url: 'http://test.com'
+    description: QATE
+paths:
+  /WithNoRefsInPath:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  a:
+                    type: string
+                  b:
+                    type: integer
+                  c:
+                    type: array
+                    items:
+                      type: boolean

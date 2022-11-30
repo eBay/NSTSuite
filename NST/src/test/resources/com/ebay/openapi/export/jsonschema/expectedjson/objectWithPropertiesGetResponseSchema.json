@@ -1,0 +1,29 @@
+{
+  "maxProperties" : 3,
+  "minProperties" : 2,
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "color" : {
+      "type" : "string"
+    }
+  },
+  "definitions" : {
+    "Apple" : {
+      "maxProperties" : 3,
+      "minProperties" : 2,
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "color" : {
+          "type" : "string"
+        }
+      }
+    }
+  },
+  "$schema" : "http://json-schema.org/draft-04/schema#"
+}

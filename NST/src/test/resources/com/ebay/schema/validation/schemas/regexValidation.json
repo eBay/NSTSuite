@@ -1,0 +1,1 @@
+{ "type": "object", "additionalProperties": false, "additionalProperties": false,"properties": { "regularExpression": { "type": "string", "pattern": "^([a-z]{3})$" } }, "$schema": "http://json-schema.org/draft-04/schema#" }
