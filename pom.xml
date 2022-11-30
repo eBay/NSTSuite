@@ -21,6 +21,36 @@
 		<deploy.plugin.version>2.4</deploy.plugin.version>
 	</properties>
 
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Ben Yarger</name>
+			<email>byarger@ebay.com</email>
+			<organization>eBay</organization>
+			<organizationUrl>https://github.com/ebay</organizationUrl>
+		</developer>
+	</developers>
+	
+	<scm>
+		<connection>scm:git:git://github.com/eBay/NSTSuite.git</connection>
+		<developerConnection>scm:git:ssh://github.com:eBay/NSTSuite.git</developerConnection>
+		<url>https://github.com/eBay/NSTSuite/tree/main</url>
+	</scm>
+	
+	<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<name>Central Repository OSSRH</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<modules>
 		<module>NST</module>
 		<module>TMBuilder</module>
