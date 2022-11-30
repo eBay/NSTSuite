@@ -1,7 +1,9 @@
 package com.ebay.utility.unzip;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import java.io.File;
@@ -114,8 +116,8 @@ public class UnzipUtilTest {
     ArrayList<String> filesThatAreLeftAfterCleanup = new ArrayList<>(Arrays.asList(cleanedUpFolderContents));
     resultingList.removeAll(filesThatAreLeftAfterCleanup);
 
-    List<String> expectedFiles = Arrays.asList(testFile1, testFile2);
-    assertThat("Files that were removed do not match expected.", resultingList, is(equalTo(expectedFiles)));
+    assertThat("List must have only two items in it.", resultingList, hasSize(2));
+    assertThat("Files that were removed do not match expected.", resultingList, containsInAnyOrder(testFile1, testFile2));
   }
 
   //

@@ -4,7 +4,6 @@ import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;
 import com.ebay.softassert.EbaySoftAssert;
 import com.nst.tutorials.rest.CanadaHoliday;
-import org.json.JSONObject;
 import org.testng.annotations.Test;
 
 public class ServiceWrappersTest implements NSTServiceTestRunner {
@@ -15,7 +14,7 @@ public class ServiceWrappersTest implements NSTServiceTestRunner {
 
         // Send a GET /api/v1/holidays/{holidayId} request.
         ServiceWrappersWrapper restServiceWrapper = new ServiceWrappersWrapper(CanadaHoliday.CANADA_DAY);
-        JSONObject response = serviceProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
+        serviceProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
     }
 
     @Override

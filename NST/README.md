@@ -3,7 +3,7 @@ Network Service Test (NST) Framework for contract testing and generating mocks.
 
 NST supports contract testing of both REST and GraphQL services using OpenAPI (3.0) and GraphQL schemas respectively. In addition to contract testing NST supports writing verified requests and responses to HTTP archives (har) files for use as mocks. NST may also write UI automation from the NST to UI mapping definitions you provide.
 
-NST may be run, without writing mocks or test code generation, to verify the mocks produced are not stale. If your NST tests are passing then you may proceed with confidence (relative to the dilligence of your NST test validations) that your mocks are not stale.
+NST may be run, without writing mocks or test code generation, to verify the mocks produced are not stale. If your NST tests are passing then you may proceed with confidence (relative to the diligence of your NST test validations) that your mocks are not stale.
 
 The output format of the mocks and service client may be overridden for customizations required by your organization.
 
@@ -13,6 +13,9 @@ See REST and GraphQL examples in the test packages:
 * com.ebay.example.graphql
 
 NST has test runner hooks for TestNG so please plan to adopt TestNG for your tests.
+
+## Running Locally
+NSTest is setup to sign the jar for deployment. Include `-Dgpg.skip=true` in your mvn command to avoid the password prompt.
 
 ## Release Notes:
 

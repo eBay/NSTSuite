@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.ebay.nst</groupId>
             <artifactId>nstest</artifactId>
-            <version>${nst.version}</version>
+            <version>${nstest.version}</version>
         </dependency>
     </dependencies>
 
@@ -41,15 +41,6 @@
                         -DiosTestsLocation="./src/test/java/com/nst/example/uitest/ios"
                         -DiosMocksLocation="./src/test/java/com/nst/example/uitest/ios"
                     </argLine>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>
