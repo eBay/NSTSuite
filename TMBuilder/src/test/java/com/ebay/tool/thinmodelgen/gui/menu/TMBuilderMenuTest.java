@@ -43,7 +43,6 @@ public class TMBuilderMenuTest {
 		
 		return new Object[][] {
 			{ cwd, "src/test", cwd + "/src/test" },
-			{ cwd, "../tmbuilder/src/test", cwd + "/../tmbuilder/src/test" },
 			{ "/Users/id/dev/project/folder", "../test/path", "../test/path" }, // Fall back case for existing TMB files.
 			{ cwd + "/src/test/resources/com/ebay/tool/thinmodelgen/testopenapi/api-complex-composition.tmb", "api-complex-composition.yaml", cwd + "/src/test/resources/com/ebay/tool/thinmodelgen/testopenapi/api-complex-composition.yaml" },
 			{ cwd + "/src/test/resources/com/ebay/tool/thinmodelgen/testopenapi/api-complex-composition.tmb", "../jsonschema/parser/jsonschema/invalidArraySchema.json", cwd + "/src/test/resources/com/ebay/tool/thinmodelgen/testopenapi/../jsonschema/parser/jsonschema/invalidArraySchema.json" },
