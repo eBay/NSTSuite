@@ -31,11 +31,6 @@
 
 	<packaging>jar</packaging>
 	
-	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-	</properties>
-	
 	<scm>
 		<connection>scm:git:git://github.com/eBay/NSTSuite.git</connection>
 		<developerConnection>scm:git:ssh://github.com:eBay/NSTSuite.git</developerConnection>
@@ -135,22 +130,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.compiler.plugin.version}</version>
-				<configuration>
-					<source>${maven.compiler.version}</source>
-					<target>${maven.compiler.version}</target>
-					<release>${maven.compiler.version}</release>
-					<failOnWarning>true</failOnWarning>
-					<showWarnings>true</showWarnings>
-					<compilerArgs>
-						<arg>-Xlint:all</arg>
-					</compilerArgs>
-				</configuration>
 			</plugin>
 
 			<plugin>
