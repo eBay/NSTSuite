@@ -8,71 +8,59 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>nstest</artifactId>
-	<version>${nst.version}</version>
-	<name>NST</name>
-	<description>Network Service Test (NST) framework for service contract and mock validation.</description>
+	<version>${nstest.version}</version>
+	<name>NSTest</name>
+	<description>Network Service Test (NSTest) framework for service contract and mock validation.</description>
+	<url>https://github.com/eBay/NSTSuite</url>
+
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Ben Yarger</name>
+			<email>byarger@ebay.com</email>
+			<organization>eBay</organization>
+			<organizationUrl>https://github.com/ebay</organizationUrl>
+		</developer>
+	</developers>
 
 	<packaging>jar</packaging>
+	
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+	</properties>
+	
+	<scm>
+		<connection>scm:git:git://github.com/eBay/NSTSuite.git</connection>
+		<developerConnection>scm:git:ssh://github.com:eBay/NSTSuite.git</developerConnection>
+		<url>https://github.com/eBay/NSTSuite/tree/main</url>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<name>Central Repository OSSRH</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
+		
+			<!-- Maven release plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.0</version>
-				<configuration>
-					<source>${maven.compiler.version}</source>
-					<target>${maven.compiler.version}</target>
-					<failOnWarning>true</failOnWarning>
-					<showWarnings>true</showWarnings>
-					<compilerArgs>
-						<arg>-Xlint:all</arg>
-					</compilerArgs>
-				</configuration>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.7.1</version>
-				<configuration>
-					<suiteXmlFiles>
-						<suiteXmlFile>${project.basedir}/src/test/java/unitTests.xml</suiteXmlFile>
-					</suiteXmlFiles>
-					<forkMode>always</forkMode>
-					<useSystemClassLoader>true</useSystemClassLoader>
-					<useManifestOnlyJar>false</useManifestOnlyJar>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<show>public</show>
-					<doctitle>eBay NST Contract Testing Framework</doctitle>
-				</configuration>
-			</plugin>
+
+			<!-- Jacoco code coverage (needed because cobertura doesn't play nice with Java 8) -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -104,7 +92,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.80</minimum>
+											<minimum>0.83</minimum>
 										</limit>
 									</limits>
 								</rule>
@@ -112,6 +100,99 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>${project.basedir}/src/test/java/unitTests.xml</suiteXmlFile>
+					</suiteXmlFiles>
+					<forkMode>always</forkMode>
+					<useSystemClassLoader>true</useSystemClassLoader>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>${maven.compiler.version}</source>
+					<target>${maven.compiler.version}</target>
+					<failOnWarning>true</failOnWarning>
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-Xlint:all</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>attach-javadoc</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<show>public</show>
+					<doctitle>eBay NSTest Contract Testing Framework</doctitle>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-source</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

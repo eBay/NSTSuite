@@ -14,7 +14,7 @@
         <dependency>
             <groupId>com.ebay.nst</groupId>
             <artifactId>nstest</artifactId>
-            <version>${nst.version}</version>
+            <version>${nstest.version}</version>
         </dependency>
     </dependencies>
 
@@ -44,14 +44,19 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>${maven.compiler.version}</source>
+					<target>${maven.compiler.version}</target>
+					<failOnWarning>true</failOnWarning>
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-Xlint:all</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 

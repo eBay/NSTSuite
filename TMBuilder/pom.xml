@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>com.ebay.nst</groupId>
 			<artifactId>nstest</artifactId>
-			<version>${nst.version}</version>
+			<version>${nstest.version}</version>
 		</dependency>
 	</dependencies>
 
