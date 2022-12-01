@@ -1,7 +1,11 @@
 # TMBuilder
 Thin Model Builder (TMBuilder) is a UI tool for designing and generating NST thin models. It consumes OpenAPI yaml, JSON schema or GraphQL schema and allows you to visually specify the thin model validations you would like to perform. These validations can then be exported to your java classes for use in your test automation.  
 
-### Usage
+## Executable
+
+Executable requires Java 8 or later. Download is available under [releases](https://github.com/eBay/NSTSuite/releases).
+
+## Build & Run Locally
 
 **Maven Build Command**:
 `mvn clean install exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass=com.ebay.tool.thinmodelgen.TMBuilder`  
@@ -12,9 +16,7 @@ Thin Model Builder (TMBuilder) is a UI tool for designing and generating NST thi
 **Launch Command - with verbose output flag set**:  
 `mvn exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass=com.ebay.tool.thinmodelgen.TMBuilder -Dexec.args="-v"`
 
-### Executable
-
-Executable requires Java 8 or later.
+## Release Notes
 
 **Release version**  
 <details>
@@ -36,7 +38,7 @@ Executable requires Java 8 or later.
 | 1.0.0 | Support for OpenAPI schema |
 </details>
 
-### Running on Mac OS  
+## Running on Mac OS  
 If you are running Mac OS, file access permission will be an issue. Executable jars (jars that can be run by double clicking on the jar) are launched by JavaLauncher. It is the JavaLauncher that you need to give file access permissions to.
 
 Open your System Properties and then open Security & Privacy. Select the Privacy tab. Unlock to make changes, then select Full Disk Access. Press the + button to add an application and navigate to `/System/Library/CoreServices` and select JavaLauncher and press open to close the file chooser dialog. Make sure JavaLauncher is shown in the list of approved applications and it has a check by it. Lock the settings and double click on the executable jar. You now have access to all of your files and folders using the file chooser in the app!
