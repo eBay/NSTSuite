@@ -6,6 +6,13 @@
 	<packaging>pom</packaging>
 	<name>NSTSuite</name>
 	<description>Suite of NST tools.</description>
+	
+	<licenses>
+		<license>
+			<name>Apache License 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -20,6 +27,20 @@
 		<testng.version>7.5</testng.version>
 		<maven.deploy.skip>true</maven.deploy.skip>
 	</properties>
+	
+	<scm>
+		<connection>scm:git:git://github.com/eBay/NSTSuite.git</connection>
+		<developerConnection>scm:git:ssh://github.com:eBay/NSTSuite.git</developerConnection>
+		<url>https://github.com/eBay/NSTSuite/tree/main</url>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>ossrh</id>
+			<name>Central Repository OSSRH</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 
 	<modules>
 		<module>NST</module>

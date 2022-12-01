@@ -13,13 +13,15 @@
 	<description>Network Service Test (NSTest) framework for service contract and mock validation.</description>
 	<url>https://github.com/eBay/NSTSuite</url>
 
+	<packaging>jar</packaging>
+	
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
 			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
-
+	
 	<developers>
 		<developer>
 			<name>Ben Yarger</name>
@@ -29,33 +31,8 @@
 		</developer>
 	</developers>
 
-	<packaging>jar</packaging>
-	
-	<scm>
-		<connection>scm:git:git://github.com/eBay/NSTSuite.git</connection>
-		<developerConnection>scm:git:ssh://github.com:eBay/NSTSuite.git</developerConnection>
-		<url>https://github.com/eBay/NSTSuite/tree/main</url>
-	</scm>
-
-	<distributionManagement>
-		<repository>
-			<id>ossrh</id>
-			<name>Central Repository OSSRH</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-
 	<build>
 		<plugins>
-		
-		    <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>${deploy.plugin.version}</version>
-				<configuration>
-					<skip>false</skip>
-				</configuration>
-			</plugin>
 		
 			<!-- Maven release plugin -->
 			<plugin>
