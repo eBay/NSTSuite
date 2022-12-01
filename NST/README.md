@@ -9,13 +9,16 @@ The output format of the mocks and service client may be overridden for customiz
 
 See REST and GraphQL examples in the test packages:  
 
-* com.ebay.example.rest
-* com.ebay.example.graphql
+* [REST](../NSTTutorials/src/test/java/com/nst/tutorials/rest)
+* [GraphQL](../NSTTutorials/src/test/java/com/nst/tutorials/graphql)
 
 NST has test runner hooks for TestNG so please plan to adopt TestNG for your tests.
 
+## Adding NST to Your Project
+NST is deployed to [Maven Central](https://search.maven.org/search?q=a:nstest). The artifact ID is `nstest`. The latest release versions are shown under the project releases, or you may check Maven Central.
+
 ## Running Locally
-NSTest is setup to sign the jar for deployment. Include `-Dgpg.skip=true` in your mvn command to avoid the password prompt.
+NST is setup to sign the jar for deployment. Include `-Dgpg.skip=true` in your mvn command to avoid the password prompt.
 
 ## Release Notes:
 
