@@ -29,6 +29,12 @@
 			<organization>eBay</organization>
 			<organizationUrl>https://github.com/ebay</organizationUrl>
 		</developer>
+		<developer>
+			<name>Julian Des Marais</name>
+			<email>juliandesmarais@gmail.com</email>
+			<organization>eBay</organization>
+			<organizationUrl>https://github.com/ebay</organizationUrl>
+		</developer>
 	</developers>
 
 	<build>
