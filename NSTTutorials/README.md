@@ -11,12 +11,12 @@ Each package maps to the topic name - for example, the Service Wrappers tutorial
 
 **Topics Covered:**
 
-1. Service Wrappers
-2. Contract Validations
-3. Thin Models
+1. [Service Wrappers](src/test/java/com/nst/tutorials/rest/servicewrappers)
+2. [Contract Validations](src/test/java/com/nst/tutorials/rest/contractvalidation)
+3. [Thin Models](src/test/java/com/nst/tutorials/rest/thinmodels)
 4. Mock Generation
 5. Runtime arguments
-6. Response logger injections
+6. [Response logger injections](src/test/java/com/nst/tutorials/rest/responseloggerinjections)
 7. Exporting to UI test files
 
 **Prerequisites:**
