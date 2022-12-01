@@ -12,7 +12,7 @@ Each package maps to the topic name - for example, the Service Wrappers tutorial
 **Topics Covered:**
 
 1. [Service Wrappers](src/test/java/com/nst/tutorials/rest/servicewrappers)
-2. [Contract Validations](src/test/java/com/nst/tutorials/rest/contractvalidation)
+2. [Contract Validations](src/test/java/com/nst/tutorials/rest/contractvalidations)
 3. [Thin Models](src/test/java/com/nst/tutorials/rest/thinmodels)
 4. Mock Generation
 5. Runtime arguments
@@ -24,14 +24,3 @@ Each package maps to the topic name - for example, the Service Wrappers tutorial
 Please ensure that the following are installed prior to running the tutorials.
 1. Java JDK (8+)
 2. Maven
-
-### Topics Covered:
-
-1. [Service Wrappers](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/servicewrappers)
-2. [Contract Validations](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidations)
-3. [Thin Models](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/thinmodels)
-4. Mock Generation
-5. Runtime Arguments
-6. Response Logger Injections
-7. Exporting to UI Test Files
-

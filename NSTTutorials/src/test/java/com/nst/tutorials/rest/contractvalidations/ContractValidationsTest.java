@@ -7,28 +7,28 @@ import com.ebay.softassert.EbaySoftAssert;
 import com.nst.tutorials.rest.CanadaHoliday;
 import org.testng.annotations.Test;
 
-public class ContractValidationTest implements NSTServiceTestRunner {
+public class ContractValidationsTest implements NSTServiceTestRunner {
 
     private final NSTServiceWrapperProcessor serviceWrapperProcessor = new NSTServiceWrapperProcessor();
 
     @Test
     public void exampleRestTest() throws Exception {
         // Send a GET /api/v1/holidays/{holidayId} request.
-        ContractValidationWrapper restServiceWrapper = new ContractValidationWrapper(CanadaHoliday.CANADA_DAY);
+        ContractValidationsWrapper restServiceWrapper = new ContractValidationsWrapper(CanadaHoliday.CANADA_DAY);
         serviceWrapperProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
     }
 
     @Test(expectedExceptions = SchemaValidationException.class)
     public void exampleRestTestWithSchemaValidationError() throws Exception {
         // Send a GET /api/v1/holidays/{holidayId} request and observe the schema validation error.
-        ContractValidationErrorWrapper restServiceWrapper = new ContractValidationErrorWrapper(CanadaHoliday.CANADA_DAY);
+        ContractValidationsErrorWrapper restServiceWrapper = new ContractValidationsErrorWrapper(CanadaHoliday.CANADA_DAY);
         serviceWrapperProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
     }
 
     @Test(expectedExceptions = SchemaValidationException.class)
     public void exampleRestTestWithPolymorphicSchemaValidationError() throws Exception {
         // Send a GET /api/v1/holidays/{holidayId} request and observe the polymorphic schema validation error.
-        ContractValidationPolymorphicErrorWrapper restServiceWrapper = new ContractValidationPolymorphicErrorWrapper(CanadaHoliday.CANADA_DAY);
+        ContractValidationsPolymorphicErrorWrapper restServiceWrapper = new ContractValidationsPolymorphicErrorWrapper(CanadaHoliday.CANADA_DAY);
         serviceWrapperProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
     }
 

@@ -19,8 +19,8 @@ Thin models get their name by not being backed by a POJO tree. They are a wrappe
 
 ## References
 - [JSONPath](https://goessner.net/articles/JsonPath/)
-- [JPChecks](https://github.com/eBay/NSTSuite/tree/main/NST/src/main/java/com/ebay/jsonpath)
-- [TMBuilder](https://github.com/eBay/NSTSuite/tree/main/TMBuilder)
+- [JPChecks](../../../../../../../../../NST/src/main/java/com/ebay/jsonpath)
+- [TMBuilder](../../../../../../../../../TMBuilder)
 
 ### a. Creating a thin model
 

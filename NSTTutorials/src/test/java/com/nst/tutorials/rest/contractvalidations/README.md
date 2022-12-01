@@ -78,9 +78,9 @@ In the above error, there are a few things we can use to understand what failed.
 - `keyword` - The type of contract validation error that occurred.
 - `found / expected` - Expected vs. what was found in the response data.
 
-In this case, at (response data) instance {"pointer":"/holiday/id"} , we were expecting the field to be of type `string`, but found an `integer`. 
+In this case, at (response data) instance {"pointer":"/holiday/id"} , we were expecting the field to be of type `string`, but found an `integer`.
 
-To see / debug an example of this schema validation error, please see [this](https://github.com/eBay/NSTSuite/blob/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidation/ContractValidationTest.java#L22) example test method.
+To see / debug an example of this schema validation error, please see the `exampleRestTestWithSchemaValidationError` test method [here](../../../../../../../../../NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidations/ContractValidationsTest.java).
 
 ### c. Polymorphic schema validation errors
 
@@ -162,4 +162,4 @@ To summarize this example:
 - The schema validator ran using this response data, first against the `HolidayWithoutId` definition, at index 0. This failed, since the response data contains an `id` field, and the service wrapper has the `.allowAdditionalProperties(OpenApiSchemaValidator.AllowAdditionalProperties.NO)` set, disallowing any undefined properties being returned in the response. An appropriate error message was appended to the `reports`.
 - The schema validator ran against the next defined type in the `oneOf` block, `HolidayExpectingIdAsString`, at index 1. This failed, since the response data has an `id` field returned as an integer type, and an error message was appended to the `reports`.
 
-To see / debug an example of this polymorphic schema validation error, please see [this](https://github.com/eBay/NSTSuite/blob/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidation/ContractValidationTest.java#L29) example test method.
+To see / debug an example of this polymorphic schema validation error, please see the `exampleRestTestWithPolymorphicSchemaValidationError` test method [here](../../../../../../../../../NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidations/ContractValidationsTest.java).

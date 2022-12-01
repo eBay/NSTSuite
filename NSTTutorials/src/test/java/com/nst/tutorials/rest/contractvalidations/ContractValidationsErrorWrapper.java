@@ -14,14 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ContractValidationErrorWrapper implements NSTRestServiceWrapper {
+public class ContractValidationsErrorWrapper implements NSTRestServiceWrapper {
 
     private static final String SERVICE_NAME = "canadaholidays";
     private static final String ENDPOINT = "/api/v1/holidays/{holidayId}";
     private static final NstRequestType NST_REQUEST_TYPE = NstRequestType.GET;
     private final CanadaHoliday canadaHoliday;
 
-    public ContractValidationErrorWrapper(CanadaHoliday canadaHoliday) {
+    public ContractValidationsErrorWrapper(CanadaHoliday canadaHoliday) {
         this.canadaHoliday = Objects.requireNonNull(canadaHoliday);
     }
 
