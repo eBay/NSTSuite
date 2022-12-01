@@ -18,13 +18,9 @@ Thin models get their name by not being backed by a POJO tree. They are a wrappe
 4. Utilizing thin models
 
 ## References
-
-- Service wrapper class - TODO: UPDATE WITH OSS LINK 
-- Test class - TODO: UPDATE WITH OSS LINK 
-- Thin model class - TODO: UPDATE WITH OSS LINK 
 - [JSONPath](https://goessner.net/articles/JsonPath/)
-- [JPChecks] TODO: UPDATE WITH OSS LINK (/NSTSuite/tree/main/NST/src/main/java/com/ebay/jsonpath)
-- [TMBuilder] TODO: UPDATE WITH OSS LINK (/NSTSuite/tree/main/TMBuilder)
+- [JPChecks](https://github.com/eBay/NSTSuite/tree/main/NST/src/main/java/com/ebay/jsonpath)
+- [TMBuilder](https://github.com/eBay/NSTSuite/tree/main/TMBuilder)
 
 ### a. Creating a thin model
 
@@ -60,7 +56,7 @@ public class ExampleResponseModel extends NSTServiceModelBase {
 
 - Every thin model must extend the `NSTServiceModelBase` class. As mentioned above, whenever any thin model class is instantiated, the `validate` method will be called. Thus, we would want to ensure that anything inside of the `validate` method applies to all scenarios in which this thin model would need to be utilized - i.e. a “base case” validation.
 - The default constructor for `NSTServiceModelBase` requires the `JSONObject` root response object, along with an instance of a TestNG `SoftAssert`.
-- The `generatedValidations` have been created using the **TMBuilder**, using the same contract file that is referenced within the service wrapper. For information on the TMBuilder tool, please see [this link] TODO: UPDATE WITH OSS LINK (/NSTSuite/tree/main/TMBuilder).
+- The `generatedValidations` have been created using the **TMBuilder**, using the same contract file that is referenced within the service wrapper. For information on the TMBuilder tool, please see [this link](https://github.com/eBay/NSTSuite/tree/main/TMBuilder).
 
 ### b. Validating JSON path data
 

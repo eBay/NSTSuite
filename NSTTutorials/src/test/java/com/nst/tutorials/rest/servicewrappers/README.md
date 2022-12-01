@@ -11,9 +11,6 @@ For any contract validation test in NST, we need to make service calls with an a
 3. Making requests with other HTTP methods
 
 ## References
-
-- Service wrapper class - TODO LINK
-- Test class - TODO LINK
 - [TestNG SoftAssert](https://www.javadoc.io/doc/org.testng/testng/6.8.8/org/testng/asserts/SoftAssert.html)
 
 ### a. Making a basic REST GET request

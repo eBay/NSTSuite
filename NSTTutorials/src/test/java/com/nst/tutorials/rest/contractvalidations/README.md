@@ -13,9 +13,6 @@ The contract can refer to either an OpenAPI / Swagger yaml, JSON schema, or Grap
 3. Polymorphic schema validation errors
 
 ## References
-
-- Service wrapper class - TODO LINK
-- Test class - TODO LINK
 - [JSON Schema Validator](https://github.com/java-json-tools/json-schema-validator)
 - [OpenAPI Specification](https://swagger.io/specification/)
 - [oneOf / anyOf](https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/)
@@ -83,7 +80,7 @@ In the above error, there are a few things we can use to understand what failed.
 
 In this case, at (response data) instance {"pointer":"/holiday/id"} , we were expecting the field to be of type `string`, but found an `integer`. 
 
-To see / debug an example of this schema validation error, please see the example test method: **TODO: Link to file**.
+To see / debug an example of this schema validation error, please see [this](https://github.com/eBay/NSTSuite/blob/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidation/ContractValidationTest.java#L22) example test method.
 
 ### c. Polymorphic schema validation errors
 
@@ -165,4 +162,4 @@ To summarize this example:
 - The schema validator ran using this response data, first against the `HolidayWithoutId` definition, at index 0. This failed, since the response data contains an `id` field, and the service wrapper has the `.allowAdditionalProperties(OpenApiSchemaValidator.AllowAdditionalProperties.NO)` set, disallowing any undefined properties being returned in the response. An appropriate error message was appended to the `reports`.
 - The schema validator ran against the next defined type in the `oneOf` block, `HolidayExpectingIdAsString`, at index 1. This failed, since the response data has an `id` field returned as an integer type, and an error message was appended to the `reports`.
 
-To see / debug an example of this polymorphic schema validation error, please see the example test method: **TODO: Link to file**.
+To see / debug an example of this polymorphic schema validation error, please see [this](https://github.com/eBay/NSTSuite/blob/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidation/ContractValidationTest.java#L29) example test method.

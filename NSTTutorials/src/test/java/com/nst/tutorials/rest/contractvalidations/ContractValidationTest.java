@@ -1,4 +1,4 @@
-package com.nst.tutorials.rest.contractvalidation;
+package com.nst.tutorials.rest.contractvalidations;
 
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;

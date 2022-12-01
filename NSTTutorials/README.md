@@ -9,19 +9,19 @@ Each module will have compilable & runnable examples that can be referenced in t
 Each package maps to the topic name - for example, the Service Wrappers tutorial files are in the 
 `com.nst.tutorials.rest.servicewrappers` package.
 
-**Topics Covered:**
-
-1. Service Wrappers
-2. Contract Validations
-3. Thin Models
-4. Mock Generation
-5. Runtime arguments
-6. Response logger injections
-7. Exporting to UI test files
-
-**Prerequisites:**
+### Prerequisites:
 
 Please ensure that the following are installed prior to running the tutorials.
-
 1. Java JDK (8+)
 2. Maven
+
+### Topics Covered:
+
+1. [Service Wrappers](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/servicewrappers)
+2. [Contract Validations](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidations)
+3. [Thin Models](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials/src/test/java/com/nst/tutorials/rest/thinmodels)
+4. Mock Generation
+5. Runtime Arguments
+6. Response Logger Injections
+7. Exporting to UI Test Files
+
