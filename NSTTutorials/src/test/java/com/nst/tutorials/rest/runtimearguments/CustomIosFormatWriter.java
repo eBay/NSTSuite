@@ -1,8 +1,8 @@
-package com.nst.tutorials.customloggers;
+package com.nst.tutorials.rest.runtimearguments;
 
 import com.ebay.runtime.arguments.Platform;
-import com.ebay.service.logger.FormatWriter;
 import com.ebay.service.logger.call.cache.ServiceCallCacheData;
+import com.ebay.service.logger.platforms.HarLogger;
 import com.ebay.service.logger.platforms.blocksignatures.BlockSignatureType;
 import com.ebay.service.logger.platforms.blocksignatures.PlatformBlockSignatures;
 import com.ebay.service.logger.platforms.model.GeneralPlatformFileModel;
@@ -20,16 +20,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-public class IosFormatWriter implements FormatWriter {
+public class CustomIosFormatWriter extends HarLogger {
 
     @Override
     public Platform getPlatformAssociation() {
         return Platform.IOS;
-    }
-
-    @Override
-    public void writeMocks(List<ServiceCallCacheData> calls, String testClassName, String testMethodName) {
-        System.out.println("WRITE IOS MOCKS");
     }
 
     @Override
@@ -64,7 +59,6 @@ public class IosFormatWriter implements FormatWriter {
         List<String> newImportStatements = PlatformLoggerUtil.getImportStatements(operations);
         List<String> newMemberVariables = PlatformLoggerUtil.getMemberVariableStatements(operations);
         String methodOperationStatements = PlatformLoggerUtil.getMethodBlockStatements(operations, methodContentsIndent);
-//        String injectStatements = getInjectStatement(methodContentsIndent);
 
         methodBlockBuilder.append(method.getMethodSignature() + "\n");
 
@@ -76,8 +70,6 @@ public class IosFormatWriter implements FormatWriter {
         }
 
         methodBlockBuilder.append(methodLeadInContents);
-
-//        methodBlockBuilder.append(injectStatements);
 
         methodBlockBuilder.append(methodOperationStatements);
 

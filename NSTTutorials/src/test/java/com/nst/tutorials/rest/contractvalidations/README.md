@@ -1,23 +1,25 @@
+[_Return to Tutorials Overview_](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials)
+
 # Contract Validations
 
-## Overview
+### Overview
 
 One of the core functionalities of NST is contract testing, where a response is compared against the service schema and the data returned in the response is evaluated. This ensures that a service / client contract has been maintained and is intact. This is critical, especially when considering the use case of generating mock response files for use in the client.
 
 The contract can refer to either an OpenAPI / Swagger yaml, JSON schema, or GraphQL schema file that defines the contract between the client and the service. The schema validation happens automatically whenever any service wrapper is sent, provided the `getSchemaValidator` method is implemented and returns a valid *`NSTSchemaValidator`* instance.
 
-## Topics Covered
+### Topics Covered
 
-1. Setting `getSchemaValidator` in the Service Wrapper
-2. Schema validation errors
-3. Polymorphic schema validation errors
+1. [Setting getSchemaValidator in the Service Wrapper](#Setting getSchemaValidator in the Service Wrapper)
+2. [Schema validation errors](#Schema validation errors)
+3. [Polymorphic schema validation errors](#Polymorphic schema validation errors)
 
-## References
+### References
 - [JSON Schema Validator](https://github.com/java-json-tools/json-schema-validator)
 - [OpenAPI Specification](https://swagger.io/specification/)
 - [oneOf / anyOf](https://swagger.io/docs/specification/data-models/oneof-anyof-allof-not/)
 
-### a. Setting `getSchemaValidator` in the Service Wrapper
+## Setting getSchemaValidator in the Service Wrapper
 
 As we saw above, we need to set up our service wrappers to return a *`NSTSchemaValidator`*. This is the schema validator that will be utilized to compare the service response against the schema definition.
 
@@ -56,7 +58,7 @@ This is just one example, but you are free to use `JsonSchemaValidator` or `Open
 
 **NOTE**: NST utilizes the [json-schema-validator library](https://github.com/java-json-tools/json-schema-validator) to validate the response data against the supplied schema.
 
-### **b. Schema validation errors**
+## Schema validation errors
 
 Let’s walk through an example of what a schema validation error looks like.
 
@@ -82,7 +84,7 @@ In this case, at (response data) instance {"pointer":"/holiday/id"} , we were ex
 
 To see / debug an example of this schema validation error, please see the `exampleRestTestWithSchemaValidationError` test method [here](../../../../../../../../../NSTTutorials/src/test/java/com/nst/tutorials/rest/contractvalidations/ContractValidationsTest.java).
 
-### c. Polymorphic schema validation errors
+## Polymorphic schema validation errors
 
 If the contract definition contains a `oneOf` or an `anyOf` definition, then a polymorphic schema validation error may occur.
 

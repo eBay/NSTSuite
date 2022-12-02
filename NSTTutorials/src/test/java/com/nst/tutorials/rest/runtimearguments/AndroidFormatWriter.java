@@ -1,4 +1,4 @@
-package com.nst.tutorials.customloggers;
+package com.nst.tutorials.rest.runtimearguments;
 
 import com.ebay.nst.resourcefile.reader.ResourceFileReader;
 import com.ebay.runtime.arguments.Platform;

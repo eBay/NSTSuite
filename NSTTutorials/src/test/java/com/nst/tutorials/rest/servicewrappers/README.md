@@ -1,19 +1,21 @@
+[_Return to Tutorials Overview_](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials)
+
 # Service Wrappers
 
-## Overview
+### Overview
 
 For any contract validation test in NST, we need to make service calls with an associated service wrapper class. Service wrappers are classes that contain all details required for the service to be called using NST, such as the endpoint, the HTTP method, and the like. How the contract and response data is validated and handled per your requirements is shown in further sections (contract validation / thin model validations).
 
-## Topics Covered
+### Topics Covered
 
-1. Making a basic REST GET request
-2. The serviceHosts.csv
-3. Making requests with other HTTP methods
+1. [Making a basic REST GET request](#Making a basic REST GET request)
+2. [Using serviceHosts.csv](#Using serviceHosts.csv)
+3. [Other HTTP methods](#Other HTTP methods)
 
-## References
+### References
 - [TestNG SoftAssert](https://www.javadoc.io/doc/org.testng/testng/6.8.8/org/testng/asserts/SoftAssert.html)
 
-### a. Making a basic REST GET request
+## Making a basic REST GET request
 
 For this initial example, we will be creating / implementing an NST REST GET request. Any REST request must implement *`NSTRestServiceWrapper`*.
 
@@ -79,7 +81,7 @@ public void exampleRestTest() throws Exception {
 }
 ```
 
-### b. serviceHosts.csv
+## Using serviceHosts.csv
 
 As we mentioned above, every service wrapper class has a service name (`getServiceName`), which is used alongside `getEndpointPath` when forming the full URL of the request with the `HostsManager` in the `prepareRequest` method. The `serviceHosts.csv` is used to map the service with the desired host, when the `HostsManager` is utilized. This allows you to easily switch the hosts for service wrappers between environments such as QA and PROD. 
 
@@ -95,7 +97,7 @@ The columns required in this CSV file are:
 - `environment` - The environment of the host, such as `QA` or `PROD`. The environment utilized here is defined by the `testExeEnv` runtime argument. By default, it is set to `QA`.
 - `host` - The host of the service to use, for the defined environment.
 
-### c. Other HTTP methods
+## Other HTTP methods
 
 When sending requests that require payloads such as PUT or POST methods, we need to pass a serialized request payload in our service wrapper.
 

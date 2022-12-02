@@ -1,6 +1,8 @@
+[_Return to Tutorials Overview_](https://github.com/eBay/NSTSuite/tree/main/NSTTutorials)
+
 # Thin Models
 
-## Overview
+### Overview
 
 Now that we’ve successfully sent a request and received a response and passed contract validation, let’s go through how we validate the contents in the response that are specific to our client test automation concerns.
 
@@ -10,19 +12,19 @@ Unlike contract validations, thin model checks are performed during the course o
 
 Thin models get their name by not being backed by a POJO tree. They are a wrapper around the parsed JSON object and use JSON path calls used to retrieve data from the model. Getters using JSON path may be defined for specific data retrieval needs. This decouples the tests from complex service models and provides a lightweight solution to retrieving response data in tests.
 
-## Topics Covered
+### Topics Covered
 
-1. Creating a thin model
-2. Validating JSONPath data
-3. Retrieving data
-4. Utilizing thin models
+1. [Creating a thin model](#Creating a thin model)
+2. [Validating JSONPath data](#Validating JSON path data)
+3. [Retrieving data](#Retrieving data)
+4. [Utilizing thin models](#Utilizing thin models)
 
-## References
+### References
 - [JSONPath](https://goessner.net/articles/JsonPath/)
 - [JPChecks](../../../../../../../../../NST/src/main/java/com/ebay/jsonpath)
 - [TMBuilder](../../../../../../../../../TMBuilder)
 
-### a. Creating a thin model
+## Creating a thin model
 
 Let’s look at an example thin model class.
 
@@ -58,7 +60,7 @@ public class ExampleResponseModel extends NSTServiceModelBase {
 - The default constructor for `NSTServiceModelBase` requires the `JSONObject` root response object, along with an instance of a TestNG `SoftAssert`.
 - The `generatedValidations` have been created using the **TMBuilder**, using the same contract file that is referenced within the service wrapper. For information on the TMBuilder tool, please see [this link](https://github.com/eBay/NSTSuite/tree/main/TMBuilder).
 
-### b. Validating JSON path data
+## Validating JSON path data
 
 Next, let’s review the format in which we validate the response data within thin models, using JSON path.
 
@@ -85,7 +87,7 @@ For any JPCheck, the default constructor will ensure that the path specified is 
 
 To note, these validations can be generated automatically using the **TMBuilder** and the OpenAPI contract yaml file or JSON schema file.
 
-### c. Retrieving data
+## Retrieving data
 
 Thin models can also be used to “reach in” and get some data that may be required for other service wrappers or to validate some data.
 
@@ -99,7 +101,7 @@ public Integer getId() {
 }
 ```
 
-### d. Utilizing thin models
+## Utilizing thin models
 
 Now that we’ve created our thin model, we can use it within our tests.
 
