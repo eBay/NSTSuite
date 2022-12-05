@@ -462,9 +462,8 @@ public class RuntimeConfigManagerTest {
 	@Test
 	public void customArgumentOverride() {
 		
-		RuntimeConfigManager.getInstance().addRuntimeArgument(new CustomArgument());
 		System.setProperty(CustomArgument.KEY, "true");
-		RuntimeConfigManager.getInstance().reinitialize();
+		RuntimeConfigManager.getInstance().addRuntimeArgument(new CustomArgument());
 
 		CustomArgument argument = (CustomArgument) RuntimeConfigManager.getInstance().getRuntimeArgument(CustomArgument.KEY);
 		Boolean runtimeValue = argument.getRuntimeArgumentValue();

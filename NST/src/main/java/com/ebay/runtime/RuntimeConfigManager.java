@@ -56,9 +56,8 @@ public class RuntimeConfigManager {
 	}
 
 	/**
-	 * Add a custom runtime config option. You MUST call reinitialize() after the
-	 * last runtime argument is added to have the manager pickup those runtime
-	 * values, if specified by the user.
+	 * Add a custom runtime config option. This will call reinitialize() to have the
+	 * manager pickup those runtime values, if specified by the user.
 	 * 
 	 * If the runtime argument already exists the new one is ignored. Overriding
 	 * existing runtime arguments is NOT allowed.
@@ -71,6 +70,7 @@ public class RuntimeConfigManager {
 	public void addRuntimeArgument(RuntimeConfigValue<?> value) {
 		if (!arguments.containsKey(value.getRuntimeArgumentKey())) {
 			arguments.put(value.getRuntimeArgumentKey(), value);
+			reinitialize();
 		}
 	}
 
