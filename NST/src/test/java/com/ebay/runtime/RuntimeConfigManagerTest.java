@@ -444,7 +444,7 @@ public class RuntimeConfigManagerTest {
 		
 		RuntimeConfigManager.getInstance().reinitialize();
 		String actualPackageValue = RuntimeConfigManager.getInstance().getCustomLoggerFormatPackage();
-		assertThat(actualPackageValue, is(nullValue()));
+		assertThat(actualPackageValue, is(equalTo("com.ebay.custom.loggers")));
 	}
 	
 	@Test
