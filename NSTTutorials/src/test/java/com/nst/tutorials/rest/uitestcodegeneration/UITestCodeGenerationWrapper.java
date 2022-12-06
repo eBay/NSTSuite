@@ -13,6 +13,7 @@ import com.ebay.service.protocol.http.NSTHttpRequestImpl;
 import com.ebay.utility.service.ServiceUtil;
 import com.nst.tutorials.rest.responseloggerinjections.ExampleResponseLoggerInjector;
 import com.nst.tutorials.rest.shared.CanadaHoliday;
+import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -43,7 +44,7 @@ public class UITestCodeGenerationWrapper implements NSTRestServiceWrapper {
 
     @Override
     public String getEndpointPath() {
-        return ENDPOINT;
+        return ENDPOINT.replace("{holidayId}", canadaHoliday.getHolidayId().toString());
     }
 
     @Override

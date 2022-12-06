@@ -48,7 +48,7 @@ public class ResponseLoggerInjectionsWrapper implements NSTRestServiceWrapper {
 
     @Override
     public String getEndpointPath() {
-        return ENDPOINT;
+        return ENDPOINT.replace("{holidayId}", canadaHoliday.getHolidayId().toString());
     }
 
     @Override

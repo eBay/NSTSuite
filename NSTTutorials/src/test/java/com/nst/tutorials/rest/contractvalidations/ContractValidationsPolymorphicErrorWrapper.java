@@ -38,7 +38,7 @@ public class ContractValidationsPolymorphicErrorWrapper implements NSTRestServic
 
     @Override
     public String getEndpointPath() {
-        return ENDPOINT;
+        return ENDPOINT.replace("{holidayId}", canadaHoliday.getHolidayId().toString());
     }
 
     @Override
