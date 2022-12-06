@@ -1,11 +1,11 @@
 package com.nst.tutorials.rest.servicewrappers;
 
 import com.ebay.nst.NstRequestType;
-import com.ebay.nst.hosts.manager.HostsManager;
 import com.ebay.nst.rest.NSTRestServiceWrapper;
 import com.ebay.nst.schema.validation.NSTRestSchemaValidator;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
+import com.ebay.utility.service.ServiceUtil;
 import com.nst.tutorials.rest.shared.CanadaHoliday;
 
 import java.net.URL;
@@ -44,15 +44,7 @@ public class ServiceWrappersWrapper implements NSTRestServiceWrapper {
         Map<String, String> headers = new HashMap<>();
         headers.put("USER-AGENT", "testHeader");
 
-        URL url;
-        try {
-            // HostsManager will utilize the data read in from the serviceHosts.csv file, in the root resources directory.
-            String path = HostsManager.getInstance().getHostForService(SERVICE_NAME) + ENDPOINT;
-            url = new URL(path.replace("{holidayId}", canadaHoliday.getHolidayId().toString()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        URL url = ServiceUtil.getUrl(this);
         return new NSTHttpRequestImpl.Builder(url, NstRequestType.GET)
                 .setHeaders(headers)
                 .build();

@@ -10,6 +10,7 @@ import com.ebay.nst.schema.validation.OpenApiSchemaValidator.StatusCode;
 import com.ebay.service.logger.injection.ResponseLoggerInjector;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
+import com.ebay.utility.service.ServiceUtil;
 import com.nst.tutorials.rest.responseloggerinjections.ExampleResponseLoggerInjector;
 import com.nst.tutorials.rest.shared.CanadaHoliday;
 
@@ -50,15 +51,7 @@ public class UITestCodeGenerationWrapper implements NSTRestServiceWrapper {
         Map<String, String> headers = new HashMap<>();
         headers.put("USER-AGENT", "testHeader");
 
-        URL url;
-        try {
-            // HostsManager will utilize the data read in from the serviceHosts.csv file, in the root resources directory.
-            String path = HostsManager.getInstance().getHostForService(SERVICE_NAME) + ENDPOINT;
-            url = new URL(path.replace("{holidayId}", canadaHoliday.getHolidayId().toString()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        URL url = ServiceUtil.getUrl(this);
         return new NSTHttpRequestImpl.Builder(url, NST_REQUEST_TYPE)
                 .setHeaders(headers)
                 .build();

@@ -7,6 +7,7 @@ import com.ebay.nst.schema.validation.NSTRestSchemaValidator;
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
+import com.ebay.utility.service.ServiceUtil;
 import com.nst.tutorials.rest.shared.CanadaHoliday;
 
 import java.net.URL;
@@ -45,14 +46,7 @@ public class ContractValidationsErrorWrapper implements NSTRestServiceWrapper {
         Map<String, String> headers = new HashMap<>();
         headers.put("USER-AGENT", "testHeader");
 
-        URL url;
-        try {
-            String path = HostsManager.getInstance().getHostForService(SERVICE_NAME) + ENDPOINT;
-            url = new URL(path.replace("{holidayId}", canadaHoliday.getHolidayId().toString()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        URL url = ServiceUtil.getUrl(this);
         return new NSTHttpRequestImpl.Builder(url, NST_REQUEST_TYPE)
                 .setHeaders(headers)
                 .build();
