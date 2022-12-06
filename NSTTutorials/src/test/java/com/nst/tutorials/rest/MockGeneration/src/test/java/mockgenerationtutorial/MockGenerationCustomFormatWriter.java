@@ -23,6 +23,7 @@ public class MockGenerationCustomFormatWriter implements FormatWriter {
     }
 
     @Override
+    // Custom format writer that generates JSON instead of the default HAR files from HarLogger.
     public void writeMocks(List<ServiceCallCacheData> calls, String testClassName, String testMethodName) {
         FormatWriterUtil.removeMockFilesMatchingClassAndMethodName(testClassName, testMethodName);
         int sequenceCounter = 0;

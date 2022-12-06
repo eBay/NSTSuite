@@ -45,7 +45,6 @@
 	<modules>
 		<module>NST</module>
 		<module>TMBuilder</module>
-		<module>NSTTutorials</module>
 	</modules>
 
 	<dependencies>
