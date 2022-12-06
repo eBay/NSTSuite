@@ -120,7 +120,7 @@ public class RuntimeConfigManager {
 	 * 
 	 * @return True if schema validation should occur, false otherwise.
 	 */
-	public boolean validateSchema() {
+	public boolean getSchemaValidation() {
 		Boolean validateSchema = (Boolean) arguments.get(SchemaValidationArgument.KEY).getRuntimeArgumentValue();
 		return (validateSchema == null) ? true : validateSchema;
 	}

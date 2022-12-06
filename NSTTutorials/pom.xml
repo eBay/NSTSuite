@@ -32,7 +32,7 @@
                     <argLine>
                         -Xms256m
                         -Xmx4096m
-                        -DcustomLoggersPackage=com.nst.tutorials.rest.runtimearguments
+                        -DcustomLoggersPackage=com.nst.tutorials.rest.mockgeneration
                         -DwhatToWrite=NONE
                         -Dnstplatform=IOS
                         -DandroidTestsLocation="./src/test/java/com/nst/tutorials/uitest/android"

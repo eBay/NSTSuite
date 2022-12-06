@@ -208,7 +208,7 @@ public final class NSTServiceWrapperProcessor {
 			NSTHttpResponse response) {
 		// validate the schema if schema node is not null and flag is not set to
 		// false
-		boolean isSchemaValidate = RuntimeConfigManager.getInstance().validateSchema();
+		boolean isSchemaValidate = RuntimeConfigManager.getInstance().getSchemaValidation();
 		NSTSchemaValidator schemaValidator = serviceWrapper.getSchemaValidator();
 
 		if ((!isSchemaValidationDisabled()) && (isSchemaValidate) && (schemaValidator != null)
