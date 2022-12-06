@@ -39,7 +39,7 @@ public String processServiceResponse(String rawServiceResponsePayload) {
 
 After we’ve created our *`ResponseLoggerInjector` ,* we just need to set it in the service wrapper class in `getResponseLoggerInjector`. Now, whenever this service wrapper is sent, the generated mock response file will have the specified field values “injected” into it.
 
-To see this functionality in action, run the `exampleResponseLoggerInjectionMockGenerationTest` test in [`ResponseLoggerInjectionsTest.java`](src/test/java/ResponseLoggerInjectionsTest.java).
+To see this functionality in action, run the `exampleResponseLoggerInjectionMockGenerationTest` test in [`ResponseLoggerInjectionsTest.java`](src/test/java/responseloggerinjectionstutorial/ResponseLoggerInjectionsTest.java).
 
 After running the example test method, you can inspect the generated HAR file to see how the response block was modified:
 ![](src/test/resources/modifiedDateFieldValue.png)

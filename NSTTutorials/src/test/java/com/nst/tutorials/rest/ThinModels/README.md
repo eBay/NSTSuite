@@ -58,7 +58,7 @@ public class ExampleResponseModel extends NSTServiceModelBase {
 
 - Every thin model must extend the `NSTServiceModelBase` class. As mentioned above, whenever any thin model class is instantiated, the `validate` method will be called. Thus, we would want to ensure that anything inside of the `validate` method applies to all scenarios in which this thin model would need to be utilized - i.e. a “base case” validation.
 - The default constructor for `NSTServiceModelBase` requires the `JSONObject` root response object, along with an instance of a TestNG `SoftAssert`.
-- The `generatedValidations` have been created using the **TMBuilder**, using the same contract file that is referenced within the service wrapper. For information on the TMBuilder tool, please see [this link](https://github.com/eBay/NSTSuite/tree/main/TMBuilder).
+- The `generatedValidations` have been created using the **TMBuilder**, using the same contract file that is referenced within the service wrapper. For information on the TMBuilder tool, please click [here](../../../../../../../../../TMBuilder).
 
 ## Validating JSON path data
 
@@ -81,7 +81,7 @@ evaluateJsonPaths(validations, softAssert);
 - The `JPCheck` instance
 - The `SoftAssert` instance
 
-There are a variety of JPChecks that are available for various data types. These can be seen [here](https://github.corp.ebay.com/byarger/NSTSuite/tree/main/NST/src/test/java/com/ebay/jsonpath).
+There are a variety of JPChecks that are available for various data types. These can be seen [here](../../../../../../../../../NST/src/main/java/com/ebay/jsonpath).
 
 For any JPCheck, the default constructor will ensure that the path specified is not null and not empty. The additional methods such as `isEqualTo` are modifiers on top of this “base” JPCheck validation. For example, `isEqualTo` should be utilized when it is critical that some field has a specific value (on top of being not null and not empty). An example of this would be if there is a specific value that the client is explicitly dependent on to trigger some functionality - not just that it has some value to render.
 

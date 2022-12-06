@@ -14,11 +14,11 @@ The benefit provided by this functionality is the ability to run your NST tests 
 2. [Output Mapping CSV](#Output Mapping CSV)
 
 ### References
-- [nstToFuiMappingsIos.csv](../../../../../../../test/resources/nstToFuiMappingsIos.csv)
-- [Custom Loggers](../mockgeneration/README.md#Adding a custom logger)
+- [nstToFuiMappingsIos.csv](./src/test/resources/nstToFuiMappingsIos.csv)
+- [Custom Loggers](../MockGeneration/README.md#Adding a custom logger)
 
 ### Prerequisites
-Custom logger for platform(s) have been created. If this has not been done yet or for more info, please see the tutorial in the [Mock Generation](../mockgeneration/README.md#Adding a custom logger) section.
+Custom logger for platform(s) have been created. If this has not been done yet or for more info, please see the tutorial in the [Mock Generation](../MockGeneration/README.md#Adding a custom logger) section.
 
 ## Runtime arguments
 

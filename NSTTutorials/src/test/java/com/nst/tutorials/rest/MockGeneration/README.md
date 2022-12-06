@@ -5,7 +5,7 @@
 ### Topics Covered
 
 1. [Generating mock files](#Generating mock files)
-2. [Adding a custom logger for mock files](#Adding a custom logger)
+2. [Adding a custom logger](#Adding a custom logger)
 
 ### References
 - [NST Runtime Arguments](../../../../../../../../../NST/README.md#Runtime Arguments)
@@ -26,9 +26,9 @@ By default, NST will generate HAR mock response files (using the `HarLogger`). T
 
 After setting the runtime arguments above, simply running the NST test method will generate the mock response files, provided the test is successful.
 
-To see an example of the mock generation capability of NST, run [this test](src/test/java/MockGenerationTest.java). Running the test will generate the example HAR mock response file in the [current directory](./).
+To see an example of the mock generation capability of NST, run the test in [this test class](src/test/java/mockgenerationtutorial/MockGenerationTest.java). Running the test will generate the example HAR mock response file in that same [directory](src/test/java/mockgenerationtutorial).
 
-## Adding a custom logger for mock files
+## Adding a custom logger
 
 NST also supports customization of the logging / output that is generated. You may want to add your own custom implementation to modify the output of either the mock response files or the output to the UI test files as well. For now, let's focus on creating a custom logger to modify the mock file output, if the `HarLogger` does not fulfill your requirements.
 
@@ -38,9 +38,9 @@ To create our own custom logger, we will need to create a class which implements
 
 - `getPlatformAssociation` - This should return whichever platform you are creating a custom logger for (e.g. `IOS, ANDROID, MWEB, SITE`).
 - `writeMocks` - This would be where you utilize the supplied list of service calls made by NST, along with the `testClassName` and `testMethodName` (if desired) to generate the mocks in the format of your choosing.
-- `updateTests` - This would be where we can again utilize the list of service calls, along with the `testClassName` and `testMethodName` (if desired) to generate the **UI test code output** that is customized per your specifications (covered in section 7, ["UI Test Code Generation"](../uitestcodegeneration/README.md)). If no modification to UI test files is needed, we do not need to add any meaningful implementation for this `updateTests` method.
+- `updateTests` - This would be where we can again utilize the list of service calls, along with the `testClassName` and `testMethodName` (if desired) to generate the **UI test code output** that is customized per your specifications (covered in section 7, ["UI Test Code Generation"](../UITestCodeGeneration/README.md)). If no modification to UI test files is needed, we do not need to add any meaningful implementation for this `updateTests` method.
 
-You can see an example of a custom logger [here](src/test/java/MockGenerationCustomFormatWriter.java) that would modify the mock generation step of NST to generate JSON files instead of HAR files from the HarLogger. Please also note the usage of [`FormatWriterUtil`](../../../../../../../../../NST/src/main/java/com/ebay/service/logger/FormatWriterUtil.java), which has various methods that assist in this step. 
+You can see an example of a custom logger [here](src/test/java/mockgenerationtutorial/MockGenerationCustomFormatWriter.java) that would modify the mock generation step of NST to generate JSON files instead of HAR files from the HarLogger. Please also note the usage of [`FormatWriterUtil`](../../../../../../../../../NST/src/main/java/com/ebay/service/logger/FormatWriterUtil.java), which has various methods that assist in this step. 
 
 Once the custom logger has been created, we need to point the `customLoggersPackage` runtime argument to the package that contains our custom loggers.
 

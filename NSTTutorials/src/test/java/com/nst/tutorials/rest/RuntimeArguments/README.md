@@ -41,7 +41,7 @@ Once you have created your runtime argument class, use `RuntimeConfigManager.get
 
 `RuntimeConfigManager.getInstance().getRuntimeArgumentValue(CustomRuntimeArgument.KEY);`
 
-See the [associated test class](src/test/java/com/nst/tutorials/runtimearguments/RuntimeArgumentsTest.java) for an example of adding a custom runtime argument.
+See the [associated test class](src/test/java/runtimeargumentstutorial/RuntimeArgumentsTest.java) for an example of adding a custom runtime argument.
 
 ## Overriding runtime arguments
 
@@ -58,4 +58,4 @@ RuntimeConfigValue<String> iosMocksLocationConfigValue =
 String newRuntimeArgumentvalue = iosMocksLocationConfigValue.override(modifiedValue);
 ```
 
-See the [associated test class](src/test/java/com/nst/tutorials/runtimearguments/RuntimeArgumentsTest.java) for a runnable example that demonstrates this functionality both for an existing runtime argument and a newly added custom runtime argument.
+See the [associated test class](src/test/java/runtimeargumentstutorial/RuntimeArgumentsTest.java) for a runnable example that demonstrates this functionality both for an existing runtime argument and a newly added custom runtime argument.
