@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.ebay.nst</groupId>
             <artifactId>nst-tutorials</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${nsttutorials.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -28,7 +28,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
+                <version>${maven.surefire.plugin.version}</version>
                 <configuration>
                     <suiteXmlFiles>
                         <suiteXmlFile>${project.basedir}/src/test/resources/ContractValidationsTestSuite.xml</suiteXmlFile>
