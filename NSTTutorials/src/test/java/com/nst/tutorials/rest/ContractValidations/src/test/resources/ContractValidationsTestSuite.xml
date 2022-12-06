@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="NST Tutorials - Contract Validations Test Suite" verbose="1">
+    <test name="NST Tutorials - Contract Validations Test Suite">
+        <packages>
+            <package name="com.nst.tutorials.contractvalidations" />
+        </packages>
+    </test>
+</suite>

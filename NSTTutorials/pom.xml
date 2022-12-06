@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>com.ebay.nst</groupId>
-        <artifactId>nst-suite</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ebay.nst</groupId>
+    <artifactId>nst-tutorials</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>NSTTutorials</name>
+    <description>Tutorials for the NST suite of tools.</description>
 
-    <artifactId>NSTTutorials</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.ebay.nst</groupId>
@@ -18,8 +18,29 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <!-- REST based tutorial modules-->
+        <module>src/test/java/com/nst/tutorials/rest/ServiceWrappers</module>
+        <module>src/test/java/com/nst/tutorials/rest/ContractValidations</module>
+        <module>src/test/java/com/nst/tutorials/rest/ThinModels</module>
+        <module>src/test/java/com/nst/tutorials/rest/RuntimeArguments</module>
+        <module>src/test/java/com/nst/tutorials/rest/MockGeneration</module>
+        <module>src/test/java/com/nst/tutorials/rest/ResponseLoggerInjections</module>
+        <module>src/test/java/com/nst/tutorials/rest/UITestCodeGeneration</module>
+    </modules>
+
     <properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
+        <java.version>1.8</java.version>
+        <maven.compiler.version>1.8</maven.compiler.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.release>1.8</maven.compiler.release>
+        <maven.compiler.plugin.version>3.6.0</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>2.9</maven.surefire.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <nstest.version>1.0.0</nstest.version>
+        <testng.version>7.5</testng.version>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <build>
@@ -36,9 +57,9 @@
                         -DwhatToWrite=NONE
                         -Dnstplatform=IOS
                         -DandroidTestsLocation="./src/test/java/com/nst/tutorials/uitest/android"
-                        -DandroidMocksLocation="./src/test/java/com/nst/tutorials/rest/mockgeneration"
+                        -DandroidMocksLocation="./src/test/java/com/nst/tutorials/rest/mockgenerationtutorial"
                         -DiosTestsLocation="./src/test/java/com/nst/tutorials/uitest/ios"
-                        -DiosMocksLocation="./src/test/java/com/nst/tutorials/rest/mockgeneration"
+                        -DiosMocksLocation="./src/test/java/com/nst/tutorials/rest/mockgenerationtutorial"
                     </argLine>
                 </configuration>
             </plugin>
