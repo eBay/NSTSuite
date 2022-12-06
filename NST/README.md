@@ -20,17 +20,6 @@ NST is deployed to [Maven Central](https://search.maven.org/search?q=a:nstest). 
 ## Running Locally
 NST is setup to sign the jar for deployment. Include `-Dgpg.skip=true` in your mvn command to avoid the password prompt.
 
-## Release Notes:
-
-<details>
-  <summary>Click to expand!</summary>
-
-| Version  | Notes  |
-|---|---|
-| 5.0.0 | Open source release. |
-
-</details>
-
 ## Tutorials - Videos
 
 This video sequence walks you through the NST, what it is, how to begin using it and examples. If you are new to NST please start at the beginning with the first video (NST Overview) and continue in sequence. You can always come back and reference videos out-of-sequence to refresh yourself on specific details of NST.
