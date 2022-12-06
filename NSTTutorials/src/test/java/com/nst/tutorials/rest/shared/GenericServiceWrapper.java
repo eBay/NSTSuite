@@ -6,7 +6,6 @@ import com.ebay.nst.rest.NSTRestServiceWrapper;
 import com.ebay.nst.schema.validation.NSTRestSchemaValidator;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
-import com.nst.tutorials.rest.CanadaHoliday;
 
 import java.net.URL;
 import java.util.HashMap;

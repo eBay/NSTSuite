@@ -1,4 +1,4 @@
-package com.nst.tutorials.rest;
+package com.nst.tutorials.rest.shared;
 
 public enum CanadaHoliday {
 

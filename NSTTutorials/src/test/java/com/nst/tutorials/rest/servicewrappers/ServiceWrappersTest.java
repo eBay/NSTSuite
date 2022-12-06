@@ -2,15 +2,9 @@ package com.nst.tutorials.rest.servicewrappers;
 
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;
-import com.ebay.runtime.RuntimeConfigManager;
-import com.ebay.runtime.arguments.PlatformArgument;
-import com.ebay.runtime.arguments.WhatToWriteArguments;
-import com.ebay.service.logger.WhatToWrite;
 import com.ebay.softassert.EbaySoftAssert;
-import com.nst.tutorials.rest.CanadaHoliday;
+import com.nst.tutorials.rest.shared.CanadaHoliday;
 import org.testng.annotations.Test;
-
-import java.util.Arrays;
 
 public class ServiceWrappersTest implements NSTServiceTestRunner {
 

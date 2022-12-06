@@ -3,7 +3,7 @@ package com.nst.tutorials.rest.thinmodels;
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;
 import com.ebay.softassert.EbaySoftAssert;
-import com.nst.tutorials.rest.CanadaHoliday;
+import com.nst.tutorials.rest.shared.CanadaHoliday;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;

@@ -9,7 +9,7 @@ import com.ebay.nst.schema.validation.OpenApiSchemaValidator.AllowAdditionalProp
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator.StatusCode;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
-import com.nst.tutorials.rest.CanadaHoliday;
+import com.nst.tutorials.rest.shared.CanadaHoliday;
 
 import java.net.URL;
 import java.util.HashMap;

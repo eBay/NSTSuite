@@ -1,4 +1,4 @@
-package com.nst.tutorials.rest.contractvalidations;
+package com.nst.tutorials.rest.uitestcodegeneration;
 
 import com.ebay.nst.NstRequestType;
 import com.ebay.nst.hosts.manager.HostsManager;
@@ -7,8 +7,10 @@ import com.ebay.nst.schema.validation.NSTRestSchemaValidator;
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator;
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator.AllowAdditionalProperties;
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator.StatusCode;
+import com.ebay.service.logger.injection.ResponseLoggerInjector;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
+import com.nst.tutorials.rest.responseloggerinjections.ExampleResponseLoggerInjector;
 import com.nst.tutorials.rest.shared.CanadaHoliday;
 
 import java.net.URL;
@@ -16,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ContractValidationsWrapper implements NSTRestServiceWrapper {
+public class UITestCodeGenerationWrapper implements NSTRestServiceWrapper {
 
     // The following are defined as constants as they are re-used in various interface methods.
     private static final String SERVICE_NAME = "canadaholidays";
@@ -24,7 +26,7 @@ public class ContractValidationsWrapper implements NSTRestServiceWrapper {
     private static final NstRequestType NST_REQUEST_TYPE = NstRequestType.GET;
     private final CanadaHoliday canadaHoliday;
 
-    public ContractValidationsWrapper(CanadaHoliday canadaHoliday) {
+    public UITestCodeGenerationWrapper(CanadaHoliday canadaHoliday) {
         this.canadaHoliday = Objects.requireNonNull(canadaHoliday);
     }
 

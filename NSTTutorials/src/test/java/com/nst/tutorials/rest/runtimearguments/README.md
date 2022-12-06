@@ -10,9 +10,9 @@ To see a list of the NST runtime arguments supported out of the box, please see 
 
 ### Topics Covered
 
-1. [Runtime argument usage]()
+1. [Runtime argument usage](#Runtime argument usage)
 2. [Adding custom runtime arguments](#Adding custom runtime arguments)
-3. [Overriding an existing runtime argument](#Overriding an existing runtime argument)
+3. [Overriding runtime arguments](#Overriding runtime arguments)
 
 ### References
 - [RuntimeConfigManager](../../../../../../../../../NST/src/main/java/com/ebay/runtime/RuntimeConfigManager.java)
@@ -43,17 +43,19 @@ Once you have created your runtime argument class, use `RuntimeConfigManager.get
 
 See the [associated test class](RuntimeArgumentsTest.java) for an example of adding a custom runtime argument.
 
-## Overriding an existing runtime argument
+## Overriding runtime arguments
 
-We can override custom runtime arguments that have been set by retrieving the `RuntimeConfigValue` that has been set.
+As mentioned above, we have access to directly override the Platform runtime argument using `RuntimeConfigManager`'s `overridePlatform` method. 
+
+However, in order to override any other runtime arguments, we must first retrieve the `RuntimeConfigValue` that has been set.
 Because the runtime argument values can be of any data type, we will need to retrieve and cast it using `RuntimeConfigManager.getRuntimeArgument`.
 
 ```java
-RuntimeConfigValue<String> customRuntimeArgumentExampleValue =
-        (RuntimeConfigValue<String>) RuntimeConfigManager.getInstance().getRuntimeArgument(customRuntimeArgumentExample.getRuntimeArgumentKey());
-customRuntimeArgumentExampleValue.override("modifiedValue");
+// Override the IosMocksLocation existing runtime argument value
+String modifiedValue = "modifiedValue";
+RuntimeConfigValue<String> iosMocksLocationConfigValue =
+        (RuntimeConfigValue<String>) RuntimeConfigManager.getInstance().getRuntimeArgument(IosMocksLocationArgument.KEY);
+String newRuntimeArgumentvalue = iosMocksLocationConfigValue.override(modifiedValue);
 ```
 
-See the [associated test class](RuntimeArgumentsTest.java) for a runnable example that demonstrates this functionality.
-
-
+See the [associated test class](RuntimeArgumentsTest.java) for a runnable example that demonstrates this functionality both for an existing runtime argument and a newly added custom runtime argument.

@@ -1,38 +1,47 @@
 package com.nst.tutorials.rest.runtimearguments;
 
 import com.ebay.nst.NSTServiceTestRunner;
-import com.ebay.nst.NSTServiceWrapperProcessor;
 import com.ebay.runtime.RuntimeConfigManager;
 import com.ebay.runtime.RuntimeConfigValue;
-import com.ebay.runtime.arguments.WhatToWriteArguments;
-import com.ebay.service.logger.WhatToWrite;
+import com.ebay.runtime.arguments.IosMocksLocationArgument;
 import com.ebay.softassert.EbaySoftAssert;
-import com.nst.tutorials.rest.CanadaHoliday;
-import com.nst.tutorials.rest.servicewrappers.ServiceWrappersWrapper;
-import com.nst.tutorials.rest.shared.GenericServiceWrapper;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RuntimeArgumentsTest implements NSTServiceTestRunner {
 
     @Test
-    public void exampleRuntimeArgumentsTest() throws Exception {
+    public void exampleOverrideExistingRuntimeArgumentTest() {
+        String initialRuntimeArgumentValue = RuntimeConfigManager.getInstance().getIosMocksLocation();
+        System.out.printf("Initial IosMocksLocation runtime argument value: %s%n", initialRuntimeArgumentValue);
+
+        // Override the IosMocksLocation existing runtime argument value
+        String modifiedValue = "modifiedValue";
+        RuntimeConfigValue<String> iosMocksLocationConfigValue =
+                (RuntimeConfigValue<String>) RuntimeConfigManager.getInstance().getRuntimeArgument(IosMocksLocationArgument.KEY);
+        String newRuntimeArgumentvalue = iosMocksLocationConfigValue.override(modifiedValue);
+
+        Assert.assertEquals(RuntimeConfigManager.getInstance().getIosMocksLocation(), newRuntimeArgumentvalue);
+        System.out.printf("Post-modification IosMocksLocation runtime argument value: %s%n", newRuntimeArgumentvalue);
+    }
+
+    @Test
+    public void exampleOverrideCustomRuntimeArgumentTest() {
         // Add a custom runtime argument
         RuntimeArgumentsCustomExample customRuntimeArgumentExample = new RuntimeArgumentsCustomExample();
         RuntimeConfigManager.getInstance().addRuntimeArgument(customRuntimeArgumentExample);
 
-        String initialRuntimeArgumentValue = RuntimeConfigManager.getInstance().getRuntimeArgumentValue(customRuntimeArgumentExample.getRuntimeArgumentKey()).toString();
+        String initialRuntimeArgumentValue = RuntimeConfigManager.getInstance().getRuntimeArgumentValue(RuntimeArgumentsCustomExample.KEY).toString();
         System.out.printf("Initial custom runtime argument value: %s%n", initialRuntimeArgumentValue);
 
         // Override the custom runtime argument value
+        String modifiedValue = "modifiedValue";
         RuntimeConfigValue<String> customRuntimeArgumentExampleValue =
-                (RuntimeConfigValue<String>) RuntimeConfigManager.getInstance().getRuntimeArgument(customRuntimeArgumentExample.getRuntimeArgumentKey());
-        customRuntimeArgumentExampleValue.override("modifiedValue");
+                (RuntimeConfigValue<String>) RuntimeConfigManager.getInstance().getRuntimeArgument(RuntimeArgumentsCustomExample.KEY);
+        String newCustomRuntimeArgumentvalue = customRuntimeArgumentExampleValue.override(modifiedValue);
 
-        String newRuntimeArgumentValue = RuntimeConfigManager.getInstance().getRuntimeArgumentValue(customRuntimeArgumentExample.getRuntimeArgumentKey()).toString();
-        System.out.printf("Post-override custom runtime argument value: %s%n", newRuntimeArgumentValue);
+        Assert.assertEquals(RuntimeConfigManager.getInstance().getRuntimeArgumentValue(RuntimeArgumentsCustomExample.KEY), newCustomRuntimeArgumentvalue);
+        System.out.printf("Post-modification custom runtime argument value: %s%n", newCustomRuntimeArgumentvalue);
     }
 
     @Override

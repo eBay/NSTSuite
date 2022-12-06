@@ -13,11 +13,11 @@ public class ExampleResponseLoggerInjector implements ResponseLoggerInjector {
 	@Override
 	public String processServiceResponse(String rawServiceResponsePayload) {
 
-		// Change the holiday ID to 20
-		// Path: $.holiday.id
+		// Change the holiday date field to "MODIFIED DATE FIELD VALUE"
+		// Path: $.holiday.date
 
 		JSONObject holiday = new JSONObject(rawServiceResponsePayload).getJSONObject("holiday");
-		holiday.put("id", "20");
+		holiday.put("date", "MODIFIED DATE FIELD VALUE");
 
 		return holiday.toString();
 	}

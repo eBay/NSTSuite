@@ -4,7 +4,7 @@ import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;
 import com.ebay.nst.schema.validation.support.SchemaValidationException;
 import com.ebay.softassert.EbaySoftAssert;
-import com.nst.tutorials.rest.CanadaHoliday;
+import com.nst.tutorials.rest.shared.CanadaHoliday;
 import org.testng.annotations.Test;
 
 public class ContractValidationsTest implements NSTServiceTestRunner {
