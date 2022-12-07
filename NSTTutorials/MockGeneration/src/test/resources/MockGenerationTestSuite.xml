@@ -4,7 +4,7 @@
 <suite name="NST Tutorials - Mock Generation Test Suite" verbose="1">
     <test name="NST Tutorials - Mock Generation Test Suite">
         <packages>
-            <package name="com.nst.tutorials.mockgeneration" />
+            <package name="com.ebay.nst.tutorials.rest.mockgeneration" />
         </packages>
     </test>
 </suite>

@@ -4,7 +4,7 @@
 <suite name="NST Tutorials - Response Logger Injections Test Suite" verbose="1">
     <test name="NST Tutorials - Response Logger Injections Test Suite">
         <packages>
-            <package name="com.nst.tutorials.responseloggerinjections" />
+            <package name="com.ebay.nst.tutorials.rest.responseloggerinjections" />
         </packages>
     </test>
 </suite>

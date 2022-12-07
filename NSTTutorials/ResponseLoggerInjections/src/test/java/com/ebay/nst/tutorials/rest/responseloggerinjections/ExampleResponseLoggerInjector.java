@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.responseloggerinjectionstutorial;
+package com.ebay.nst.tutorials.rest.responseloggerinjections;
 
 import com.ebay.service.logger.injection.ResponseLoggerInjector;
 import org.json.JSONObject;

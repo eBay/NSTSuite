@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.thinmodelstutorial;
+package com.ebay.nst.tutorials.rest.thinmodels;
 
 import com.ebay.nst.NstRequestType;
 import com.ebay.nst.rest.NSTRestServiceWrapper;

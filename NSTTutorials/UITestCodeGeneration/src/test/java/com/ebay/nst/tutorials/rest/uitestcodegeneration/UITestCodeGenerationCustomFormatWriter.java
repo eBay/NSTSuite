@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.uitestcodegenerationtutorial;
+package com.ebay.nst.tutorials.rest.uitestcodegeneration;
 
 import com.ebay.runtime.arguments.Platform;
 import com.ebay.service.logger.FormatWriter;

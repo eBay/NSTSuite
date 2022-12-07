@@ -4,7 +4,7 @@
 <suite name="NST Tutorials - UI Test Code Generation Test Suite" verbose="1">
     <test name="NST Tutorials - UI Test Code Generation Test Suite">
         <packages>
-            <package name="uitestcodegenerationtutorial" />
+            <package name="com.ebay.nst.tutorials.rest.uitestcodegeneration" />
         </packages>
     </test>
 </suite>

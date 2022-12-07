@@ -14,7 +14,7 @@ jobs:
       - name: Build and install / test NSTSuite with Maven
         run: mvn clean install -Dgpg.skip=true
       - name: Build and test NSTTutorials project with Maven
-        run: mvn -f NSTTutorials/pom.xml clean verify -Dgpg.skip=true
+        run: mvn -f NSTTutorials/pom.xml clean test -Dgpg.skip=true
       - name: Publish Test Report
         if: ${{ always() }}
         uses: scacap/action-surefire-report@v1

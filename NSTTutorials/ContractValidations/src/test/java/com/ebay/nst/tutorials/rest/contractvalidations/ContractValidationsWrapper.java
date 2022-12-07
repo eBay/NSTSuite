@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.responseloggerinjectionstutorial;
+package com.ebay.nst.tutorials.rest.contractvalidations;
 
 import com.ebay.nst.NstRequestType;
 import com.ebay.nst.rest.NSTRestServiceWrapper;
@@ -7,7 +7,6 @@ import com.ebay.nst.schema.validation.OpenApiSchemaValidator;
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator.AllowAdditionalProperties;
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator.StatusCode;
 import com.ebay.nst.tutorials.sharedtutorialutilities.rest.CanadaHoliday;
-import com.ebay.service.logger.injection.ResponseLoggerInjector;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
 import com.ebay.utility.service.ServiceUtil;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ResponseLoggerInjectionsWrapper implements NSTRestServiceWrapper {
+public class ContractValidationsWrapper implements NSTRestServiceWrapper {
 
     // The following are defined as constants as they are re-used in various interface methods.
     private static final String SERVICE_NAME = "canadaholidays";
@@ -25,14 +24,8 @@ public class ResponseLoggerInjectionsWrapper implements NSTRestServiceWrapper {
     private static final NstRequestType NST_REQUEST_TYPE = NstRequestType.GET;
     private final CanadaHoliday canadaHoliday;
 
-    public ResponseLoggerInjectionsWrapper(CanadaHoliday canadaHoliday) {
+    public ContractValidationsWrapper(CanadaHoliday canadaHoliday) {
         this.canadaHoliday = Objects.requireNonNull(canadaHoliday);
-    }
-
-    // Add the response logger injector to the service wrapper to enable it
-    @Override
-    public ResponseLoggerInjector getResponseLoggerInjector() {
-        return new ExampleResponseLoggerInjector();
     }
 
     @Override

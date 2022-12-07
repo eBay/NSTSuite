@@ -4,7 +4,7 @@
 <suite name="NST Tutorials - Runtime Arguments Test Suite" verbose="1">
     <test name="NST Tutorials - Runtime Arguments Test Suite">
         <packages>
-            <package name="com.nst.tutorials.runtimearguments" />
+            <package name="com.ebay.nst.tutorials.rest.runtimearguments" />
         </packages>
     </test>
 </suite>

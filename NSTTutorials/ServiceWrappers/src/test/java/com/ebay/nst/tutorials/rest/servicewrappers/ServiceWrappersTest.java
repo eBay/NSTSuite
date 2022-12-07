@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.servicewrapperstutorial;
+package com.ebay.nst.tutorials.rest.servicewrappers;
 
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;

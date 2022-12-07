@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.thinmodelstutorial;
+package com.ebay.nst.tutorials.rest.thinmodels;
 
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;

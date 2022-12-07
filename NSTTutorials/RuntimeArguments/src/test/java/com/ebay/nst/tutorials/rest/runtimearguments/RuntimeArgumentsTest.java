@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.runtimeargumentstutorial;
+package com.ebay.nst.tutorials.rest.runtimearguments;
 
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.runtime.RuntimeConfigManager;

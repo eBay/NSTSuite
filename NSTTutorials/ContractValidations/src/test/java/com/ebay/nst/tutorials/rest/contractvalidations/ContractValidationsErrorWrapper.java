@@ -1,11 +1,9 @@
-package com.ebay.nst.tutorials.rest.uitestcodegenerationtutorial;
+package com.ebay.nst.tutorials.rest.contractvalidations;
 
 import com.ebay.nst.NstRequestType;
 import com.ebay.nst.rest.NSTRestServiceWrapper;
 import com.ebay.nst.schema.validation.NSTRestSchemaValidator;
 import com.ebay.nst.schema.validation.OpenApiSchemaValidator;
-import com.ebay.nst.schema.validation.OpenApiSchemaValidator.AllowAdditionalProperties;
-import com.ebay.nst.schema.validation.OpenApiSchemaValidator.StatusCode;
 import com.ebay.nst.tutorials.sharedtutorialutilities.rest.CanadaHoliday;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
@@ -16,15 +14,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class UITestCodeGenerationWrapper implements NSTRestServiceWrapper {
+public class ContractValidationsErrorWrapper implements NSTRestServiceWrapper {
 
-    // The following are defined as constants as they are re-used in various interface methods.
     private static final String SERVICE_NAME = "canadaholidays";
     private static final String ENDPOINT = "/api/v1/holidays/{holidayId}";
     private static final NstRequestType NST_REQUEST_TYPE = NstRequestType.GET;
     private final CanadaHoliday canadaHoliday;
 
-    public UITestCodeGenerationWrapper(CanadaHoliday canadaHoliday) {
+    public ContractValidationsErrorWrapper(CanadaHoliday canadaHoliday) {
         this.canadaHoliday = Objects.requireNonNull(canadaHoliday);
     }
 
@@ -35,7 +32,7 @@ public class UITestCodeGenerationWrapper implements NSTRestServiceWrapper {
 
     @Override
     public NstRequestType getRequestType() {
-        return NstRequestType.GET;
+        return NST_REQUEST_TYPE;
     }
 
     @Override
@@ -57,14 +54,9 @@ public class UITestCodeGenerationWrapper implements NSTRestServiceWrapper {
     @Override
     public NSTRestSchemaValidator getSchemaValidator() {
         return new OpenApiSchemaValidator.Builder(
-                "com/nst/tutorials/rest/canada-holidays.yaml",
+                "canada-holidays-error.yaml",
                 ENDPOINT,
-                NST_REQUEST_TYPE)
-                .allowAdditionalProperties(AllowAdditionalProperties.YES)
-                // Payloads must be set in the case of PUT/POST requests.
-                // .setPayload(null)
-                .setStatusCode(StatusCode._200)
-                .build();
+                NST_REQUEST_TYPE).build();
     }
 
 }

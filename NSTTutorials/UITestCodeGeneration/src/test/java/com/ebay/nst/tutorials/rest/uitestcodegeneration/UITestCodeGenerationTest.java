@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.uitestcodegenerationtutorial;
+package com.ebay.nst.tutorials.rest.uitestcodegeneration;
 
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;

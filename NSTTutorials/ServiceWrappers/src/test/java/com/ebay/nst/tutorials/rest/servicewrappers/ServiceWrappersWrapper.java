@@ -1,9 +1,8 @@
-package com.ebay.nst.tutorials.rest.contractvalidationstutorial;
+package com.ebay.nst.tutorials.rest.servicewrappers;
 
 import com.ebay.nst.NstRequestType;
 import com.ebay.nst.rest.NSTRestServiceWrapper;
 import com.ebay.nst.schema.validation.NSTRestSchemaValidator;
-import com.ebay.nst.schema.validation.OpenApiSchemaValidator;
 import com.ebay.nst.tutorials.sharedtutorialutilities.rest.CanadaHoliday;
 import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpRequestImpl;
@@ -14,14 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class ContractValidationsErrorWrapper implements NSTRestServiceWrapper {
+public class ServiceWrappersWrapper implements NSTRestServiceWrapper {
 
+    // The following are defined as constants as they are re-used in various interface methods.
     private static final String SERVICE_NAME = "canadaholidays";
     private static final String ENDPOINT = "/api/v1/holidays/{holidayId}";
-    private static final NstRequestType NST_REQUEST_TYPE = NstRequestType.GET;
     private final CanadaHoliday canadaHoliday;
 
-    public ContractValidationsErrorWrapper(CanadaHoliday canadaHoliday) {
+    public ServiceWrappersWrapper(CanadaHoliday canadaHoliday) {
         this.canadaHoliday = Objects.requireNonNull(canadaHoliday);
     }
 
@@ -32,7 +31,7 @@ public class ContractValidationsErrorWrapper implements NSTRestServiceWrapper {
 
     @Override
     public NstRequestType getRequestType() {
-        return NST_REQUEST_TYPE;
+        return NstRequestType.GET;
     }
 
     @Override
@@ -46,17 +45,14 @@ public class ContractValidationsErrorWrapper implements NSTRestServiceWrapper {
         headers.put("USER-AGENT", "testHeader");
 
         URL url = ServiceUtil.getUrl(this);
-        return new NSTHttpRequestImpl.Builder(url, NST_REQUEST_TYPE)
+        return new NSTHttpRequestImpl.Builder(url, NstRequestType.GET)
                 .setHeaders(headers)
                 .build();
     }
 
     @Override
     public NSTRestSchemaValidator getSchemaValidator() {
-        return new OpenApiSchemaValidator.Builder(
-                "canada-holidays-error.yaml",
-                ENDPOINT,
-                NST_REQUEST_TYPE).build();
+        return null;
     }
 
 }

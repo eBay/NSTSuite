@@ -1,4 +1,4 @@
-package com.ebay.nst.tutorials.rest.mockgenerationtutorial;
+package com.ebay.nst.tutorials.rest.mockgeneration;
 
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;
