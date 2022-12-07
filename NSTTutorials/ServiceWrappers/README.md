@@ -8,9 +8,9 @@ For any contract validation test in NST, we need to make service calls with an a
 
 ### Topics Covered
 
-1. [Making a basic REST GET request](#Making a basic REST GET request)
-2. [Using serviceHosts.csv](#Using serviceHosts.csv)
-3. [Other HTTP methods](#Other HTTP methods)
+1. [Making a basic REST GET request](#making-a-basic-rest-get-request)
+2. [Using serviceHosts.csv](#using-serviceHosts.csv)
+3. [Other HTTP methods](#other-http-methods)
 
 ### References
 - [TestNG SoftAssert](https://www.javadoc.io/doc/org.testng/testng/6.8.8/org/testng/asserts/SoftAssert.html)
@@ -24,7 +24,7 @@ For this initial example, we will be creating / implementing an NST REST GET req
 The required *`NSTRestServiceWrapper`* methods are:
 
 - `getServiceName` - Must return the name of the service. The service name is used when forming the full endpoint URL in the `prepareRequest` method.
-- `getRequestType` - Must return the type of HTTP request, in this example, `NstRequestType.***GET`.***
+- `getRequestType` - Must return the type of HTTP request, in this example, it would be `NstRequestType.GET`.
 - `getEndpointPath` - Must return the **endpoint** of the call.
 - `prepareRequest` - Where the request object (`NSTHttpRequest`) is formed. This includes any headers that may need to be sent, setting the actual URL for the request, including setting any required parameters that the service wrapper was initialized with, and finally using the `NSTHttpRequestImpl` builder to form the `NSTHttpRequest`. The host name is retrieved from `getServiceName` and prefixed to `getEndpointPath` to form the full URL. We are using `HostsManager` in order to retrieve the **host** for the provided **service name**, using the `serviceHosts.csv` mapping. This `serviceHosts.csv` mapping allows you to easily switch hosts between environments such as QA, dev, and production. More on this in the following section, `serviceHosts.csv`.
     ```java
@@ -66,7 +66,7 @@ Create the TestNG test class and have it implement the *`NSTServiceTestRunner`* 
 
 SoftAsserts are utilized in order to aggregate failures that occurred into a log that is output at the end of the test instead of failing the test immediately upon the first failure. They are utilized in NST when passing them to the thin models, which are covered in a later tutorial. For now, we will set this to `null`, as we will not be using it yet.
 
-`NSTServiceWrapperProcessor` is the class that we will use to send service wrappers. This processor only takes in 1 parameter for the call to send the request and receive the response (`sendRequestAndGetJSONResponse`), which is the `NSTServiceWrapper` **instance*.*
+`NSTServiceWrapperProcessor` is the class that we will use to send service wrappers. This processor only takes in 1 parameter for the call to send the request and receive the response (`sendRequestAndGetJSONResponse`), which is the `NSTServiceWrapper` instance.
 
 In the example below, we are using this processor to send our service wrapper we created above in order to retrieve the JSONObject response. Only one instance of the processor is required to send any number of NST service wrappers.
 

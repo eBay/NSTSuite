@@ -14,10 +14,10 @@ Thin models get their name by not being backed by a POJO tree. They are a wrappe
 
 ### Topics Covered
 
-1. [Creating a thin model](#Creating a thin model)
-2. [Validating JSONPath data](#Validating JSON path data)
-3. [Retrieving data](#Retrieving data)
-4. [Utilizing thin models](#Utilizing thin models)
+1. [Creating a thin model](#creating-a-thin-model)
+2. [Validating JSONPath data](#validating-json-path-data)
+3. [Retrieving data](#retrieving-data)
+4. [Utilizing thin models](#utilizing-thin-models)
 
 ### References
 - [JSONPath](https://goessner.net/articles/JsonPath/)

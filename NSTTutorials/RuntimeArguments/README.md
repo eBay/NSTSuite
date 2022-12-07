@@ -10,9 +10,9 @@ To see a list of the NST runtime arguments supported out of the box, please see 
 
 ### Topics Covered
 
-1. [Runtime argument usage](#Runtime argument usage)
-2. [Adding custom runtime arguments](#Adding custom runtime arguments)
-3. [Overriding runtime arguments](#Overriding runtime arguments)
+1. [Runtime argument usage](#runtime-argument-usage)
+2. [Adding custom runtime arguments](#adding-custom-runtime-arguments)
+3. [Overriding runtime arguments](#overriding-runtime-arguments)
 
 ### References
 - [RuntimeConfigManager](../../NST/src/main/java/com/ebay/runtime/RuntimeConfigManager.java)
@@ -34,14 +34,14 @@ To add a custom runtime argument that can be read during a test (for example), y
 
 To create the runtime argument object, create a class that implements `RuntimeConfigValue`. All the runtime arguments above implement this interface, which you can reference as an example.
 
-[Here](src/test/java/com/nst/tutorials/runtimearguments/RuntimeArgumentsCustomExample.java) is one such example.
+[Here](src/test/java/com/ebay/nst/tutorials/rest/runtimearguments/RuntimeArgumentsCustomExample.java) is one such example.
 The generic defined with the `RuntimeConfigValue` interface defines what value that runtime argument should return.
 
 Once you have created your runtime argument class, use `RuntimeConfigManager.getInstance().addRuntimeArgument` to add it to the manager. Then, you can reference the value that is set during runtime by referencing the key, as so:
 
 `RuntimeConfigManager.getInstance().getRuntimeArgumentValue(CustomRuntimeArgument.KEY);`
 
-See the [associated test class](src/test/java/runtimeargumentstutorial/RuntimeArgumentsTest.java) for an example of adding a custom runtime argument.
+See the [associated test class](src/test/java/com/ebay/nst/tutorials/rest/runtimearguments/RuntimeArgumentsTest.java) for an example of adding a custom runtime argument.
 
 ## Overriding runtime arguments
 
@@ -58,4 +58,4 @@ RuntimeConfigValue<String> iosMocksLocationConfigValue =
 String newRuntimeArgumentvalue = iosMocksLocationConfigValue.override(modifiedValue);
 ```
 
-See the [associated test class](src/test/java/runtimeargumentstutorial/RuntimeArgumentsTest.java) for a runnable example that demonstrates this functionality both for an existing runtime argument and a newly added custom runtime argument.
+See the [associated test class](src/test/java/com/ebay/nst/tutorials/rest/runtimearguments/RuntimeArgumentsTest.java) for a runnable example that demonstrates this functionality both for an existing runtime argument and a newly added custom runtime argument.

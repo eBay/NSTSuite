@@ -10,9 +10,9 @@ The contract can refer to either an OpenAPI / Swagger yaml, JSON schema, or Grap
 
 ### Topics Covered
 
-1. [Setting getSchemaValidator in the Service Wrapper](#Setting getSchemaValidator in the Service Wrapper)
-2. [Schema validation errors](#Schema validation errors)
-3. [Polymorphic schema validation errors](#Polymorphic schema validation errors)
+1. [Setting getSchemaValidator in the Service Wrapper](#setting-getschemavalidator-in-the-service-wrapper)
+2. [Schema validation errors](#schema-validation-errors)
+3. [Polymorphic schema validation errors](#polymorphic-schema-validation-errors)
 
 ### References
 - [JSON Schema Validator](https://github.com/java-json-tools/json-schema-validator)
@@ -80,7 +80,7 @@ In the above error, there are a few things we can use to understand what failed.
 - `keyword` - The type of contract validation error that occurred.
 - `found / expected` - Expected vs. what was found in the response data.
 
-In this case, at (response data) instance {"pointer":"/holiday/id"} , we were expecting the field to be of type `string`, but found an `integer`.
+In this case, at (response data) instance {"pointer":"/holiday/id"} , we were expecting the field to be of type `String`, but found an `integer`.
 
 To see / debug an example of this schema validation error, please see the `exampleRestTestWithSchemaValidationError` test method [here](src/test/java/contractvalidationstutorial/ContractValidationsTest.java).
 

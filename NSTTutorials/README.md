@@ -7,9 +7,9 @@ will be using REST to demonstrate and explain NST functionality.
 
 Each module will have compilable & runnable examples that can be referenced in their respective test package. 
 Each module maps to the topic names below - for example, the Service Wrappers tutorial is contained in the 
-[ServiceWrappers](ServiceWrappers) module.
+`ServiceWrappers` module.
 
-### Topics Covered
+### Table of Contents
 
 1. [Service Wrappers](ServiceWrappers)
 2. [Contract Validations](ContractValidations)

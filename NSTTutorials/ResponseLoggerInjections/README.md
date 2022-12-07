@@ -8,7 +8,7 @@ For use cases where the mock response files / data needs to be modified in some 
 
 ### Topics Covered
 
-1. Modifying response data
+1. [Modifying response data](#modifying-response-data)
 
 ### References
 - [ResponseLoggerInjector](../../NST/src/main/java/com/ebay/service/logger/injection/ResponseLoggerInjector.java)
@@ -39,7 +39,7 @@ public String processServiceResponse(String rawServiceResponsePayload) {
 
 After we’ve created our *`ResponseLoggerInjector` ,* we just need to set it in the service wrapper class in `getResponseLoggerInjector`. Now, whenever this service wrapper is sent, the generated mock response file will have the specified field values “injected” into it.
 
-To see this functionality in action, run the `exampleResponseLoggerInjectionMockGenerationTest` test in [`ResponseLoggerInjectionsTest.java`](src/test/java/responseloggerinjectionstutorial/ResponseLoggerInjectionsTest.java).
+To see this functionality in action, run the `exampleResponseLoggerInjectionMockGenerationTest` test in [`ResponseLoggerInjectionsTest.java`](src/test/java/com/ebay/nst/tutorials/rest/responseloggerinjections/ResponseLoggerInjectionsTest.java).
 
 After running the example test method, you can inspect the generated HAR file to see how the response block was modified:
 ![](src/test/resources/modifiedDateFieldValue.png)

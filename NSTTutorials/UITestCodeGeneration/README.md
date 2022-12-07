@@ -10,15 +10,15 @@ The benefit provided by this functionality is the ability to run your NST tests 
 
 ### Topics Covered
 
-1. [Runtime arguments](#Runtime arguments)
-2. [Output Mapping CSV](#Output Mapping CSV)
+1. [Runtime arguments](#runtime-arguments)
+2. [Output Mapping CSV](#output-mapping-csv)
 
 ### References
 - [nstToFuiMappingsIos.csv](src/test/resources/nstToFuiMappingsIos.csv)
-- [Custom Loggers](../MockGeneration/README.md#Adding a custom logger)
+- [Custom Loggers](../MockGeneration/README.md#adding-a-custom-logger)
 
 ### Prerequisites
-Custom logger for platform(s) have been created. If this has not been done yet or for more info, please see the tutorial in the [Mock Generation](../MockGeneration/README.md#Adding a custom logger) section.
+Custom logger for platform(s) have been created. If this has not been done yet or for more info, please see the tutorial in the [Mock Generation](../MockGeneration/README.md#adding-a-custom-logger) section.
 
 ## Runtime arguments
 
@@ -32,7 +32,7 @@ There are some required runtime arguments that need to be set in order to do tri
 
 Additionally, we need to create and set up a mapping CSV file with the following columns, with the name of the file prefixed with `nstToFuiMappings`. For example, if creating a mapping file for IOS platform UI test code generation, the file should be called `nstToFuiMappingsIos.csv`. See this module's [resources](src/test/resources) for two example files for iOS and Android.
 
-```java
+```csv
 SERVICE,API,PLATFORM_REQUEST_TYPE,NAVIGATION,ENTRY,IMPORTS,MEMBER_FIELDS
 ```
 
