@@ -11,8 +11,10 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - name: Build with Maven
+      - name: Build and test main project (NSTSuite) with Maven
         run: mvn clean verify -Dgpg.skip=true
+      - name: Build and test NSTTutorials project with Maven
+        run: mvn -f NSTTutorials/pom.xml clean verify -Dgpg.skip=true
       - name: Publish Test Report
         if: ${{ always() }}
         uses: scacap/action-surefire-report@v1

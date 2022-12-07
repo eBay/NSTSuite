@@ -20,13 +20,16 @@
 
     <modules>
         <!-- REST based tutorial modules-->
-        <module>src/test/java/com/nst/tutorials/rest/ServiceWrappers</module>
-        <module>src/test/java/com/nst/tutorials/rest/ContractValidations</module>
-        <module>src/test/java/com/nst/tutorials/rest/ThinModels</module>
-        <module>src/test/java/com/nst/tutorials/rest/RuntimeArguments</module>
-        <module>src/test/java/com/nst/tutorials/rest/MockGeneration</module>
-        <module>src/test/java/com/nst/tutorials/rest/ResponseLoggerInjections</module>
-        <module>src/test/java/com/nst/tutorials/rest/UITestCodeGeneration</module>
+        <module>ServiceWrappers</module>
+        <module>ContractValidations</module>
+        <module>ThinModels</module>
+        <module>RuntimeArguments</module>
+        <module>MockGeneration</module>
+        <module>ResponseLoggerInjections</module>
+        <module>UITestCodeGeneration</module>
+
+        <module>SharedTutorialUtilities</module>
+        <module>GraphQLExamples</module>
     </modules>
 
     <properties>
