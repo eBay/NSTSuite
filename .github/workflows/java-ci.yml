@@ -11,8 +11,8 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - name: Build and test main project (NSTSuite) with Maven
-        run: mvn clean verify -Dgpg.skip=true
+      - name: Build and install / test NSTSuite with Maven
+        run: mvn clean install -Dgpg.skip=true
       - name: Build and test NSTTutorials project with Maven
         run: mvn -f NSTTutorials/pom.xml clean verify -Dgpg.skip=true
       - name: Publish Test Report
