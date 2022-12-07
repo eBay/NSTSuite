@@ -3,7 +3,6 @@ package com.ebay.nst.tutorials.rest.uitestcodegeneration;
 import com.ebay.nst.NSTServiceTestRunner;
 import com.ebay.nst.NSTServiceWrapperProcessor;
 import com.ebay.nst.tutorials.sharedtutorialutilities.rest.CanadaHoliday;
-import com.ebay.nst.tutorials.sharedtutorialutilities.rest.GenericServiceWrapper;
 import com.ebay.runtime.RuntimeConfigManager;
 import com.ebay.softassert.EbaySoftAssert;
 import org.testng.Assert;
@@ -15,7 +14,7 @@ import java.io.File;
 
 public class UITestCodeGenerationTest implements NSTServiceTestRunner {
 
-    private static final String GENERATED_MOCK_PATH = RuntimeConfigManager.getInstance().getIosMocksLocation() + "/UITestCodeGenerationTest_exampleUITestCodeGenerationTest_%d_GenericServiceWrapper.har";
+    private static final String GENERATED_MOCK_PATH = RuntimeConfigManager.getInstance().getIosMocksLocation() + "/UITestCodeGenerationTest_exampleUITestCodeGenerationTest_%d_UITestCodeGenerationWrapper.har";
 
     @BeforeClass
     // Remove any prior mocks that were generated when running the test method below.
@@ -38,11 +37,11 @@ public class UITestCodeGenerationTest implements NSTServiceTestRunner {
         NSTServiceWrapperProcessor serviceProcessor = new NSTServiceWrapperProcessor();
 
         // Send a GET /api/v1/holidays/{holidayId} request to trigger the ENTRY column being used in the nstToFuiMappingsIos.csv.
-        GenericServiceWrapper restServiceWrapper = new GenericServiceWrapper(CanadaHoliday.CANADA_DAY);
+        UITestCodeGenerationWrapper restServiceWrapper = new UITestCodeGenerationWrapper(CanadaHoliday.CANADA_DAY);
         serviceProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
 
         // Send a GET /api/v1/holidays/{holidayId} request to trigger the NAVIGATE column being used in the nstToFuiMappingsIos.csv.
-        restServiceWrapper = new GenericServiceWrapper(CanadaHoliday.CHRISTMAS_DAY);
+        restServiceWrapper = new UITestCodeGenerationWrapper(CanadaHoliday.CHRISTMAS_DAY);
         serviceProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
     }
 

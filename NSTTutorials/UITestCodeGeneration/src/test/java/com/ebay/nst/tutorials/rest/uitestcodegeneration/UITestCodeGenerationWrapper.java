@@ -57,7 +57,7 @@ public class UITestCodeGenerationWrapper implements NSTRestServiceWrapper {
     @Override
     public NSTRestSchemaValidator getSchemaValidator() {
         return new OpenApiSchemaValidator.Builder(
-                "com/nst/tutorials/rest/canada-holidays.yaml",
+                "canada-holidays.yaml",
                 ENDPOINT,
                 NST_REQUEST_TYPE)
                 .allowAdditionalProperties(AllowAdditionalProperties.YES)

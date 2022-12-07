@@ -42,7 +42,7 @@ public class MockGenerationTest implements NSTServiceTestRunner {
     // This is not a required part of writing an NST test.
     public void ensureMockIsGeneratedSuccessfully() {
         File existingMock = new File(GENERATED_MOCK_PATH);
-        Assert.assertTrue(existingMock.exists());
+        Assert.assertTrue(existingMock.exists(), String.format("Expected mock to be generated at path: %s", existingMock.getPath()));
     }
 
     @Override

@@ -35,10 +35,10 @@
                     <argLine>
                         -Xms256m
                         -Xmx4096m
-                        -DcustomLoggersPackage=mockgenerationtutorial
+                        -DcustomLoggersPackage=com.ebay.nst.tutorials.rest.mockgeneration
                         -DwhatToWrite=MOCKS
                         -Dnstplatform=IOS
-                        -DiosMocksLocation="./src/test/java/mockgenerationtutorial"
+                        -DiosMocksLocation="${project.basedir}/src/test/java/com/ebay/nst/tutorials/rest/mockgeneration"
                     </argLine>
                 </configuration>
             </plugin>

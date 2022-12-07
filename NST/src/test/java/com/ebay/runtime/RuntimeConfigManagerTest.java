@@ -1,7 +1,9 @@
 package com.ebay.runtime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -73,7 +75,7 @@ public class RuntimeConfigManagerTest {
 		System.setProperty(NST_PLATFORM, "ANDROID");
 		RuntimeConfigManager.getInstance().reinitialize();
 		Platform platform = RuntimeConfigManager.getInstance().getPlatform();
-		assertThat(platform, is(not((equalTo(Platform.ANDROID)))));
+		assertThat(platform, is(equalTo(Platform.ANDROID)));
 		
 		System.clearProperty(NST_PLATFORM);
 		RuntimeConfigManager.getInstance().reinitialize();
