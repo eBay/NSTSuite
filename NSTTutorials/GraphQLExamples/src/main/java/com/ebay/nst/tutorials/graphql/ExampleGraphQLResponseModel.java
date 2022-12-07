@@ -1,4 +1,4 @@
-package graphql;
+package com.ebay.nst.tutorials.graphql;
 
 import com.ebay.jsonpath.JPIntegerCheck;
 import com.ebay.jsonpath.JPListOfStringCheck;

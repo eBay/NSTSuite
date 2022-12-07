@@ -45,8 +45,6 @@
 	<modules>
 		<module>NST</module>
 		<module>TMBuilder</module>
-<!--		<module>NSTTutorials/RestServiceWrappersTutorial</module>-->
-<!--		<module>NSTTutorials/Shared</module>-->
 	</modules>
 
 	<dependencies>

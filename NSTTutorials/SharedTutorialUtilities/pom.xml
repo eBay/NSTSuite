@@ -9,7 +9,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId></groupId>
 
     <name>NSTTutorials - Shared Tutorial Utilities</name>
     <description>Shared utilities used across tutorial modules</description>
