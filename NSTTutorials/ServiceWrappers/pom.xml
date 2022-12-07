@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.ebay.nst</groupId>
-            <artifactId>Shared</artifactId>
+            <artifactId>nst-tutorials-sharedtutorialutilities</artifactId>
             <version>${nsttutorials.version}</version>
         </dependency>
     </dependencies>
