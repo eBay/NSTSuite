@@ -5,7 +5,7 @@
 ### Topics Covered
 
 1. [Generating mock files](#generating-mock-files)
-2. [Adding a custom logger](#adding-a-custom-logger)
+2. [Adding a custom logger to modify mock output](#adding-a-custom-logger-to-modify-output)
 
 ### References
 - [NST Runtime Arguments](../../NST/README.md#runtime-arguments)
@@ -28,19 +28,17 @@ After setting the runtime arguments above, simply running the NST test method wi
 
 To see an example of the mock generation capability of NST, run the test in [this test class](src/test/java/com/ebay/nst/tutorials/rest/mockgeneration). Running the test will generate the example HAR mock response file in that same [directory](src/test/java/com/ebay/nst/tutorials/rest/mockgeneration).
 
-## Adding a custom logger
+## Adding a custom logger to modify output
 
-NST also supports customization of the logging / output that is generated. You may want to add your own custom implementation to modify the output of either the mock response files or the output to the UI test files as well. For now, let's focus on creating a custom logger to modify the mock file output, if the `HarLogger` does not fulfill your requirements.
-
-**NOTE**: As an aside, custom loggers are **required** to be implemented if you want to export/generate boilerplate code to UI test files, which is covered later on in detail in section 7 ("UI Test Code Generation").
+NST also supports customization of the output that is generated. You may want to add your own custom implementation of `FormatWriter` to modify the output of the mock response files, if for example the `HarLogger` does not fulfill your requirements.
 
 To create our own custom logger, we will need to create a class which implements *`FormatWriter`*. `FormatWriter` gives us access to the list of service calls made by NST, their payloads, along with the test class and test method name that was triggered:
 
-- `getPlatformAssociation` - This should return whichever platform you are creating a custom logger for (e.g. `IOS, ANDROID, MWEB, SITE`).
-- `writeMocks` - This would be where you utilize the supplied list of service calls made by NST, along with the `testClassName` and `testMethodName` (if desired) to generate the mocks in the format of your choosing.
-- `updateTests` - This would be where we can again utilize the list of service calls, along with the `testClassName` and `testMethodName` (if desired) to generate the **UI test code output** that is customized per your specifications (covered in section 7, ["UI Test Code Generation"](../UITestCodeGeneration/README.md)). If no modification to UI test files is needed, we do not need to add any meaningful implementation for this `updateTests` method.
+- `getPlatformAssociation` - This should return whichever platform you are creating a custom logger for (e.g. `IOS, ANDROID, MWEB, SITE`).<br><br>
+- `writeMocks` - This would be where you utilize the supplied list of service calls made by NST, along with the `testClassName` and `testMethodName` (if desired) to generate the mocks in the format of your choosing.<br><br>
+- `updateTests` - This would be where we can again utilize the list of service calls, along with the `testClassName` and `testMethodName` - however, this method is utilized when generating UI test code output. This is covered in detail section 7, ["UI Test Code Generation"](../UITestCodeGeneration/README.md)). If no modification to UI test files is needed, we do not need to add any meaningful implementation for this `updateTests` method. For our example, we will skip adding any implementation here, since we only care about the `writeMocks` method.<br><br>
 
-You can see an example of a custom logger [here](src/test/java/com/ebay/nst/tutorials/rest/mockgeneration/MockGenerationCustomFormatWriter.java) that would modify the mock generation step of NST to generate JSON files instead of HAR files from the HarLogger. Please also note the usage of [`FormatWriterUtil`](../../NST/src/main/java/com/ebay/service/logger/FormatWriterUtil.java), which has various methods that assist in this step. 
+You can see an example of our custom logger [here](src/test/java/com/ebay/nst/tutorials/rest/mockgeneration/MockGenerationCustomFormatWriter.java) that would modify the mock generation step of NST to generate JSON files instead of HAR files from the HarLogger. Please also note the usage of [`FormatWriterUtil`](../../NST/src/main/java/com/ebay/service/logger/FormatWriterUtil.java), which has various methods that assist in this step. 
 
 Once the custom logger has been created, we need to point the `customLoggersPackage` runtime argument to the package that contains our custom loggers.
 

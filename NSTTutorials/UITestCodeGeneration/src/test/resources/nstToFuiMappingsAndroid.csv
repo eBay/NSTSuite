@@ -1,2 +1,0 @@
-SERVICE,API,PLATFORM_REQUEST_TYPE,NAVIGATION,ENTRY,IMPORTS,MEMBER_FIELDS
-canadaholidays,UITestCodeGenerationWrapper,,// Navigate: Output that would navigate to the action that would trigger this API request.,// Enter: Output that would trigger this API request as the initial step of the UI test.,,"let caHolidayPageModel = CaHolidayPageModel()"

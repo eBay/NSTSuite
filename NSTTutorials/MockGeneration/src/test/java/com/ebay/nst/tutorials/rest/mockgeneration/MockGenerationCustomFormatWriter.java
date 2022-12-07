@@ -59,7 +59,7 @@ public class MockGenerationCustomFormatWriter implements FormatWriter {
 
     @Override
     public void updateTests(List<ServiceCallCacheData> calls, String testClassName, String testMethodName) {
-        System.out.println("Update your UI test code here, if applicable.");
+        System.out.println("Update your UI test code generation output here, if applicable.");
     }
 
 }

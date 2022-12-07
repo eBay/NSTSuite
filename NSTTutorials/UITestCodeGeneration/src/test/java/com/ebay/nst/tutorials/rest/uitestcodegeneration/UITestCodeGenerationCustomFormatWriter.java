@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+// TODO: REMOVE THIS CLASS AND UTILIZE THE DEFAULT LOGGER
 public class UITestCodeGenerationCustomFormatWriter implements FormatWriter {
 
     @Override
@@ -64,7 +65,7 @@ public class UITestCodeGenerationCustomFormatWriter implements FormatWriter {
 
     @Override
     public void updateTests(List<ServiceCallCacheData> calls, String testClassName, String testMethodName) {
-        File file = PlatformLoggerUtil.getTestFile("UITestCodeGenerationBlah");
+        File file = PlatformLoggerUtil.getTestFile(testClassName);
         if (file != null) {
 
             GeneralPlatformFileModel fileModel = getFileModel(file, testClassName, testMethodName);

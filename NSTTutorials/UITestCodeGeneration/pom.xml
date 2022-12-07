@@ -37,6 +37,7 @@
                         -Xmx4096m
                         -DwhatToWrite=TESTS|MOCKS
                         -Dnstplatform=IOS
+                        <!-- TODO: REMOVE THE CUSTOM LOGGER (UTILIZE DEFAULT IOS LOGGER) -->
                         -DcustomLoggersPackage=com.ebay.nst.tutorials.rest.uitestcodegeneration
                         -DandroidTestsLocation="${project.basedir}/src/test/java/com/ebay/nst/tutorials/rest/uitestcodegeneration"
                         -DandroidMocksLocation="${project.basedir}/src/test/java/com/ebay/nst/tutorials/rest/uitestcodegeneration"
