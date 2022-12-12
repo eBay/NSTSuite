@@ -358,7 +358,7 @@ public class RuntimeConfigManagerTest {
 	public void schemaValidationOff() {
 		System.setProperty(SCHEMA_VALIDATION, "false");
 		RuntimeConfigManager.getInstance().reinitialize();
-		boolean validateSchema = RuntimeConfigManager.getInstance().getSchemaValidation();
+		boolean validateSchema = RuntimeConfigManager.getInstance().validateSchema();
 		assertThat(validateSchema, is(equalTo(false)));
 	}
 
@@ -366,7 +366,7 @@ public class RuntimeConfigManagerTest {
 	public void schemaValidationOn() {
 		System.setProperty(SCHEMA_VALIDATION, "true");
 		RuntimeConfigManager.getInstance().reinitialize();
-		boolean validateSchema = RuntimeConfigManager.getInstance().getSchemaValidation();
+		boolean validateSchema = RuntimeConfigManager.getInstance().validateSchema();
 		assertThat(validateSchema, is(equalTo(true)));
 	}
 
@@ -374,7 +374,7 @@ public class RuntimeConfigManagerTest {
 	public void schemaValidationNotSpecified() {
 		System.clearProperty(SCHEMA_VALIDATION);
 		RuntimeConfigManager.getInstance().reinitialize();
-		boolean validateSchema = RuntimeConfigManager.getInstance().getSchemaValidation();
+		boolean validateSchema = RuntimeConfigManager.getInstance().validateSchema();
 		assertThat(validateSchema, is(equalTo(true)));
 	}
 
@@ -382,7 +382,7 @@ public class RuntimeConfigManagerTest {
 	public void schemaValidationNonBooleanFlagValue() {
 		System.setProperty(SCHEMA_VALIDATION, "BLAH");
 		RuntimeConfigManager.getInstance().reinitialize();
-		boolean validateSchema = RuntimeConfigManager.getInstance().getSchemaValidation();
+		boolean validateSchema = RuntimeConfigManager.getInstance().validateSchema();
 		assertThat(validateSchema, is(equalTo(false)));
 	}
 

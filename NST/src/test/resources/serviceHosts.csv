@@ -1,6 +1,6 @@
 serviceName,environment,host
-pinsvc,qa,http://pinsvc.test.com
-wsvc,qa,http://wsvc.test.com
+pinsvc,qa,https://pinsvc.test.com
+wsvc,qa,https://wsvc.test.com
 checkout,qa,https://checkout.test.com
-missinghostname,qa,http://missing.hostname
+missinghostname,qa,https://missing.hostname
 cdc,qa,https://api.gdc.cancer.gov

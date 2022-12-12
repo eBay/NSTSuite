@@ -8,7 +8,6 @@ import com.ebay.runtime.RuntimeConfigManager;
 import com.ebay.softassert.EbaySoftAssert;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -17,22 +16,19 @@ public class MockGenerationTest implements NSTServiceTestRunner {
 
     private static final String GENERATED_MOCK_PATH = RuntimeConfigManager.getInstance().getIosMocksLocation() + "/MockGenerationTest_exampleMockGenerationTest_0_GenericServiceWrapper.json";
 
-    @BeforeClass
-    // Remove any prior mocks that were generated when running the test method below.
-    public void removeExistingMockAndSetCustomLoggersPackage() {
+    @Test
+    public void exampleMockGenerationTest() throws Exception {
+        // Remove any prior mocks that were generated when running the test method below.
         File existingMock = new File(GENERATED_MOCK_PATH);
         if (existingMock.exists()) {
             existingMock.delete();
             System.out.printf("Removed existing mock at: %s%n", GENERATED_MOCK_PATH);
         }
-    }
 
-    @Test
-    // Example output is placed in the same directory as this file (mockgenerationtutorial).
-    public void exampleMockGenerationTest() throws Exception {
         NSTServiceWrapperProcessor serviceProcessor = new NSTServiceWrapperProcessor();
 
         // Send a GET /api/v1/holidays/{holidayId} request.
+        // Example output is placed in the same directory as this file (mockgenerationtutorial).
         GenericServiceWrapper restServiceWrapper = new GenericServiceWrapper(CanadaHoliday.CANADA_DAY);
         serviceProcessor.sendRequestAndGetJSONResponse(restServiceWrapper);
     }
