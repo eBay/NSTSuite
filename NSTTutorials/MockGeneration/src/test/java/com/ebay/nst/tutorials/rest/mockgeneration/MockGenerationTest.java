@@ -18,7 +18,7 @@ public class MockGenerationTest implements NSTServiceTestRunner {
 
     @Test
     public void exampleMockGenerationTest() throws Exception {
-        // Remove any prior mocks that were generated when running the test method below.
+        // Remove any prior mocks that were generated when running the test.
         File existingMock = new File(GENERATED_MOCK_PATH);
         if (existingMock.exists()) {
             existingMock.delete();

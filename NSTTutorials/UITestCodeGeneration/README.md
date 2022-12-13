@@ -37,6 +37,8 @@ There are several required runtime arguments that need to be set in order to tri
 
 Additionally, we need to create and set up a mapping CSV file with the following columns, with the name of the file prefixed with `nstToFuiMappings`. For example, if creating a mapping file for IOS platform UI test code generation, the file should be called `nstToFuiMappingsIos.csv`. See this module's [resources](src/test/resources) for two example files for iOS and Android.
 
+The following are the column headers, in order, that must be adopted in the mapping CSV file:
+
 ```csv
 SERVICE,API,PLATFORM_REQUEST_TYPE,NAVIGATION,ENTRY,IMPORTS,MEMBER_FIELDS
 ```
@@ -69,6 +71,8 @@ As long as we have the appropriate mapping CSV file set up, then the default log
 
 To see an example of this in action, run the test method in the [UITestCodeGenerationTest](src/test/java/com/ebay/nst/tutorials/rest/uitestcodegeneration/UITestCodeGenerationTest.java) class, and observe the UI test code that is generated in the [UITestCodeGenerationTest.swift](src/test/java/com/ebay/nst/tutorials/rest/uitestcodegeneration/UITestCodeGenerationTest.swift) class.
 Additionally, you can modify the mapping CSV file to see the changes reflected in the associated Swift class (after re-running the NST test).
+
+**NOTE**: It is advised to keep the output in the iOS / Android / platform CSV mapping file consistent, simple, and standardized to avoid problems. For example, adding statements in the output mapping CSV file that take parameters gives the test writer the flexibility to mutate a behavior in generated code (by setting those parameter values). This is not ideal, since every time the UI test code is generated, it will generate code according to the mapping CSV file - which would remove any customizations on the output that was done previously since it will be overwritten. In other words, avoiding output that would require some sort of user manipulation will ensure that output can be exported / generated without needing any massaging by the user.
 
 ## Customizing UI test code output
 If the default loggers for iOS or Android do not meet your requirements, or you would like to implement a UI test code generator for another platform, you can customize and extend these supplied loggers, or create one yourself. Review the custom logger tutorial section [here](../MockGeneration/README.md#adding-a-custom-logger-to-modify-output) for guidance, and ensure that the `updateTests` method is implemented to your preference.

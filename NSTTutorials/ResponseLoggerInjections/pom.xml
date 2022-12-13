@@ -35,10 +35,9 @@
                     <argLine>
                         -Xms256m
                         -Xmx4096m
-                        -DcustomLoggersPackage=com.nst.tutorials.mockgeneration
                         -DwhatToWrite=MOCKS
                         -Dnstplatform=IOS
-                        -DiosMocksLocation="./src/test/java/responseloggerinjectionstutorial"
+                        -DiosMocksLocation="./src/test/java/com/ebay/nst/tutorials/rest/responseloggerinjections"
                     </argLine>
                 </configuration>
             </plugin>

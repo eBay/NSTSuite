@@ -24,15 +24,17 @@ public class ResponseLoggerInjectionsWrapper implements NSTRestServiceWrapper {
     private static final String ENDPOINT = "/api/v1/holidays/{holidayId}";
     private static final NstRequestType NST_REQUEST_TYPE = NstRequestType.GET;
     private final CanadaHoliday canadaHoliday;
+    private final ResponseLoggerInjector responseLoggerInjector;
 
-    public ResponseLoggerInjectionsWrapper(CanadaHoliday canadaHoliday) {
+    public ResponseLoggerInjectionsWrapper(CanadaHoliday canadaHoliday, boolean useResponseLoggerInjector) {
         this.canadaHoliday = Objects.requireNonNull(canadaHoliday);
+        responseLoggerInjector = useResponseLoggerInjector ? new ExampleResponseLoggerInjector() : null;
     }
 
     // Add the response logger injector to the service wrapper to enable it
     @Override
     public ResponseLoggerInjector getResponseLoggerInjector() {
-        return new ExampleResponseLoggerInjector();
+        return responseLoggerInjector;
     }
 
     @Override
