@@ -23,7 +23,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          artifacts: "${{ github.workspace }}/NST/target/*.jar,${{ github.workspace }}/pom.xml"
+          artifacts: "${{ github.workspace }}/NST/target/*.jar"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to the Maven Central Repository
         run: mvn --no-transfer-progress --batch-mode deploy -pl com.ebay.nst:nstest
