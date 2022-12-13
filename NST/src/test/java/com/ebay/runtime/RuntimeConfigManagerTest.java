@@ -444,7 +444,7 @@ public class RuntimeConfigManagerTest {
 		
 		RuntimeConfigManager.getInstance().reinitialize();
 		String actualPackageValue = RuntimeConfigManager.getInstance().getCustomLoggerFormatPackage();
-		assertThat(actualPackageValue, is(nullValue()));
+		assertThat(actualPackageValue, is(equalTo("com.ebay.custom.loggers")));
 	}
 	
 	@Test
@@ -462,9 +462,8 @@ public class RuntimeConfigManagerTest {
 	@Test
 	public void customArgumentOverride() {
 		
-		RuntimeConfigManager.getInstance().addRuntimeArgument(new CustomArgument());
 		System.setProperty(CustomArgument.KEY, "true");
-		RuntimeConfigManager.getInstance().reinitialize();
+		RuntimeConfigManager.getInstance().addRuntimeArgument(new CustomArgument());
 
 		CustomArgument argument = (CustomArgument) RuntimeConfigManager.getInstance().getRuntimeArgument(CustomArgument.KEY);
 		Boolean runtimeValue = argument.getRuntimeArgumentValue();
