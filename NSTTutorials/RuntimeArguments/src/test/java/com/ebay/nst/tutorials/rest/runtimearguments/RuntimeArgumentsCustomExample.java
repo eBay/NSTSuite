@@ -19,7 +19,9 @@ public class RuntimeArgumentsCustomExample implements RuntimeConfigValue<String>
 
     @Override
     public void parseRuntimeArgument(String argumentValue) {
-        runtimeArgumentsCustomExample = argumentValue;
+        if (argumentValue != null) {
+            runtimeArgumentsCustomExample = argumentValue;
+        }
     }
 
     @Override
