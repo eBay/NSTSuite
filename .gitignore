@@ -10,6 +10,9 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Intellij
+*.iml
+
 # Package Files #
 *.jar
 *.war
@@ -32,3 +35,4 @@ target/
 BreezeTestsStats/
 TestReport.csv
 .idea
+.flattened-pom.xml
