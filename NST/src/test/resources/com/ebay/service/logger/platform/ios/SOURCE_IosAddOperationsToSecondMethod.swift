@@ -8,9 +8,14 @@
 import XCTest
 
 class SimpleCheckoutExampleTest : ServiceTestBase {
-
+	
 	func test_firstTest() {
 		testRailCaseId = "2027564"
+		XCTAssert(false, "Unimplemented test.")
+	}
+	
+	func test_secondTest() {
+		testRailCaseId = "2027565"
 		XCTAssert(false, "Unimplemented test.")
 	}
 }
