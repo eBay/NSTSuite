@@ -1,9 +1,10 @@
 package com.ebay.service.logger.platform.android;
 
+import com.test.PurchaseCheckoutSession;
 import androidx.test.filters.LargeTest;
-
+import com.test.EnterCheckoutSession;
 import org.json.JSONObject;
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 import com.ebay.test.utils.testrail.TestCase;
 
@@ -19,23 +20,33 @@ import com.ebay.test.utils.testrail.TestCase;
 @PreconditionCountry(siteId = EbaySite.SITE_ID.US)
 public class AndroidEmptyTestClass extends AndroidBaseClass
 {
+
+	// AUTO GENERATED MEMBER FIELD CODE BLOCK - DO NOT MODIFY CONTENTS
+	PurchaseCheckoutSession purchaseCheckoutSession = new PurchaseCheckoutSession();
+	// END OF AUTO GENERATED MEMBER FIELD CODE BLOCK
+
 	private final String assertionMessage
-		= "Option was not successfully selected.";
+		= "Test was unsuccessful.";
 
 	@Test
-	@TestCase(id = "C2152776Edit")
-	@Ignore("Unimplemented test.")
+	@TestCase(id = "C2121462")
 	public void firstTestMethod() throws Throwable
 	{
-		// TODO: implement test
+
+		// AUTO GENERATED METHOD CODE BLOCK - DO NOT MODIFY CONTENTS
+		// CORRESPONDING API CALL: PurchaseCheckout
+		// OPERATION INDEX: 1
+		purchaseCheckoutSession.enterCheckoutSuccess();
+		// END OF AUTO GENERATED METHOD CODE BLOCK
+
 	}
 
 	@Test
 	@TestCase(id = "C2152776Edit")
-	@Ignore("Unimplemented test.")
 	public void secondTestMethod() throws Throwable
 	{
 		// TODO: implement test
+		Assert.fail("unimplemented test.")
 	}
 
 	/**

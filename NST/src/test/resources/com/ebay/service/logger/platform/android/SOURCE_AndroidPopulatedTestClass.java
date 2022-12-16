@@ -42,7 +42,7 @@ public class AndroidEmptyTestClass extends AndroidBaseClass
 		int i = 0;
 
 		// AUTO GENERATED METHOD CODE BLOCK - DO NOT MODIFY CONTENTS
-		// CORRESPONDING API CALL: CreateCheckoutSessionV2
+		// CORRESPONDING API CALL: EnterCheckout
 		// OPERATION INDEX: 1
 		Checkout.launchActivity(getStubCheckoutIntent(getEbayContext()))
 		// END OF AUTO GENERATED METHOD CODE BLOCK
@@ -51,7 +51,7 @@ public class AndroidEmptyTestClass extends AndroidBaseClass
 		Assert.assertTrue(checkoutHubHasOneItemInCheckout(), "We do not have a single item in checkout.");
 
 		// AUTO GENERATED METHOD CODE BLOCK - DO NOT MODIFY CONTENTS
-		// CORRESPONDING API CALL: SetPaymentInstrument
+		// CORRESPONDING API CALL: SetPayment
 		// OPERATION INDEX: 2
 		CheckoutHub.clickPaymentMethod();
 		// END OF AUTO GENERATED METHOD CODE BLOCK
@@ -59,7 +59,7 @@ public class AndroidEmptyTestClass extends AndroidBaseClass
 		psp.paymentMethodPrimaryText(PaymentMethodType.DIRECT_DEBIT.name()).perform(click());
 
 		// AUTO GENERATED METHOD CODE BLOCK - DO NOT MODIFY CONTENTS
-		// CORRESPONDING API CALL: PurchaseCheckoutSession
+		// CORRESPONDING API CALL: PurchaseCheckout
 		// OPERATION INDEX: 3
 		Checkout.purchaseCheckoutSession();
 		// END OF AUTO GENERATED METHOD CODE BLOCK

@@ -2,10 +2,9 @@ package com.ebay.service.logger.platform.android;
 
 import androidx.test.filters.LargeTest;
 
-import org.json.JSONObject;
-import org.junit.Ignore;
-import org.junit.Test;
+import com.ebay.AndroidBaseClass;
 import com.ebay.test.utils.testrail.TestCase;
+import org.junit.Test;
 
 /**
  * AndroidEmptyTestClass.java
@@ -19,12 +18,9 @@ import com.ebay.test.utils.testrail.TestCase;
 @PreconditionCountry(siteId = EbaySite.SITE_ID.US)
 public class AndroidEmptyTestClass extends AndroidBaseClass
 {
-	private final String assertionMessage
-		= "Option was not successfully selected.";
-
 	@Test
 	@TestCase(id = "C2152776Edit")
-	@Ignore("Unimplemented test.")
+	@Ignore("Unimplemented test")
 	public void firstTestMethod() throws Throwable
 	{
 		// TODO: implement test
@@ -32,18 +28,9 @@ public class AndroidEmptyTestClass extends AndroidBaseClass
 
 	@Test
 	@TestCase(id = "C2152776Edit")
-	@Ignore("Unimplemented test.")
+	@Ignore("Unimplemented test")
 	public void secondTestMethod() throws Throwable
 	{
 		// TODO: implement test
-	}
-
-	/**
-	 * Simple private method for evaluation purposes.,
-	 */
-	private void doSomething()
-	{
-		int b = 0;
-		b++;
 	}
 }

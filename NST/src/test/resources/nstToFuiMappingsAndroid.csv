@@ -5,3 +5,5 @@ checkout,AddAddress,,"// Navigate to: add a shipping address in xo
 checkout,ChangeAddress,,// Navigate to: change a shipping address in xo,// Enter: change a shipping address in xo,,
 checkout,EditAddress,,// Navigate to: edit a shipping address in xo,// Enter: edit a shipping address in xo,,
 checkout,EnterCheckout,enter-checkout,enterCheckoutSession.navigateToCheckout();,enterCheckoutSession.enterCheckout();,import com.test.EnterCheckoutSession;,EnterCheckoutSession enterCheckoutSession = new EnterCheckoutSession();
+checkout,PurchaseCheckout,session,purchaseCheckoutSession.completePurchase();,purchaseCheckoutSession.enterCheckoutSuccess();,import com.test.PurchaseCheckoutSession;,PurchaseCheckoutSession purchaseCheckoutSession = new PurchaseCheckoutSession();
+checkout,SetPayment,incentive,"setPayment.navigateTo();validate(setPayment);","setPayment.enter();validate(setPayment);",import com.test.SetPayment;,SetPayment setPayment = new SetPayment();
