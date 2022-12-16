@@ -3,3 +3,7 @@ checkout,AddAddress,,// Navigate to: add a shipping address in xo,// Enter: add 
 checkout,ChangeAddress,,// Navigate to: change a shipping address in xo,// Enter: change a shipping address in xo,,
 checkout,EditAddress,,// Navigate to: edit a shipping address in xo,// Enter: edit a shipping address in xo,,
 checkout,EnterCheckout,CheckoutModule.EnterCheckoutRequest,enterCheckoutSession.navigateToCheckout(),enterCheckoutSession.enterCheckout(),import EnterCheckoutSession,let enterCheckoutSession = EnterCheckoutSession()
+checkout,SetPayment,CheckoutModule.SetPaymentRequest,"setPayment.navigateTo()
+validate(setPayment)","setPayment.enter()
+validate(setPayment)",import SetPayment,let setPayment = SetPayment()
+checkout,PurchaseCheckout,CheckoutModule.PurchaseCheckoutRequest,purchaseCheckoutSession.completePurchase(),purchaseCheckoutSession.enterCheckoutSuccess(),import PurchaseCheckoutSession,let purchaseCheckoutSession = PurchaseCheckoutSession()

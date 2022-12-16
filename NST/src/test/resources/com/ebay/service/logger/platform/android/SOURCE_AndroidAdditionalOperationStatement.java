@@ -2,6 +2,8 @@ package com.ebay.service.logger.platform.android;
 
 import androidx.test.filters.LargeTest;
 
+import com.test.EnterCheckoutSession;
+import com.test.SetPayment;
 import org.json.JSONObject;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,15 +21,35 @@ import com.ebay.test.utils.testrail.TestCase;
 @PreconditionCountry(siteId = EbaySite.SITE_ID.US)
 public class AndroidEmptyTestClass extends AndroidBaseClass
 {
+	// AUTO GENERATED MEMBER FIELD CODE BLOCK - DO NOT MODIFY CONTENTS
+	EnterCheckoutSession enterCheckoutSession = new EnterCheckoutSession();
+	SetPayment setPayment = new SetPayment();
+	// END OF AUTO GENERATED MEMBER FIELD CODE BLOCK
+	
 	private final String assertionMessage
-		= "Option was not successfully selected.";
+		= "Test case was unsuccessful.";
 
 	@Test
 	@TestCase(id = "C2152776Edit")
-	@Ignore("Unimplemented test.")
 	public void firstTestMethod() throws Throwable
 	{
-		// TODO: implement test
+
+		// Special sauce comment
+		int i = 0;
+
+		// AUTO GENERATED METHOD CODE BLOCK - DO NOT MODIFY CONTENTS
+		// CORRESPONDING API CALL: EnterCheckout
+		// OPERATION INDEX: 1
+		enterCheckoutSession.enterCheckout();
+		// END OF AUTO GENERATED METHOD CODE BLOCK
+
+		// AUTO GENERATED METHOD CODE BLOCK - DO NOT MODIFY CONTENTS
+		// CORRESPONDING API CALL: SetPayment
+		// OPERATION INDEX: 2
+		setPayment.navigateTo();
+		validate(setPayment);
+		// END OF AUTO GENERATED METHOD CODE BLOCK
+
 	}
 
 	@Test

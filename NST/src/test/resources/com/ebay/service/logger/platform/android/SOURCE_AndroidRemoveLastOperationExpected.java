@@ -1,10 +1,13 @@
 package com.ebay.service.logger.platform.android;
 
+import com.test.EnterCheckoutSession;
 import androidx.test.filters.LargeTest;
-
+import com.test.PurchaseCheckoutSession;
 import org.json.JSONObject;
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import com.ebay.test.utils.testrail.TestCase;
 
 /**
@@ -19,23 +22,37 @@ import com.ebay.test.utils.testrail.TestCase;
 @PreconditionCountry(siteId = EbaySite.SITE_ID.US)
 public class AndroidEmptyTestClass extends AndroidBaseClass
 {
+
+	// AUTO GENERATED MEMBER FIELD CODE BLOCK - DO NOT MODIFY CONTENTS
+	EnterCheckoutSession enterCheckoutSession = new EnterCheckoutSession();
+	// END OF AUTO GENERATED MEMBER FIELD CODE BLOCK
+	
 	private final String assertionMessage
-		= "Option was not successfully selected.";
+		= "Test case was unsuccessful.";
 
 	@Test
-	@TestCase(id = "C2152776Edit")
-	@Ignore("Unimplemented test.")
+	@TestCase(id = "C2121462")
 	public void firstTestMethod() throws Throwable
 	{
-		// TODO: implement test
+
+		int i = 0;
+
+		// AUTO GENERATED METHOD CODE BLOCK - DO NOT MODIFY CONTENTS
+		// CORRESPONDING API CALL: EnterCheckout
+		// OPERATION INDEX: 1
+		enterCheckoutSession.enterCheckout();
+		// END OF AUTO GENERATED METHOD CODE BLOCK
+
+		i++;
+
 	}
 
 	@Test
 	@TestCase(id = "C2152776Edit")
-	@Ignore("Unimplemented test.")
 	public void secondTestMethod() throws Throwable
 	{
 		// TODO: implement test
+		Assert.fail("unimplemented test.")
 	}
 
 	/**

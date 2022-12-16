@@ -418,20 +418,20 @@ public class AndroidJavaFuiTestParserTest {
     methodModel.addMethodLeadInContents("");
 
     GeneralPlatformOperationModel operation1 = new GeneralPlatformOperationModel();
-    operation1.setServiceWrapperApiName("CreateCheckoutSessionV2");
+    operation1.setServiceWrapperApiName("EnterCheckout");
     operation1.addCustomBlockLine("\n\t\tAssert.assertTrue(checkWeAreOnCheckoutHub(), \"We are not where we think we are.\");");
     operation1.addCustomBlockLine("\t\tAssert.assertTrue(checkoutHubHasOneItemInCheckout(), \"We do not have a single item in checkout.\");");
     operation1.addCustomBlockLine("");
     methodModel.addMethodOperations(operation1);
 
     GeneralPlatformOperationModel operation2 = new GeneralPlatformOperationModel();
-    operation2.setServiceWrapperApiName("SetPaymentInstrument");
+    operation2.setServiceWrapperApiName("SetPayment");
     operation2.addCustomBlockLine("\n\t\tpsp.paymentMethodPrimaryText(PaymentMethodType.DIRECT_DEBIT.name()).perform(click());");
     operation2.addCustomBlockLine("");
     methodModel.addMethodOperations(operation2);
 
     GeneralPlatformOperationModel operation3 = new GeneralPlatformOperationModel();
-    operation3.setServiceWrapperApiName("PurchaseCheckoutSession");
+    operation3.setServiceWrapperApiName("PurchaseCheckout");
     operation3.addCustomBlockLine("\n\t\tAssert.assertTrue(checkThatWeCompletedCheckout(), \"Checkout was not completed successfully.\");");
     methodModel.addMethodOperations(operation3);
 

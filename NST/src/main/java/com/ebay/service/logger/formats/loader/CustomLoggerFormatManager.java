@@ -12,7 +12,9 @@ import org.reflections.Reflections;
 import com.ebay.runtime.RuntimeConfigManager;
 import com.ebay.runtime.arguments.Platform;
 import com.ebay.service.logger.FormatWriter;
+import com.ebay.service.logger.platforms.AndroidLogger;
 import com.ebay.service.logger.platforms.HarLogger;
+import com.ebay.service.logger.platforms.IosLogger;
 
 public final class CustomLoggerFormatManager {
 
@@ -86,6 +88,10 @@ public final class CustomLoggerFormatManager {
 		for (Platform platform : Platform.values()) {
 			platformWriters.put(platform, new HarLogger());
 		}
+		
+		// Add the Android and iOS loggers.
+		platformWriters.put(Platform.IOS, new IosLogger());
+		platformWriters.put(Platform.ANDROID, new AndroidLogger());
 
 		String customLoggerPackage = RuntimeConfigManager.getInstance().getCustomLoggerFormatPackage();
 		if (customLoggerPackage == null) {
