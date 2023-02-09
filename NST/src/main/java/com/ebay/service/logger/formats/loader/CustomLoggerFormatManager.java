@@ -16,7 +16,7 @@ import com.ebay.service.logger.platforms.AndroidLogger;
 import com.ebay.service.logger.platforms.HarLogger;
 import com.ebay.service.logger.platforms.IosLogger;
 
-public final class CustomLoggerFormatManager {
+public class CustomLoggerFormatManager {
 
 	private static CustomLoggerFormatManager instance;
 	private Map<Platform, FormatWriter> platformWriters = new HashMap<>();

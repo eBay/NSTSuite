@@ -108,7 +108,7 @@ public class OpenApiValidatorTest {
 
   @Test(groups = "unitTest", expectedExceptions = SchemaValidationException.class)
   public void additionalPropertiesFail() throws Throwable {
-    OpenApiSchemaValidator validator = new OpenApiSchemaValidator.Builder("/com/ebay/schema/validation/schemas/additionalPropertiesValidation.yaml", "/test", NstRequestType.GET).build();
+    OpenApiSchemaValidator validator = new OpenApiSchemaValidator.Builder("/com/ebay/schema/validation/schemas/additionalPropertiesValidation.yaml", "/test", NstRequestType.GET).allowAdditionalProperties(AllowAdditionalProperties.NO).build();
     validator.validate(ResourceParser.readInResourceFile("/com/ebay/schema/validation/responses/additionalPropertiesFail.json"));
   }
 

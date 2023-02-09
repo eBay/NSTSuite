@@ -214,7 +214,7 @@ public final class NSTServiceWrapperProcessor {
 		if ((!isSchemaValidationDisabled()) && (isSchemaValidate) && (schemaValidator != null)
 				&& !serviceWrapper.alwaysDisableSchemaValidation()) {
 			Reporter.log("Schema Validation Turned On.", true);
-			schemaValidator.toString(); // Print out the validator details including schema path and API choice.
+			Reporter.log(schemaValidator.toString()); // Print out the validator details including schema path and API choice.
 			schemaValidator.validate(response.getPayload());
 		} else {
 			Reporter.log("Schema Validation Turned Off");
@@ -299,7 +299,25 @@ public final class NSTServiceWrapperProcessor {
 			NSTHttpResponse response) {
 
 		if (response == null) {
+			Reporter.log("Response was null - skipping logging response details.", true);
 			return;
+		}
+
+		Map<String, String> responseHeaders = response.getHeaders();
+		if (responseHeaders != null && !responseHeaders.isEmpty()) {
+			Reporter.log("Response Headers:", true);
+			for (Map.Entry<String, String> entry : responseHeaders.entrySet()) {
+				Reporter.log(String.format("%s : %s", entry.getKey(), entry.getValue()), true);
+			}
+		} else {
+			Reporter.log("Response does not contain headers.", true);
+		}
+
+		if (response.getPayload() != null) {
+			Reporter.log("Response Payload:", true);
+			Reporter.log(response.getPayload(), true);
+		} else {
+			Reporter.log("Response does not contain a payload.", true);
 		}
 
 		// Log custom info from wrapper
