@@ -214,7 +214,7 @@ public final class NSTServiceWrapperProcessor {
 		if ((!isSchemaValidationDisabled()) && (isSchemaValidate) && (schemaValidator != null)
 				&& !serviceWrapper.alwaysDisableSchemaValidation()) {
 			Reporter.log("Schema Validation Turned On.", true);
-			Reporter.log(schemaValidator.toString()); // Print out the validator details including schema path and API choice.
+			Reporter.log(schemaValidator.toString(), true); // Print out the validator details including schema path and API choice.
 			schemaValidator.validate(response.getPayload());
 		} else {
 			Reporter.log("Schema Validation Turned Off");
