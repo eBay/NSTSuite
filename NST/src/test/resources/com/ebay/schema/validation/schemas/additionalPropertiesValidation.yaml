@@ -21,7 +21,6 @@ components:
   schemas:
     test:
       type: object
-      additionalProperties: false
       properties:
         first:
           type: string

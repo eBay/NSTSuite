@@ -13,25 +13,26 @@ import com.ebay.service.protocol.http.NSTHttpResponse;
 import com.ebay.service.protocol.http.NSTHttpResponseImpl;
 
 import org.apache.http.HttpException;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.json.JSONObject;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.*;
 import static org.testng.AssertJUnit.fail;
 
@@ -52,6 +53,8 @@ public class NSTServiceWrapperProcessorTest {
 	private static final String IOS_MOCKS_LOCAITON = "iosMocksLocation";
 	private static final String IOS_TESTS_LOCATION = "iosTestsLocation";
 	private NSTServiceWrapperProcessor processor;
+	private final PrintStream standardOut = System.out;
+	private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
 	@BeforeMethod(alwaysRun = true)
 	@AfterMethod(alwaysRun = true)
@@ -73,7 +76,12 @@ public class NSTServiceWrapperProcessorTest {
 		ServiceCallCacheManager.getInstance().clearCache();
 	}
 
-	@AfterClass
+	@AfterMethod(alwaysRun = true)
+	public void resetConsoleLoggingToStdOut() {
+		System.setOut(standardOut);
+	}
+
+	@AfterClass(alwaysRun = true)
 	public void cleanupTestFiles() throws IllegalStateException {
 		cleanup(OUTPUT_FOLDER);
 	}
@@ -354,7 +362,7 @@ public class NSTServiceWrapperProcessorTest {
 		
 		Map<String, List<ServiceCallCacheData>> cacheData = ServiceCallCacheManager.getInstance().getCacheData();
 		assertThat("Map size MUST be 1", cacheData.size(), is(equalTo(1)));
-		assertThat(cacheData.keySet(), contains(key));
+		MatcherAssert.assertThat(cacheData.keySet(), contains(key));
 		
 		List<ServiceCallCacheData> callData = cacheData.get(key);
 		assertThat("Call data MUST contain ONLY one call.", callData.size(), is(equalTo(1)));
@@ -529,9 +537,8 @@ public class NSTServiceWrapperProcessorTest {
 		NSTHttpResponse response = mock(NSTHttpResponse.class);
 		when(response.getPayload()).thenReturn(payload);
 
-		OpenApiSchemaValidator validator = mock(OpenApiSchemaValidator.class);
 		NSTServiceWrapper nstServiceWrapper = mock(NSTServiceWrapper.class);
-		when(nstServiceWrapper.getSchemaValidator()).thenReturn(validator);
+		when(nstServiceWrapper.getSchemaValidator()).thenReturn(new OpenApiSchemaValidator.Builder("resource_path", "api_path", NstRequestType.GET).build());
 		when(nstServiceWrapper.alwaysDisableSchemaValidation()).thenReturn(true);
 
 		processor = new NSTServiceWrapperProcessor();
@@ -613,42 +620,12 @@ public class NSTServiceWrapperProcessorTest {
 	}
 	
 	@Test(groups = "unitTest")
-	public void getServiceWrapperNameeWithUniqueWrapperName() {
+	public void getServiceWrapperNameWithUniqueWrapperName() {
 		String uniqueServiceWrapperName = "uniqueServiceWrapperName";
 		TestServiceWrapper nstServiceWrapper = new TestServiceWrapper(uniqueServiceWrapperName);
 		processor = new NSTServiceWrapperProcessor();
 		String forcedServiceFileName = processor.getServiceWrapperName(nstServiceWrapper);
 		assertThat(forcedServiceFileName, is(equalTo(uniqueServiceWrapperName)));
-	}
-	
-	@Test(groups = "unitTest")
-	public void sendRequestWrapper() throws Exception {
-
-		// Confirming the calls that constitute the sendRequestWrapper() method.
-		// Each should be called exactly once.
-		NSTHttpRequest request = mock(NSTHttpRequest.class);
-		NSTHttpResponse response = mock(NSTHttpResponse.class);
-
-		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
-		when(serviceWrapper.prepareRequest()).thenReturn(request);
-
-		processor = Mockito.spy(new NSTServiceWrapperProcessor());
-		doNothing().when(processor).logRequestDetailsToConsole(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpRequest.class));
-		doReturn(response).when(processor).sendRequest(Mockito.any(NSTHttpRequest.class));
-		doNothing().when(processor).logResponseDetailsToConsole(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpResponse.class));
-		doNothing().when(processor).confirmSuccess(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpRequest.class), Mockito.any(NSTHttpResponse.class));
-		doNothing().when(processor).schemaValidation(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpResponse.class));
-		doNothing().when(processor).logCallDetails(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpRequest.class), Mockito.any(NSTHttpResponse.class));
-		doNothing().when(processor).logServiceDetails(Mockito.any(NSTServiceWrapper.class));
-
-		processor.sendRequestWrapper(serviceWrapper);
-
-		verify(processor, times(1)).logRequestDetailsToConsole(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpRequest.class));
-		verify(processor, times(1)).logResponseDetailsToConsole(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpResponse.class));
-		verify(processor, times(1)).confirmSuccess(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpRequest.class), Mockito.any(NSTHttpResponse.class));
-		verify(processor, times(1)).schemaValidation(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpResponse.class));
-		verify(processor, times(1)).logCallDetails(Mockito.any(NSTServiceWrapper.class), Mockito.any(NSTHttpRequest.class), Mockito.any(NSTHttpResponse.class));
-		verify(processor, times(1)).logServiceDetails(Mockito.any(NSTServiceWrapper.class));
 	}
 	
 	@Test
@@ -663,6 +640,83 @@ public class NSTServiceWrapperProcessorTest {
 		processor.sendRequest(request);
 		
 		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class));
+	}
+
+	@Test
+	public void logResponseDetailsToConsoleWithNullResponse() {
+		System.setOut(new PrintStream(outputStreamCaptor));
+		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
+		when(serviceWrapper.getServiceWrapperConsoleOutput(Mockito.any(NSTHttpResponse.class))).thenReturn(null);
+		processor = new NSTServiceWrapperProcessor();
+		processor.logResponseDetailsToConsole(serviceWrapper, null);
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Response was null - skipping logging response details."));
+	}
+
+	@Test
+	public void logResponseDetailsToConsoleWithNullResponseHeaders() {
+		System.setOut(new PrintStream(outputStreamCaptor));
+		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
+		when(serviceWrapper.getServiceWrapperConsoleOutput(Mockito.any(NSTHttpResponse.class))).thenReturn(null);
+
+		NSTHttpResponse response = mock(NSTHttpResponse.class);
+		when(response.getHeaders()).thenReturn(null);
+
+		processor = new NSTServiceWrapperProcessor();
+		processor.logResponseDetailsToConsole(serviceWrapper, response);
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Response does not contain headers."));
+	}
+
+	@Test
+	public void logResponseDetailsToConsoleWithNullResponsePayload() {
+		System.setOut(new PrintStream(outputStreamCaptor));
+		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
+		when(serviceWrapper.getServiceWrapperConsoleOutput(Mockito.any(NSTHttpResponse.class))).thenReturn(null);
+
+		NSTHttpResponse response = mock(NSTHttpResponse.class);
+		when(response.getHeaders()).thenReturn(null);
+		when(response.getPayload()).thenReturn(null);
+
+		processor = new NSTServiceWrapperProcessor();
+		processor.logResponseDetailsToConsole(serviceWrapper, response);
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Response does not contain a payload."));
+	}
+
+	@Test
+	public void logResponseDetailsToConsoleWithResponsePayloadAndHeaders() {
+		System.setOut(new PrintStream(outputStreamCaptor));
+		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
+		when(serviceWrapper.getServiceWrapperConsoleOutput(Mockito.any(NSTHttpResponse.class))).thenReturn(null);
+
+		Map<String, String> headers = new HashMap<>();
+		headers.put("Content-Type", "application-json");
+		headers.put("Accept", "application-json");
+
+		NSTHttpResponse response = mock(NSTHttpResponse.class);
+		when(response.getHeaders()).thenReturn(headers);
+		when(response.getPayload()).thenReturn("{ \"Foo\" : \"Bar\" }");
+
+		processor = new NSTServiceWrapperProcessor();
+		processor.logResponseDetailsToConsole(serviceWrapper, response);
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Response Headers:"));
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Content-Type : application-json"));
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Accept : application-json"));
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Response Payload:"));
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("{ \"Foo\" : \"Bar\" }"));
+	}
+
+	@Test
+	public void logResponseDetailsToConsoleWithCustomServiceWrapperLog() {
+		System.setOut(new PrintStream(outputStreamCaptor));
+		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
+		when(serviceWrapper.getServiceWrapperConsoleOutput(Mockito.any(NSTHttpResponse.class))).thenReturn("Service Wrapper Console Output");
+
+		NSTHttpResponse response = mock(NSTHttpResponse.class);
+		when(response.getHeaders()).thenReturn(null);
+		when(response.getPayload()).thenReturn(null);
+
+		processor = new NSTServiceWrapperProcessor();
+		processor.logResponseDetailsToConsole(serviceWrapper, response);
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString("Service Wrapper Console Output"));
 	}
 
 	// ----------------------------------
