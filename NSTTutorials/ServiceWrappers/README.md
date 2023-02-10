@@ -26,7 +26,8 @@ The required *`NSTRestServiceWrapper`* methods are:
 - `getServiceName` - Must return the name of the service. The service name is used when forming the full endpoint URL in the `prepareRequest` method.
 - `getRequestType` - Must return the type of HTTP request, in this example, it would be `NstRequestType.GET`.
 - `getEndpointPath` - Must return the **endpoint** of the call.
-- `prepareRequest` - Where the request object (`NSTHttpRequest`) is formed. This includes any headers that may need to be sent, setting the actual URL for the request, including setting any required parameters that the service wrapper was initialized with, and finally using the `NSTHttpRequestImpl` builder to form the `NSTHttpRequest`. The host name is retrieved from `getServiceName` and prefixed to `getEndpointPath` to form the full URL. We are using `HostsManager` in order to retrieve the **host** for the provided **service name**, using the `serviceHosts.csv` mapping. This `serviceHosts.csv` mapping allows you to easily switch hosts between environments such as QA, dev, and production. More on this in the following section, `serviceHosts.csv`.
+- `prepareRequest` - Where the request object (`NSTHttpRequest`) is formed. This includes any headers that may need to be sent, setting the actual URL for the request, including setting any required parameters that the service wrapper was initialized with, and finally using the `NSTHttpRequestImpl` builder to form the `NSTHttpRequest`. Using ServiceUtil.getUrl() is recommended to get the URL. This utility looks at the `HostsManager` in order to retrieve the **host** for the provided **service name**, using the `serviceHosts.csv` mapping. This `serviceHosts.csv` mapping allows you to easily switch hosts between environments such as QA, dev, and production. More on this in the following section, `serviceHosts.csv`. It also calls `getEndpointPath()` from the current service wrapper to form the full URL.
+
     ```java
     private static final String SERVICE_NAME = "canadaholidays";
     private static final String ENDPOINT = "/api/v1/holidays/{holidayId}";
@@ -36,14 +37,7 @@ The required *`NSTRestServiceWrapper`* methods are:
         Map<String, String> headers = new HashMap<>();
         headers.put("USER-AGENT", "testHeader");
     
-        URL url;
-        try {
-            String path = HostsManager.getInstance().getHostForService(SERVICE_NAME) + ENDPOINT;
-            url = new URL(path.replace("{holidayId}", canadaHoliday.getHolidayId().toString()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    
+        URL url = ServiceUtil.getUrl(this);    
         return new NSTHttpRequestImpl.Builder(url, NstRequestType.GET)
                 .setHeaders(headers)
                 .build();
