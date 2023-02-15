@@ -46,7 +46,7 @@ public class DeveloperMockListOfValuesTest {
     }
 
     // Test classes that implement DeveloperMockTypeDecoder with the various primitive box types.
-    class DeveloperMockListOfBoolean implements DeveloperMockListOfValues<Boolean> {
+    private class DeveloperMockListOfBoolean implements DeveloperMockListOfValues<Boolean> {
 
         @Override
         public List<Boolean> getMockValues() {
@@ -59,7 +59,7 @@ public class DeveloperMockListOfValuesTest {
         }
     }
 
-    class DeveloperMockListOfDouble implements DeveloperMockListOfValues<Double> {
+    private class DeveloperMockListOfDouble implements DeveloperMockListOfValues<Double> {
 
         @Override
         public List<Double> getMockValues() {
@@ -72,7 +72,7 @@ public class DeveloperMockListOfValuesTest {
         }
     }
 
-    class DeveloperMockListOfInteger implements DeveloperMockListOfValues<Integer> {
+    private class DeveloperMockListOfInteger implements DeveloperMockListOfValues<Integer> {
 
         @Override
         public List<Integer> getMockValues() {
@@ -85,7 +85,7 @@ public class DeveloperMockListOfValuesTest {
         }
     }
 
-    class DeveloperMockListOfString implements DeveloperMockListOfValues<String> {
+    private class DeveloperMockListOfString implements DeveloperMockListOfValues<String> {
 
         @Override
         public List<String> getMockValues() {
@@ -98,7 +98,7 @@ public class DeveloperMockListOfValuesTest {
         }
     }
 
-    class DeveloperMockListOfObject implements DeveloperMockListOfValues<Object> {
+    private class DeveloperMockListOfObject implements DeveloperMockListOfValues<Object> {
 
         @Override
         public List<Object> getMockValues() {

@@ -52,23 +52,23 @@ public class DeveloperMockTypeDecoderTest {
     }
 
     // Test classes that implement DeveloperMockTypeDecoder with the various primitive box types.
-    class BooleanDeveloperMockType implements DeveloperMockTypeDecoder<Boolean> {
+    private class BooleanDeveloperMockType implements DeveloperMockTypeDecoder<Boolean> {
 
     }
 
-    class DoubleDeveloperMockType implements DeveloperMockTypeDecoder<Double> {
+    private class DoubleDeveloperMockType implements DeveloperMockTypeDecoder<Double> {
 
     }
 
-    class IntegerDeveloperMockType implements DeveloperMockTypeDecoder<Integer> {
+    private class IntegerDeveloperMockType implements DeveloperMockTypeDecoder<Integer> {
 
     }
 
-    class StringDeveloperMockType implements DeveloperMockTypeDecoder<String> {
+    private class StringDeveloperMockType implements DeveloperMockTypeDecoder<String> {
 
     }
 
-    class UnknownDeveloperMockType implements DeveloperMockTypeDecoder<Object> {
+    private class UnknownDeveloperMockType implements DeveloperMockTypeDecoder<Object> {
 
     }
 }
