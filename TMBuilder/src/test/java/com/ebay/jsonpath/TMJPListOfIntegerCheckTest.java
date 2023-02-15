@@ -294,4 +294,15 @@ public class TMJPListOfIntegerCheckTest {
     assertThat("Clone MUST have is equal to values set to expected.", clone.getIsEqualToValues(), is(equalTo(equalToValues)));
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPListOfIntegerCheck() {
+
+    List<Integer> expectedValues = Arrays.asList(1, 2, 30);
+    TMJPListOfIntegerCheck original = new TMJPListOfIntegerCheck();
+    original.setMockValues(expectedValues);
+
+    TMJPListOfIntegerCheck clone = new TMJPListOfIntegerCheck(original);
+    assertThat("Clone MUST have mock values set to expected.", clone.getMockValues(), is(equalTo(expectedValues)));
+  }
 }

@@ -51,6 +51,7 @@ public class DeveloperMockTypeDecoderTest {
         assertThat(mockType, is(equalTo(DeveloperMockType.UNKNOWN)));
     }
 
+    // Test classes that implement DeveloperMockTypeDecoder with the various primitive box types.
     class BooleanDeveloperMockType implements DeveloperMockTypeDecoder<Boolean> {
 
     }

@@ -294,4 +294,15 @@ public class TMJPListOfBooleanCheckTest {
     assertThat("Clone MUST have is equal to values set to expected.", clone.getIsEqualToValues(), is(equalTo(equalToValues)));
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPListOfBooleanCheck() {
+
+    List<Boolean> expectedValues = Arrays.asList(false, true, false);
+    TMJPListOfBooleanCheck original = new TMJPListOfBooleanCheck();
+    original.setMockValues(expectedValues);
+
+    TMJPListOfBooleanCheck clone = new TMJPListOfBooleanCheck(original);
+    assertThat("Clone MUST have mock values set to expected.", clone.getMockValues(), is(equalTo(expectedValues)));
+  }
 }

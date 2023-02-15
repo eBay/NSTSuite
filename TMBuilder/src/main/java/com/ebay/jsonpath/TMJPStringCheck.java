@@ -3,11 +3,14 @@ package com.ebay.jsonpath;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
-public class TMJPStringCheck extends JPStringCheck implements ThinModelSerializer {
+public class TMJPStringCheck extends JPStringCheck implements ThinModelSerializer, DeveloperMockValue<String> {
 
   private static final long serialVersionUID = 1L;
+  private static final String DEFAULT_DEVELOPER_MOCK_VALUE = "lorem ipsum";
+  private String developerMockValue = DEFAULT_DEVELOPER_MOCK_VALUE;
 
   /**
    * Run the baseline checks for a String - not null and not empty.
@@ -48,6 +51,10 @@ public class TMJPStringCheck extends JPStringCheck implements ThinModelSerialize
 
     if (source.getMinimumNumberOfCharacters() != null) {
       this.hasMinimumNumberOfCharacters(source.getMinimumNumberOfCharacters());
+    }
+
+    if (source instanceof TMJPStringCheck) {
+      this.setMockValue(((TMJPStringCheck) source).getMockValue());
     }
   }
 
@@ -91,6 +98,26 @@ public class TMJPStringCheck extends JPStringCheck implements ThinModelSerialize
   public TMJPStringCheck hasMaximumNumberOfCharacters(int length) {
     super.hasMaximumNumberOfCharacters(length);
     return this;
+  }
+
+  // ----------------------------------------------
+  // DeveloperMockValue<Integer> getter and setter
+  // ----------------------------------------------
+
+  @Override
+  public String getMockValue() {
+    return developerMockValue;
+  }
+
+  @Override
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock String value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  public void setMockValue(String value) {
+
+    if (value == null) {
+      developerMockValue = DEFAULT_DEVELOPER_MOCK_VALUE;
+    } else {
+      developerMockValue = value;
+    }
   }
 
   // -----------------------------------------------

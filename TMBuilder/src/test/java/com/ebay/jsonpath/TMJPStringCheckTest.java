@@ -258,4 +258,14 @@ public class TMJPStringCheckTest {
     assertThat("Clone MUST have maximum number of characters set to null.", clone.getMaximumNumberOfCharacters(), is(equalTo(maximumNumberOfCharacters)));
     assertThat("Clone MUST have minimum number of characters set to null.", clone.getMinimumNumberOfCharacters(), is(equalTo(minimumNumberOfCharacters)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPStringCheck() {
+
+    TMJPStringCheck original = new TMJPStringCheck();
+    original.setMockValue("Bar");
+
+    TMJPStringCheck clone = new TMJPStringCheck(original);
+    assertThat("Clone MUST have mock value set to expected.", clone.getMockValue(), is(equalTo("Bar")));
+  }
 }

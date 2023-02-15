@@ -1,13 +1,18 @@
 package com.ebay.jsonpath;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockListOfValues;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
-public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements ThinModelSerializer {
+public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements ThinModelSerializer, DeveloperMockListOfValues<Boolean> {
 
   private static final long serialVersionUID = 7056471666195229575L;
+  private static final List<Boolean> DEFAULT_DEVELOPER_MOCK_VALUES = Arrays.asList(true);
+  private List<Boolean> developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;
 
   /**
    * Run baseline checks for a list of Booleans - list is not null and indexes
@@ -47,6 +52,10 @@ public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements Thin
 
     if (source.getContainsValues() != null) {
       this.contains(source.getContainsValues());
+    }
+
+    if (source instanceof TMJPListOfBooleanCheck) {
+      this.setMockValues(((TMJPListOfBooleanCheck) source).getMockValues());
     }
   }
 
@@ -90,6 +99,25 @@ public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements Thin
   public TMJPListOfBooleanCheck contains(List<Boolean> values) {
     super.contains(values);
     return this;
+  }
+
+  // ----------------------------------------------
+  // DeveloperMockListOfValues<Boolean> getter and setter
+  // ----------------------------------------------
+
+  @Override
+  public List<Boolean> getMockValues() {
+    return developerMockValues;
+  }
+
+  @Override
+  @TMCheckData(inputName = "Mock values", inputDescription = "The mock boolean values to use when producing developer mocks.", getterMethodName = "getMockValues")
+  public void setMockValues(List<Boolean> values) {
+    if (values == null || values.isEmpty()) {
+      developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;
+    } else {
+      developerMockValues = new ArrayList<>(values);
+    }
   }
 
   // -----------------------------------------------
