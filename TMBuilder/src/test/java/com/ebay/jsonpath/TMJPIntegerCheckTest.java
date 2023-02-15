@@ -118,4 +118,16 @@ public class TMJPIntegerCheckTest {
 
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPIntegerCheck() {
+
+    TMJPIntegerCheck original = new TMJPIntegerCheck();
+    original.setMockValue(11);
+    original.isEqualTo(5);
+
+    TMJPIntegerCheck clone = new TMJPIntegerCheck(original);
+    assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5)));
+    assertThat("Clone MUST have mock value set to expected.", clone.getMockValue(), is(equalTo(11)));
+  }
 }

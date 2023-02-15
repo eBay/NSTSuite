@@ -1,11 +1,14 @@
 package com.ebay.jsonpath;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
-public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSerializer {
+public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSerializer, DeveloperMockValue<Boolean> {
 
   private static final long serialVersionUID = 1L;
+  private static final boolean DEFAULT_DEVELOPER_MOCK_VALUE = true;
+  private Boolean developerMockValue = DEFAULT_DEVELOPER_MOCK_VALUE;
 
   /**
    * Run the baseline checks for a boolean - not null.
@@ -24,6 +27,10 @@ public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSeriali
     if (source.getExpectedValue() != null) {
       this.isEqualTo(source.getExpectedValue());
     }
+
+    if (source instanceof TMJPBooleanCheck) {
+      this.setMockValue(((TMJPBooleanCheck) source).getMockValue());
+    }
   }
 
   @Override
@@ -31,6 +38,26 @@ public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSeriali
   public TMJPBooleanCheck isEqualTo(Boolean value) {
     super.isEqualTo(value);
     return this;
+  }
+
+  // ----------------------------------------------
+  // DeveloperMockValue<Boolean> getter and setter
+  // ----------------------------------------------
+
+  @Override
+  public Boolean getMockValue() {
+    return developerMockValue;
+  }
+
+  @Override
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock boolean value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  public void setMockValue(Boolean value) {
+
+    if (value == null) {
+      developerMockValue = DEFAULT_DEVELOPER_MOCK_VALUE;
+    } else {
+      developerMockValue = value;
+    }
   }
 
   // -----------------------------------------------

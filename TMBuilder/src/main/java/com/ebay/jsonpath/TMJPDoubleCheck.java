@@ -1,11 +1,14 @@
 package com.ebay.jsonpath;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
-public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerializer {
+public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerializer, DeveloperMockValue<Double> {
 
   private static final long serialVersionUID = 1L;
+  private static final Double DEFAULT_DEVELOPER_MOCK_VALUE = 0.0;
+  private Double developerMockValue = DEFAULT_DEVELOPER_MOCK_VALUE;
 
   /**
    * Run the baseline checks for a double - not null.
@@ -27,6 +30,10 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
     if (source.getExpectedValue() != null) {
       this.isEqualTo(source.getExpectedValue());
     }
+
+    if (source instanceof TMJPDoubleCheck) {
+      this.setMockValue(((TMJPDoubleCheck) source).getMockValue());
+    }
   }
 
   @Override
@@ -34,6 +41,26 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
   public TMJPDoubleCheck isEqualTo(Double value) {
     super.isEqualTo(value);
     return this;
+  }
+
+  // ----------------------------------------------
+  // DeveloperMockValue<Double> getter and setter
+  // ----------------------------------------------
+
+  @Override
+  public Double getMockValue() {
+    return developerMockValue;
+  }
+
+  @Override
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock double value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  public void setMockValue(Double value) {
+
+    if (value == null) {
+      developerMockValue = DEFAULT_DEVELOPER_MOCK_VALUE;
+    } else {
+      developerMockValue = value;
+    }
   }
 
   // -----------------------------------------------

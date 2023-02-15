@@ -330,4 +330,15 @@ public class TMJPListOfDoubleCheckTest {
     assertThat("Clone MUST have is equal to values set to expected.", clone.getIsEqualToValues(), is(equalTo(equalToValues)));
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPListOfDoubleCheck() {
+
+    List<Double> expectedValues = Arrays.asList(1.0, 2.0, 30.3);
+    TMJPListOfDoubleCheck original = new TMJPListOfDoubleCheck();
+    original.setMockValues(expectedValues);
+
+    TMJPListOfDoubleCheck clone = new TMJPListOfDoubleCheck(original);
+    assertThat("Clone MUST have mock values set to expected.", clone.getMockValues(), is(equalTo(expectedValues)));
+  }
 }

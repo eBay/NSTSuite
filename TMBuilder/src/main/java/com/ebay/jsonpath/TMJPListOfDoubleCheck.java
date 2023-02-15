@@ -1,13 +1,18 @@
 package com.ebay.jsonpath;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockListOfValues;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
-public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinModelSerializer {
+public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinModelSerializer, DeveloperMockListOfValues<Double> {
 
   private static final long serialVersionUID = 1L;
+  private static final List<Double> DEFAULT_DEVELOPER_MOCK_VALUES = Arrays.asList(0.0);
+  private List<Double> developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;
 
   /**
    * Run baseline checks for a list of Doubles - list is not null and indexes
@@ -49,6 +54,10 @@ public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinMo
 
     if (source.getContainsValues() != null) {
       this.contains(source.getContainsValues());
+    }
+
+    if (source instanceof TMJPListOfDoubleCheck) {
+      this.setMockValues(((TMJPListOfDoubleCheck) source).getMockValues());
     }
   }
 
@@ -92,6 +101,25 @@ public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinMo
   public TMJPListOfDoubleCheck contains(List<Double> values) {
     super.contains(values);
     return this;
+  }
+
+  // ----------------------------------------------
+  // DeveloperMockListOfValues<Double> getter and setter
+  // ----------------------------------------------
+
+  @Override
+  public List<Double> getMockValues() {
+    return developerMockValues;
+  }
+
+  @Override
+  @TMCheckData(inputName = "Mock values", inputDescription = "The mock double values to use when producing developer mocks.", getterMethodName = "getMockValues")
+  public void setMockValues(List<Double> values) {
+    if (values == null || values.isEmpty()) {
+      developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;
+    } else {
+      developerMockValues = new ArrayList<>(values);
+    }
   }
 
   // -----------------------------------------------

@@ -118,4 +118,16 @@ public class TMJPBooleanCheckTest {
 
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(true)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPBooleanCheck() {
+
+    TMJPBooleanCheck original = new TMJPBooleanCheck();
+    original.setMockValue(false);
+    original.isEqualTo(true);
+
+    TMJPBooleanCheck clone = new TMJPBooleanCheck(original);
+    assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(true)));
+    assertThat("Clone MUST have mock value set to expected.", clone.getMockValue(), is(equalTo(false)));
+  }
 }

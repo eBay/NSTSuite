@@ -130,4 +130,16 @@ public class TMJPDoubleCheckTest {
 
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5.5)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPDoubleCheck() {
+
+    TMJPDoubleCheck original = new TMJPDoubleCheck();
+    original.setMockValue(11.0);
+    original.isEqualTo(5.5);
+
+    TMJPDoubleCheck clone = new TMJPDoubleCheck(original);
+    assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5.5)));
+    assertThat("Clone MUST have mock value set to expected.", clone.getMockValue(), is(equalTo(11.0)));
+  }
 }

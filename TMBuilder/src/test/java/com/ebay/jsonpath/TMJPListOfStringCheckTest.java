@@ -360,4 +360,15 @@ public class TMJPListOfStringCheckTest {
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
     assertThat("Clone MUST have all limited to values set to null.", clone.getLimitedToValues(), is(equalTo(limitedToValues)));
   }
+
+  @Test(groups = unitTest)
+  public void initializeWithTMJPListOfStringCheck() {
+
+    List<String> expectedValues = Arrays.asList("Bob", "Joe", "Nancy");
+    TMJPListOfStringCheck original = new TMJPListOfStringCheck();
+    original.setMockValues(expectedValues);
+
+    TMJPListOfStringCheck clone = new TMJPListOfStringCheck(original);
+    assertThat("Clone MUST have mock values set to expected.", clone.getMockValues(), is(equalTo(expectedValues)));
+  }
 }

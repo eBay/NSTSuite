@@ -1,13 +1,18 @@
 package com.ebay.jsonpath;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockListOfValues;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
-public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements ThinModelSerializer {
+public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements ThinModelSerializer, DeveloperMockListOfValues<Integer> {
 
   private static final long serialVersionUID = 1L;
+  private static final List<Integer> DEFAULT_DEVELOPER_MOCK_VALUES = Arrays.asList(0);
+  private List<Integer> developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;
 
   /**
    * Run baseline checks for a list of Integers - list is not null and indexes
@@ -49,6 +54,10 @@ public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements Thin
 
     if (source.getContainsValues() != null) {
       this.contains(source.getContainsValues());
+    }
+
+    if (source instanceof TMJPListOfIntegerCheck) {
+      this.setMockValues(((TMJPListOfIntegerCheck) source).getMockValues());
     }
   }
 
@@ -99,6 +108,25 @@ public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements Thin
   public TMJPListOfIntegerCheck contains(List<Integer> values) {
     super.contains(values);
     return this;
+  }
+
+  // ----------------------------------------------
+  // DeveloperMockListOfValues<Integer> getter and setter
+  // ----------------------------------------------
+
+  @Override
+  public List<Integer> getMockValues() {
+    return developerMockValues;
+  }
+
+  @Override
+  @TMCheckData(inputName = "Mock values", inputDescription = "The mock integer values to use when producing developer mocks.", getterMethodName = "getMockValues")
+  public void setMockValues(List<Integer> values) {
+    if (values == null || values.isEmpty()) {
+      developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;
+    } else {
+      developerMockValues = new ArrayList<>(values);
+    }
   }
 
   // -----------------------------------------------
