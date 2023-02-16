@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
@@ -141,5 +142,12 @@ public class TMJPDoubleCheckTest {
     TMJPDoubleCheck clone = new TMJPDoubleCheck(original);
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5.5)));
     assertThat("Clone MUST have mock value set to expected.", clone.getMockValue(), is(equalTo(11.0)));
+  }
+
+  @Test
+  public void getDeveloperMockType() {
+    TMJPDoubleCheck check = new TMJPDoubleCheck();
+    DeveloperMockType type = check.getMockType();
+    assertThat(type, is(equalTo(DeveloperMockType.DOUBLE)));
   }
 }

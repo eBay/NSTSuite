@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.nullValue;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
@@ -340,5 +341,12 @@ public class TMJPListOfDoubleCheckTest {
 
     TMJPListOfDoubleCheck clone = new TMJPListOfDoubleCheck(original);
     assertThat("Clone MUST have mock values set to expected.", clone.getMockValues(), is(equalTo(expectedValues)));
+  }
+
+  @Test
+  public void getDeveloperMockType() {
+    TMJPListOfDoubleCheck check = new TMJPListOfDoubleCheck();
+    DeveloperMockType type = check.getMockType();
+    assertThat(type, is(equalTo(DeveloperMockType.LIST_OF_DOUBLE)));
   }
 }

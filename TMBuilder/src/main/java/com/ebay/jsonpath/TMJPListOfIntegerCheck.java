@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
 import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockListOfValues;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements ThinModelSerializer, DeveloperMockListOfValues<Integer> {
@@ -113,6 +114,11 @@ public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements Thin
   // ----------------------------------------------
   // DeveloperMockListOfValues<Integer> getter and setter
   // ----------------------------------------------
+
+  @Override
+  public DeveloperMockType getMockType() {
+    return DeveloperMockType.LIST_OF_INTEGER;
+  }
 
   @Override
   public List<Integer> getMockValues() {

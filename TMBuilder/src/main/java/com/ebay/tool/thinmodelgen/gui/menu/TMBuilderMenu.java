@@ -30,6 +30,7 @@ import com.ebay.tool.thinmodelgen.gui.MainWindow;
 import com.ebay.tool.thinmodelgen.gui.TMGuiConstants;
 import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManager;
 import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManagerObserver;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ExportConstants;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelExport;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.FileModel;
@@ -49,7 +50,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private static final String OPEN = "Open";
   private static final String SAVE_AS = "Save As";
   private static final String SAVE = "Save";
-  private static final String EXPORT_TO = "Export to...";
+  private static final String EXPORT_TM_CHECKS_TO = "Export TM Checks to...";
+  private static final String EXPORT_DEVELOPER_MOCKS_TO = "Export Developer Mocks to...";
   private static String EXPORT_FILE = "No export path specified...";
 
   private static final String DEFAULT_VALIDATION_SET = "Core Validation";
@@ -70,7 +72,11 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private File currentSchemaFile = null;
   private File currentExportFile = null;
 
-  private JMenuItem exportFilePath = null;
+  private File currentDeveloperMockExportFile = null;
+
+  private JMenuItem tmCheckExportFilePath = null;
+
+  private JMenuItem developerMockExportFilePath = null;
 
   private JMenu validationMenu;
   private LinkedHashMap<String, NodeModel[]> validationSetCache = new LinkedHashMap<>();
@@ -107,18 +113,30 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     fileMenu.add(RecentFileManager.getInstance().getRecentFilesMenu());
     RecentFileManager.getInstance().addObserver(this);
 
-    // Export menu
+    // Export TM Check Menu
 
-    JMenu exportMenu = new JMenu("Export");
-    fileMenu.add(exportMenu);
+    JMenu exportTmChecksMenu = new JMenu("Export TM Checks");
+    fileMenu.add(exportTmChecksMenu);
 
-    JMenuItem exportTo = new JMenuItem(EXPORT_TO);
+    JMenuItem exportTo = new JMenuItem(EXPORT_TM_CHECKS_TO);
     exportTo.addActionListener(this);
-    exportMenu.add(exportTo);
+    exportTmChecksMenu.add(exportTo);
 
-    exportFilePath = new JMenuItem(EXPORT_FILE);
-    exportFilePath.addActionListener(this);
-    exportMenu.add(exportFilePath);
+    tmCheckExportFilePath = new JMenuItem(EXPORT_FILE);
+    tmCheckExportFilePath.addActionListener(this);
+    exportTmChecksMenu.add(tmCheckExportFilePath);
+
+    // Export Developer Mocks Menu
+    JMenu exportDeveloperMocksMenu = new JMenu("Export Developer Mocks");
+    fileMenu.add(exportDeveloperMocksMenu);
+
+    JMenuItem exportDeveloperMocksTo = new JMenuItem(EXPORT_DEVELOPER_MOCKS_TO);
+    exportDeveloperMocksTo.addActionListener(this);
+    exportDeveloperMocksMenu.add(exportDeveloperMocksTo);
+
+    developerMockExportFilePath = new JMenuItem(EXPORT_FILE);
+    developerMockExportFilePath.addActionListener(this);
+    exportDeveloperMocksMenu.add(developerMockExportFilePath);
 
     // Validation Set Menu
     validationMenu = new JMenu(VALIDATION_MENU_TITLE);
@@ -143,6 +161,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       if (confirmCreateNew() && doLoadSchemaFile()) {
         currentTmbFile = null;
         currentExportFile = null;
+        currentDeveloperMockExportFile = null;
         resetValidationSetCache();
         currentValidationSet = DEFAULT_VALIDATION_SET;
         setValidationSetNameAsMenuTitle(DEFAULT_VALIDATION_SET);
@@ -166,9 +185,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     case SAVE:
       doSave();
       break;
-    case EXPORT_TO:
+    case EXPORT_TM_CHECKS_TO:
       doExportTo();
       break;
+      case EXPORT_DEVELOPER_MOCKS_TO:
+        doExportDeveloperMocksTo();
+        break;
     case NEW_VALIDATION_SET:
       doNewValidationSet();
       break;
@@ -197,7 +219,13 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       doDeleteValidationSet(getValidationMenuInvokerText(e));
       break;
     default:
-      doExportToStoredFile();
+      // Default is to handle the export to TM checks or developer mocks.
+      // Inspect the source JMenuItem to determine which menu item was selected.
+      if (e.getSource() == tmCheckExportFilePath) {
+        doExportToStoredFile();
+      } else if (e.getSource() == developerMockExportFilePath) {
+        doDeveloperMockExportToStoredFile();
+      }
       break;
     }
 
@@ -696,6 +724,25 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     writeExportToFile();
   }
 
+  private void doExportDeveloperMocksTo() {
+
+    doSave();
+
+    JFileChooser fc = new JFileChooser();
+    fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    fc.setAcceptAllFileFilterUsed(false);
+    fc.setFileFilter(new JavaFileFilter());
+
+    int returnVal = fc.showOpenDialog(MainWindow.getInstance());
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      updateExportDeveloperMocksFilePath(fc.getSelectedFile().getPath());
+    } else {
+      return;
+    }
+
+    writeDeveloperMocksToFile();
+  }
+
   private void doExportToStoredFile() {
 
     if (currentExportFile == null) {
@@ -703,6 +750,16 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     } else {
       doSave();
       writeExportToFile();
+    }
+  }
+
+  private void doDeveloperMockExportToStoredFile() {
+
+    if (currentDeveloperMockExportFile == null) {
+      doExportDeveloperMocksTo();
+    } else {
+      doSave();
+      writeDeveloperMocksToFile();
     }
   }
 
@@ -723,6 +780,26 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
               String.format("Error exporting thin model validations:\n%s\n\n%s", tmbFilePath, e.getMessage()),
               "Export Thin Model Validation File Error",
               JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  private void writeDeveloperMocksToFile() {
+    DeveloperMockExport developerMockExport = new DeveloperMockExport();
+
+    String developerMockOutputFolder = "";
+
+    try {
+      developerMockOutputFolder = currentDeveloperMockExportFile.getCanonicalPath();
+      developerMockExport.export(currentDeveloperMockExportFile, getValidationSetCacheAsModel());
+    } catch (ClassNotFoundException | IOException e) {
+      e.printStackTrace();
+
+      JOptionPane
+              .showMessageDialog(
+                      MainWindow.getInstance(),
+                      String.format("Error exporting developer mocks:\n%s\n\n%s", developerMockOutputFolder, e.getMessage()),
+                      "Export Developer Mocks File Error",
+                      JOptionPane.ERROR_MESSAGE);
     }
   }
 
@@ -852,10 +929,20 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private void updateExportFilePath(String filePath) {
 
     if (filePath == null) {
-      exportFilePath.setText(EXPORT_FILE);
+      tmCheckExportFilePath.setText(EXPORT_FILE);
     } else {
       currentExportFile = new File(filePath);
-      exportFilePath.setText(currentExportFile.getAbsolutePath());
+      tmCheckExportFilePath.setText(currentExportFile.getAbsolutePath());
+    }
+  }
+
+  private void updateExportDeveloperMocksFilePath(String filePath) {
+
+    if (filePath == null) {
+      developerMockExportFilePath.setText(EXPORT_FILE);
+    } else {
+      currentDeveloperMockExportFile = new File(filePath);
+      developerMockExportFilePath.setText(currentDeveloperMockExportFile.getAbsolutePath());
     }
   }
 

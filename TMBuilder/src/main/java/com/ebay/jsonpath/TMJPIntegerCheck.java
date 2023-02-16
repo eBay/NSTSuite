@@ -1,6 +1,7 @@
 package com.ebay.jsonpath;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
 import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
@@ -50,6 +51,11 @@ public class TMJPIntegerCheck extends JPIntegerCheck implements ThinModelSeriali
   @Override
   public Integer getMockValue() {
     return developerMockValue;
+  }
+
+  @Override
+  public DeveloperMockType getMockType() {
+    return DeveloperMockType.INTEGER;
   }
 
   @Override
