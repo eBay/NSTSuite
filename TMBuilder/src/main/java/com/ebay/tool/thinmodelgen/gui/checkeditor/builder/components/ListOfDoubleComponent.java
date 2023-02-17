@@ -63,9 +63,9 @@ public class ListOfDoubleComponent extends BaseComponent {
 
     if (getValue != null && getValue instanceof List) {
       @SuppressWarnings("unchecked")
-      List<String> stringValues = (List<String>) getValue;
-      for (String val : stringValues) {
-        listModel.addElement(val);
+      List<Double> doubleValues = (List<Double>) getValue;
+      for (Double val : doubleValues) {
+        listModel.addElement(String.valueOf(val));
       }
     }
 

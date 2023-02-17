@@ -66,9 +66,9 @@ public class ListOfIntegerComponent extends BaseComponent {
 
     if (getValue != null && getValue instanceof List) {
       @SuppressWarnings("unchecked")
-      List<String> stringValues = (List<String>) getValue;
-      for (String val : stringValues) {
-        listModel.addElement(val);
+      List<Integer> integerValues = (List<Integer>) getValue;
+      for (Integer val : integerValues) {
+        listModel.addElement(String.valueOf(val));
       }
     }
 
@@ -234,11 +234,11 @@ public class ListOfIntegerComponent extends BaseComponent {
     System.out.println("--------------------------");
     System.out.println("Saving data...");
 
-    ArrayList<Double> saveData = new ArrayList<>();
+    ArrayList<Integer> saveData = new ArrayList<>();
 
     for (int i = 0; i < listModel.size(); i++) {
       String stringData = listModel.getElementAt(i);
-      Double data = Double.parseDouble(stringData);
+      Integer data = Integer.parseInt(stringData);
       System.out.println(i + " " + stringData + " parsed as [" + data + "]");
       saveData.add(data);
     }

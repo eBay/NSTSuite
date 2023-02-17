@@ -180,6 +180,8 @@ public abstract class JsonBaseType implements Serializable {
 		String arrayBlock = "";
 		int bracketCounter = 0;
 
+		// This seems unnecessary, however, we are ensuring that the open and close brackets are paired correctly.
+		// The goal is to inform the user they have an invalid JSON path if they screw up the brackets.
 		for (int i = 0; i < jsonPath.length(); i++) {
 
 			char character = jsonPath.charAt(i);
@@ -212,7 +214,7 @@ public abstract class JsonBaseType implements Serializable {
 		}
 
 		// If the path contains an *, then it too should return a list.
-		if (jsonPath.contains(".*.")) {
+		if (jsonPath.contains("\\*")) {
 			return true;
 		}
 

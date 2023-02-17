@@ -63,7 +63,7 @@ public class ListOfBooleanComponent extends BaseComponent {
       @SuppressWarnings("unchecked")
       List<Boolean> booleanValues = (List<Boolean>) getValue;
       for (Boolean val : booleanValues) {
-        listModel.addElement(val.toString());
+        listModel.addElement(String.valueOf(val));
       }
     }
 
