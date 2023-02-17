@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockListOfValues;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockListOfValues;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements ThinModelSerializer, DeveloperMockListOfValues<Boolean> {

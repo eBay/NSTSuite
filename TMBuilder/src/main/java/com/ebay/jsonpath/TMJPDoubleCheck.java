@@ -1,8 +1,8 @@
 package com.ebay.jsonpath;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerializer, DeveloperMockValue<Double> {

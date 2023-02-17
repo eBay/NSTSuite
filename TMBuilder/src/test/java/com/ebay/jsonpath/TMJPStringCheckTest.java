@@ -9,7 +9,7 @@ import static org.hamcrest.Matchers.nullValue;
 import java.util.Arrays;
 import java.util.List;
 
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;

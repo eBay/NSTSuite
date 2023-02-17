@@ -6,7 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;

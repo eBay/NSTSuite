@@ -3,8 +3,8 @@ package com.ebay.jsonpath;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockType;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPStringCheck extends JPStringCheck implements ThinModelSerializer, DeveloperMockValue<String> {
