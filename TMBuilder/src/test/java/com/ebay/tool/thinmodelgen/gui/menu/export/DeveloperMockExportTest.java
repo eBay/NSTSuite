@@ -25,6 +25,7 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
 public class DeveloperMockExportTest {
@@ -47,7 +48,7 @@ public class DeveloperMockExportTest {
         NodeModel[] nodeModels = new NodeModel[] {objectModel};
 
         ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
-        Mockito.when(validationSetModel.getData()).thenReturn(nodeModels);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
 
         export.populateArrayPathToArraySizeMap(validationSetModel);
         TreeMap<String, Integer> actual = export.getArrayPathToArraySizeMap();
@@ -85,7 +86,7 @@ public class DeveloperMockExportTest {
         NodeModel[] nodeModels = new NodeModel[] {firstModel, secondModel, thirdModel, fourthModel, fifthModel};
 
         ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
-        Mockito.when(validationSetModel.getData()).thenReturn(nodeModels);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
 
         export.populateArrayPathToArraySizeMap(validationSetModel);
         TreeMap<String, Integer> actual = export.getArrayPathToArraySizeMap();
@@ -121,7 +122,7 @@ public class DeveloperMockExportTest {
         NodeModel[] nodeModels = new NodeModel[] {firstModel, secondModel, thirdModel, fourthModel};
 
         ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
-        Mockito.when(validationSetModel.getData()).thenReturn(nodeModels);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
 
         export.populateArrayPathToArraySizeMap(validationSetModel);
         export.populateJsonMapArrays();
@@ -162,8 +163,23 @@ public class DeveloperMockExportTest {
         JSONAssert.assertEquals(expected, actual, JSONCompareMode.STRICT);
     }
 
-    public void getCoreValidationSet() {
+    @Test
+    public void getCoreValidationSet() throws IOException {
 
+        ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(validationSetModel.getValidationSetName()).thenReturn("FOO");
+
+        ValidationSetModel coreValidationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(coreValidationSetModel.getValidationSetName()).thenReturn(ExportConstants.CORE_VALIDATION_SET);
+
+        List<ValidationSetModel> validations = new ArrayList<>();
+        validations.add(validationSetModel);
+        validations.add(coreValidationSetModel);
+
+        ValidationSetModel actual = export.getCoreValidationSet(validations);
+        assertThat(actual.getValidationSetName(), is(equalTo(ExportConstants.CORE_VALIDATION_SET)));
+        assertThat(validations.size(), is(equalTo(1)));
+        assertThat(validations.get(0).getValidationSetName(), is(equalTo("FOO")));
     }
 
 
