@@ -1,7 +1,10 @@
 package com.ebay.tool.thinmodelgen.gui.menu.export;
 
+import com.ebay.jsonpath.JsonPathExecutor;
 import com.ebay.jsonpath.TMJPBooleanCheck;
+import com.ebay.jsonpath.TMJPListOfStringCheck;
 import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockListOfValues;
 import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.SmallestToLargestArrayPathComparator;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
@@ -25,6 +28,7 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
@@ -93,6 +97,41 @@ public class DeveloperMockExportTest {
         TreeMap<String, Integer> expected = new TreeMap<>(new SmallestToLargestArrayPathComparator());
         expected.put("$.first.second.third", 5);
         expected.put("$.first.second.third.address", 3);
+        assertThat("ArrayPathToArraySizeMap MUST match expected.", actual, is(equalTo(expected)));
+    }
+
+    @Test
+    public void populateArrayPathToArraySizeMapUsingLargerListOfMockValues() throws IOException, ClassNotFoundException {
+
+        JsonIntegerType firstType = new JsonIntegerType("testObject");
+        firstType.updatePath("", "$.first.second");
+        String serializedFirstType = JsonBaseTypePersistence.serialize(firstType);
+        NodeModel firstModel = new NodeModel(null, serializedFirstType);
+
+        JsonStringType secondType = new JsonStringType("testStringObject");
+        secondType.updatePath("", "$.first.second.third[2].name");
+        String serializedSecondType = JsonBaseTypePersistence.serialize(secondType);
+        NodeModel secondModel = new NodeModel(null, serializedSecondType);
+
+        TMJPListOfStringCheck developerMockList = new TMJPListOfStringCheck();
+        ArrayList<String> mockValues = new ArrayList<>(Arrays.asList("one", "two", "three", "four"));
+        developerMockList.setMockValues(mockValues);
+
+        JsonStringType thirdType = new JsonStringType("secondTestStringObject");
+        thirdType.updatePath("", "$.first.second.third[*].name");
+        thirdType.updateCheckForPath("$.first.second.third[*].name", developerMockList);
+        String serializedThirdType = JsonBaseTypePersistence.serialize(thirdType);
+        NodeModel thirdModel = new NodeModel(null, serializedThirdType);
+
+        NodeModel[] nodeModels = new NodeModel[] {firstModel, secondModel, thirdModel};
+
+        ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
+
+        export.populateArrayPathToArraySizeMap(validationSetModel);
+        TreeMap<String, Integer> actual = export.getArrayPathToArraySizeMap();
+        TreeMap<String, Integer> expected = new TreeMap<>(new SmallestToLargestArrayPathComparator());
+        expected.put("$.first.second.third", 4);
         assertThat("ArrayPathToArraySizeMap MUST match expected.", actual, is(equalTo(expected)));
     }
 

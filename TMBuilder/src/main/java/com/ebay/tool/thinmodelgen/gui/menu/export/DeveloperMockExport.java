@@ -106,7 +106,7 @@ public class DeveloperMockExport {
     }
 
     /**
-     * Populate the arrayPathToArraySize map with the validaitonSetModel provided. Each time this method is called the
+     * Populate the arrayPathToArraySize map with the validationSetModel provided. Each time this method is called the
      * arrayPathToArraySize map is added to with paths that contain arrays. The last node in each path added to the
      * arrayPathToArraySize map will end with the array element and the key is the maximum size of that array. The size
      * is parsed from the path (EG: value[3] would be an array node 'value' with size 3. [*] defaults to size 1).
@@ -125,13 +125,14 @@ public class DeveloperMockExport {
             for (String savedPath : savedPaths) {
                 String[] splitSavedPath = savedPath.split("\\.");
                 StringBuilder pathBuilder = new StringBuilder();
+                String lastArrayPath = "";
                 for (String value : splitSavedPath) {
                     if (pathBuilder.length() > 0) {
                         pathBuilder.append(".");
                     }
 
                     // Check for step with array signature.
-                    // If found, add to arrayPathToArraySizeMap, if it doesn't exist
+                    // If found, add to arrayPathToArraySizeMap if it doesn't exist
                     // or is a greater array size than the existing value.
                     int arrayOpeningBracketPosition = value.indexOf("[");
                     if (arrayOpeningBracketPosition != -1) {
@@ -151,11 +152,29 @@ public class DeveloperMockExport {
                             arrayPathToArraySizeMap.put(pathBuilder.toString(), arraySize);
                         }
 
+                        lastArrayPath = pathBuilder.toString();
+
                     } else {
                         pathBuilder.append(value);
                     }
                 }
-            }
+
+                // For the very last array path, we may need to increase the list size if the check is a listOf* check.
+                // If we have an array path, check the type for instanceOf DeveloperMockListOfValues.
+                // If it is a match, check if the list of mock values is greater than the current array size.
+                // If it is, us the larger size.
+                if (!lastArrayPath.isEmpty()) {
+                    JsonPathExecutor pathExecutor = jsonBaseType.getCheckForPath(savedPath);
+                    if (pathExecutor instanceof DeveloperMockListOfValues) {
+                        DeveloperMockListOfValues listOfValues = (DeveloperMockListOfValues) pathExecutor;
+                        List mockValues = listOfValues.getMockValues();
+                        Integer currentArraySize = arrayPathToArraySizeMap.get(lastArrayPath);
+                        if (currentArraySize != null && currentArraySize < mockValues.size()) {
+                            arrayPathToArraySizeMap.put(lastArrayPath, mockValues.size());
+                        }
+                    }
+                }
+             }
         }
     }
 
