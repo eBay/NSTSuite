@@ -155,6 +155,7 @@ public class DeveloperMockExport {
             } else {
                 pathStepArrayIndex = Integer.valueOf(indexVal);
             }
+            pathStep = pathStep.substring(0, pathStep.indexOf("["));
         }
         pathSteps = Arrays.copyOfRange(pathSteps, 1, pathSteps.length);
 
@@ -276,35 +277,15 @@ public class DeveloperMockExport {
                 throw new IllegalStateException("PathStepArrayIndex is not set for an array element.");
             }
 
-            // Check if the remaining path steps contain an array.
-            // If there are other array elements, simply iterate over each element and continue recursion with each
-            // element.
-            if (doPathStepsContainArray(pathSteps)) {
-
-                if (pathStepArrayIndex == -1) {
-                    for (Map child : childList) {
-                        walkAndPopulateJsonMap(child, pathSteps, mockValueLooper);
-                    }
-                } else {
-                    childNode = childList.get(pathStepArrayIndex);
-                    walkAndPopulateJsonMap((Map) childNode, pathSteps, mockValueLooper);
+            if (pathStepArrayIndex == -1) {
+                for (Map child : childList) {
+                    walkAndPopulateJsonMap(child, pathSteps, mockValueLooper);
                 }
-
             } else {
-                // This is the last step with an array. We need to pass the array indexed mock value to populate mocks
-                // in the way expected by the mock author.
-                if (pathStepArrayIndex >= 0) {
-                    childNode = childList.get(pathStepArrayIndex);
-                    walkAndPopulateJsonMap((Map) childNode, pathSteps, mockValueLooper);
-                }
-
-                // If we get a case where the number of elements in the array is > the number of elements in the
-                // mock set, restart with the first element in the mock set and keep looping until all array
-                // elements have been set.
-                for (Map<String, Object> child : childList) {
-                    // TODO
-                }
+                childNode = childList.get(pathStepArrayIndex);
+                walkAndPopulateJsonMap((Map) childNode, pathSteps, mockValueLooper);
             }
+
         } else {
             throw new IllegalStateException("Unexpected childNode type encountered.");
         }
@@ -362,7 +343,7 @@ public class DeveloperMockExport {
                         String indexString = value.substring(arrayOpeningBracketPosition+1, value.indexOf("]"));
                         int arraySize = 1;
                         if (!indexString.equals("*")) {
-                            arraySize = Integer.parseInt(indexString);
+                            arraySize = Integer.parseInt(indexString)+1;
                         }
 
                         value = value.substring(0, arrayOpeningBracketPosition);
@@ -445,10 +426,18 @@ public class DeveloperMockExport {
             }
 
             if (mapNode instanceof Map) {
-                ((Map) mapNode).put(step, new ArrayList<>(initializeArraySize));
+                List<Object> list = new ArrayList<>(initializeArraySize);
+                for (int i = 0; i < initializeArraySize; i++) {
+                    list.add(new HashMap<String, Object>());
+                }
+                ((Map) mapNode).put(step, list);
             } else if (mapNode instanceof List) {
                 HashMap<String, Object> listObject = new HashMap<>();
-                listObject.put(step, new ArrayList<>(initializeArraySize));
+                List<Object> list = new ArrayList<>(initializeArraySize);
+                for (int i = 0; i < initializeArraySize; i++) {
+                    list.add(new HashMap<String, Object>());
+                }
+                listObject.put(step, list);
                 ((List) mapNode).add(listObject);
             } else {
                 throw new IllegalStateException("Encountered node type that does not match expectations." + mapNode);

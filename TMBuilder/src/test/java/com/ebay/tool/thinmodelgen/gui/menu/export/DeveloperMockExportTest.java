@@ -2,6 +2,7 @@ package com.ebay.tool.thinmodelgen.gui.menu.export;
 
 import com.ebay.jsonpath.JsonPathExecutor;
 import com.ebay.jsonpath.TMJPBooleanCheck;
+import com.ebay.jsonpath.TMJPListOfIntegerCheck;
 import com.ebay.jsonpath.TMJPListOfStringCheck;
 import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
 import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockListOfValues;
@@ -239,37 +240,45 @@ public class DeveloperMockExportTest {
         assertThat(actual, is(equalTo(expected)));
     }
 
+    @Test
+    public void populateJsonMapWithValues() throws IOException, ClassNotFoundException {
 
+        JsonStringType secondType = new JsonStringType("testStringObject");
+        String secondTypePath = "$.first.second.third[*].name";
+        secondType.updatePath("", secondTypePath);
+        TMJPListOfStringCheck secondTypeCheck = new TMJPListOfStringCheck();
+        secondTypeCheck.setMockValues(Arrays.asList("bob", "nancy", "jan"));
+        secondType.updateCheckForPath(secondTypePath, secondTypeCheck);
+        String serializedSecondType = JsonBaseTypePersistence.serialize(secondType);
+        NodeModel secondModel = new NodeModel(null, serializedSecondType);
 
+        JsonStringType thirdType = new JsonStringType("secondTestStringObject");
+        String thirdTypePath = "$.first.second.third[*].address[3].city";
+        thirdType.updatePath("", thirdTypePath);
+        TMJPListOfStringCheck thirdTypeCheck = new TMJPListOfStringCheck();
+        thirdTypeCheck.setMockValues(Arrays.asList("Chicago", "Portland", "San Jose"));
+        thirdType.updateCheckForPath(thirdTypePath, thirdTypeCheck);
+        String serializedThirdType = JsonBaseTypePersistence.serialize(thirdType);
+        NodeModel thirdModel = new NodeModel(null, serializedThirdType);
 
+        JsonStringType fourthType = new JsonStringType("secondTestStringObject");
+        String fourthTypePath = "$.first.second.alternate[*].foo";
+        fourthType.updatePath("", fourthTypePath);
+        TMJPListOfIntegerCheck fourthTypeCheck = new TMJPListOfIntegerCheck();
+        fourthTypeCheck.setMockValues(Arrays.asList(1, 2, 3));
+        fourthType.updateCheckForPath(fourthTypePath, fourthTypeCheck);
+        String serializedFourthType = JsonBaseTypePersistence.serialize(fourthType);
+        NodeModel fourthModel = new NodeModel(null, serializedFourthType);
 
+        NodeModel[] nodeModels = new NodeModel[] {secondModel, thirdModel, fourthModel};
 
+        ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
 
-
-
-
-
-//    @Test
-//    public void testPopulateJsonModelWithBoolean() {
-//        TMJPBooleanCheck check = new TMJPBooleanCheck();
-//        check.setMockValue(true);
-//        export.populateJsonModel(check, "$.test.foo");
-//        Map<String, Object> jsonMap = export.getJson();
-//        JSONObject jsonObject = new JSONObject(jsonMap);
-//        assertThat(jsonObject.toString(), is(Matchers.equalTo("{\"test\":{\"foo\":true}}")));
-//    }
-//
-//    @Test
-//    public void testPopulateJsonModelWithBooleanWithOverride() {
-//        TMJPBooleanCheck check = new TMJPBooleanCheck();
-//        check.setMockValue(true);
-//        export.populateJsonModel(check, "$.test.foo");
-//
-//        check.setMockValue(false);
-//        export.populateJsonModel(check, "$.test.foo");
-//
-//        Map<String, Object> jsonMap = export.getJsonMap();
-//        JSONObject jsonObject = new JSONObject(jsonMap);
-//        assertThat(jsonObject.toString(), is(Matchers.equalTo("{\"test\":{\"foo\":false}}")));
-//    }
+        export.populateArrayPathToArraySizeMap(validationSetModel);
+        export.populateJsonMapArrays();
+        export.populateJsonMapWithMockValues(validationSetModel);
+        Map<String, Object> actualMap = export.getJsonMap();
+        assertThat(actualMap, is(equalTo(new HashMap<>())));
+    }
 }
