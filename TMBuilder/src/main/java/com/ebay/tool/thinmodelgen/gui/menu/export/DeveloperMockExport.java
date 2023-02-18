@@ -2,14 +2,12 @@ package com.ebay.tool.thinmodelgen.gui.menu.export;
 
 import com.ebay.jsonpath.JsonPathExecutor;
 import com.ebay.service.logger.har.Param;
-import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.SmallestToLargestArrayPathComparator;
-import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockListOfValues;
-import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
-import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockValue;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.*;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
 import com.ebay.tool.thinmodelgen.jsonschema.type.JsonBaseType;
 import com.ebay.tool.thinmodelgen.jsonschema.type.persistence.JsonBaseTypePersistence;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +26,14 @@ public class DeveloperMockExport {
         arrayPathToArraySizeMap = new TreeMap<>(new SmallestToLargestArrayPathComparator());
     }
 
+    /**
+     * Export the validation mock values to JSON for each validation defined. Each custom validation will also include
+     * the core validation set, because, those are true in every response and therefore MUST be part of every mock.
+     * @param exportPath Folder to export mocks to.
+     * @param validationSetModels Validation set models containing mock values to write to JSON.
+     * @throws IOException Pass through.
+     * @throws ClassNotFoundException Pass through.
+     */
     public void export(File exportPath, List<ValidationSetModel> validationSetModels) throws IOException, ClassNotFoundException {
 
         ValidationSetModel coreValidaitonSet = getCoreValidationSet(validationSetModels);
@@ -57,33 +63,28 @@ public class DeveloperMockExport {
             // $.root.next[1].step[2].key - will set/overwrite only one key node at the specified array indexes noted
             // $.root.next[*].step[2].key - will set/overwrite every 2nd step.key
             // $.root.next[1].step[*].key - will set/overwrite every step.key on the first next index.
+            populateJsonMapWithMockValues(validationSetModel);
 
-
+            // 4) Write the JSON to file.
+            String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, validationSetModel.getValidationSetName());
+            JSONObject jsonObject = new JSONObject(jsonMap);
+            String json = jsonObject.toString();
+            // TODO: write jsonMap, as JSON, to file.
         }
-
-
-
-
-
-
-
-        // Build up the jsonSchemaRoot instance, resetting the jsonSchemaRoot instance every time.
-        // Start with the core validation set. This set's nodes be overridden by a value on the custom set.
-        // Apply the custom set values.
-        // Write the json to file, rinse and repeat.
-//        for (ValidationSetModel setModel : validationSetModels) {
-//            jsonMap = new HashMap<>();
-//            processValidationSetModel(coreValidaitonSet);
-//            processValidationSetModel(setModel);
-//
-//            String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, setModel.getValidationSetName());
-//        }
     }
 
+    /**
+     * For testing.
+     * @return Unmodifiable map.
+     */
     protected Map<String, Object> getJsonMap() {
         return Collections.unmodifiableMap(jsonMap);
     }
 
+    /**
+     * For testing - access to map. Cannot modify source map with copy returned.
+     * @return Copy of map.
+     */
     protected TreeMap<String,Integer> getArrayPathToArraySizeMap() {
         return new TreeMap<>(arrayPathToArraySizeMap);
     }
@@ -103,6 +104,228 @@ public class DeveloperMockExport {
             }
             populateJsonMapArray(jsonMap, steps, new ArrayList<>(Arrays.asList("$")));
         }
+    }
+
+    protected void populateJsonMapWithMockValues(ValidationSetModel validationSetModel) throws IOException, ClassNotFoundException {
+
+        NodeModel[] nodes = validationSetModel.getData();
+        for (NodeModel node : nodes) {
+
+            JsonBaseType jsonBaseType = convertNodeModelToJsonBaseType(node);
+            String[] savedPaths = jsonBaseType.getSavedPathsForNode();
+
+            for (String savedPath : savedPaths) {
+
+                JsonPathExecutor pathCheck = jsonBaseType.getCheckForPath(savedPath);
+                DeveloperMockTypeDecoder mockValueDecoder = null;
+                if (pathCheck instanceof DeveloperMockTypeDecoder) {
+                    mockValueDecoder = (DeveloperMockTypeDecoder) pathCheck;
+                }
+                String[] splitPath = savedPath.split("\\.");
+                Map rootNode = jsonMap;
+                walkAndPopulateJsonMap(rootNode, splitPath, new DeveloperMockValueLooper(mockValueDecoder));
+            }
+        }
+    }
+
+    protected void walkAndPopulateJsonMap(Map currentNode, String[] pathSteps, DeveloperMockValueLooper mockValueLooper) {
+
+        if (currentNode == null || pathSteps == null || mockValueLooper == null) {
+            return;
+        } else if (pathSteps.length == 1) {
+            currentNode.put(pathSteps[0], mockValueLooper.getNextMockValue());
+            return;
+        }
+
+        if (pathSteps[0].equals("$")) {
+            if (pathSteps.length > 1) {
+                pathSteps = Arrays.copyOfRange(pathSteps, 1, pathSteps.length);
+            } else {
+                return;
+            }
+        }
+
+        String pathStep = pathSteps[0];
+        // pathStepArrayIndex will be null (not an array), -1 for *, or a specific value for a specific array element.
+        Integer pathStepArrayIndex = null;
+        if (pathStep.contains("[")) {
+            String indexVal = pathStep.substring(pathStep.indexOf("[")+1, pathStep.indexOf("]"));
+            if (indexVal.equals("*")) {
+                pathStepArrayIndex = -1;
+            } else {
+                pathStepArrayIndex = Integer.valueOf(indexVal);
+            }
+        }
+        pathSteps = Arrays.copyOfRange(pathSteps, 1, pathSteps.length);
+
+        // Check if the pathStep is an array or map.
+        // If it is a map, check for the child, add it if missing and continue.
+        // If it is an array, do effectively the same operation as the map, but for each index of the array.
+
+        // The trick with the array is matching the mocks to indexes. If we have an explicit path, arrays without
+        // * for indexes, we don't have to worry. We will be dealing with a single mock value.
+        // For paths with * and a single mock value we need still have a relatively simple effort, because, each
+        // node will get the same value.
+        // For a wildcard (*) path with a list of mock values we need to get the mock values added to the correct
+        // indexes
+
+        // For example, if we have the path $.first[*].number with mock values for number [1, 2, 3] we expect to
+        // generate the JSON as:
+        /*
+        {
+            "first": [
+                {
+                    "number": 1
+                },
+                {
+                    "number": 2
+                },
+                {
+                    "number": 3
+                }
+            ]
+        }
+         */
+
+
+        // The more complicated case is: $.first[*].second[*].number with mock values for number [1, 2, 3] we expect
+        // to generate the JSON as:
+        /*
+        {
+            "first": [
+                {
+                    "second": [
+                        {
+                            "number": 1
+                        },
+                        {
+                            "number": 2
+                        },
+                        {
+                            "number": 3
+                        }
+                    ]
+                }
+            ]
+        }
+        */
+
+        // Another case is where the sub array nodes have more than one element. There was another JSON path defined
+        // as $.first[3].second[2].number with mock value [9] and then we have our case:
+        // $.first[*].second[*].number with mock values [1, 2, 3], then first[] will have 3 elements
+        // (from $.first[3]) and second[] will also have 3 elements, because, the wild card mock values for number
+        // has 3 mock values.
+        // we expect the JSON to look like:
+        /*
+        {
+            "first": [
+                {
+                    "second": [
+                        {
+                            "number": 1
+                        },
+                        {
+                            "number": 2
+                        },
+                        {
+                            "number": 3
+                        }
+                    ]
+                },
+                {
+                    "second": [
+                        {
+                            "number": 1
+                        },
+                        {
+                            "number": 2
+                        },
+                        {
+                            "number": 3
+                        }
+                    ]
+                },
+                {
+                    "second": [
+                        {
+                            "number": 1
+                        },
+                        {
+                            "number": 9 // --------------- This is where 9 is set
+                        },
+                        {
+                            "number": 3
+                        }
+                    ]
+                }
+            ]
+        }
+         */
+
+        Object childNode = currentNode.get(pathStep);
+        if (childNode == null) {
+            childNode = new HashMap<String, Object>();
+            currentNode.put(pathStep, childNode);
+            walkAndPopulateJsonMap((Map) childNode, pathSteps, mockValueLooper);
+        } else if (childNode instanceof Map) {
+            walkAndPopulateJsonMap((Map) childNode, pathSteps, mockValueLooper);
+        } else if (childNode instanceof List) {
+            List<Map<String, Object>> childList = (List) childNode;
+
+            if (pathStepArrayIndex == null) {
+                throw new IllegalStateException("PathStepArrayIndex is not set for an array element.");
+            }
+
+            // Check if the remaining path steps contain an array.
+            // If there are other array elements, simply iterate over each element and continue recursion with each
+            // element.
+            if (doPathStepsContainArray(pathSteps)) {
+
+                if (pathStepArrayIndex == -1) {
+                    for (Map child : childList) {
+                        walkAndPopulateJsonMap(child, pathSteps, mockValueLooper);
+                    }
+                } else {
+                    childNode = childList.get(pathStepArrayIndex);
+                    walkAndPopulateJsonMap((Map) childNode, pathSteps, mockValueLooper);
+                }
+
+            } else {
+                // This is the last step with an array. We need to pass the array indexed mock value to populate mocks
+                // in the way expected by the mock author.
+                if (pathStepArrayIndex >= 0) {
+                    childNode = childList.get(pathStepArrayIndex);
+                    walkAndPopulateJsonMap((Map) childNode, pathSteps, mockValueLooper);
+                }
+
+                // If we get a case where the number of elements in the array is > the number of elements in the
+                // mock set, restart with the first element in the mock set and keep looping until all array
+                // elements have been set.
+                for (Map<String, Object> child : childList) {
+                    // TODO
+                }
+            }
+        } else {
+            throw new IllegalStateException("Unexpected childNode type encountered.");
+        }
+    }
+
+    /**
+     * Check if the path steps provided contain a step that is an array element. EG: foo[*] or foo[2].
+     * @param pathSteps Steps to check.
+     * @return True if path steps contain an array element, false otherwise.
+     */
+    protected boolean doPathStepsContainArray(String[] pathSteps) {
+        if (pathSteps == null) {
+            return false;
+        }
+
+        for (String step : pathSteps) {
+            if (step.contains("[")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

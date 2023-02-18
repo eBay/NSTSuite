@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -221,6 +222,22 @@ public class DeveloperMockExportTest {
         assertThat(validations.get(0).getValidationSetName(), is(equalTo("FOO")));
     }
 
+    @DataProvider(name = "doPathStepsContainArrayData")
+    public Object[][] doPathStepsContainArrayData() {
+        return new Object[][] {
+                { new String[] {}, false },
+                { null, false },
+                { new String[] { "one", "two", "three"}, false },
+                { new String[] { "one[1]", "two", "three"}, true },
+                { new String[] { "one", "two", "three[*]"}, true },
+        };
+    }
+
+    @Test(dataProvider = "doPathStepsContainArrayData")
+    public void doPathStepsContainArray(String[] pathSteps, boolean expected) {
+        boolean actual = export.doPathStepsContainArray(pathSteps);
+        assertThat(actual, is(equalTo(expected)));
+    }
 
 
 
