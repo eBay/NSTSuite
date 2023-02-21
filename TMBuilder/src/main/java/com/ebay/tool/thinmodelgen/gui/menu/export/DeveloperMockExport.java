@@ -133,7 +133,14 @@ public class DeveloperMockExport {
         if (currentNode == null || pathSteps == null || mockValueLooper == null) {
             return;
         } else if (pathSteps.length == 1) {
-            currentNode.put(pathSteps[0], mockValueLooper.getNextMockValue());
+            if (currentNode.get(pathSteps[0]) == null || mockValueLooper.getNumberOfMockValues() == 1) {
+                currentNode.put(pathSteps[0], mockValueLooper.getNextMockValue());
+            } else {
+                // Do this to keep the populated list always in the same order.
+                // If we didn't do this then the included list of wild card element values could shift depending
+                // on the order of the mock population paths executed.
+                mockValueLooper.getNextMockValue();
+            }
             return;
         }
 
