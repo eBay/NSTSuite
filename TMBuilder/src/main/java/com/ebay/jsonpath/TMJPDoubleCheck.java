@@ -59,7 +59,7 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
   }
 
   @Override
-  @TMCheckData(inputName = "Mock value", inputDescription = "The mock double value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock double value to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValue")
   public void setMockValue(Double value) {
 
     if (value == null) {

@@ -59,7 +59,7 @@ public class TMJPIntegerCheck extends JPIntegerCheck implements ThinModelSeriali
   }
 
   @Override
-  @TMCheckData(inputName = "Mock value", inputDescription = "The mock integer value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock integer value to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValue")
   public void setMockValue(Integer value) {
 
     if (value == null) {

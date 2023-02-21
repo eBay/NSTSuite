@@ -117,7 +117,7 @@ public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements Thin
   }
 
   @Override
-  @TMCheckData(inputName = "Mock values", inputDescription = "The mock boolean values to use when producing developer mocks.", getterMethodName = "getMockValues")
+  @TMCheckData(inputName = "Mock values", inputDescription = "The mock boolean values to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValues")
   public void setMockValues(List<Boolean> values) {
     if (values == null || values.isEmpty()) {
       developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;

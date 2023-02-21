@@ -56,7 +56,7 @@ public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSeriali
   }
 
   @Override
-  @TMCheckData(inputName = "Mock value", inputDescription = "The mock boolean value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock boolean value to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValue")
   public void setMockValue(Boolean value) {
 
     if (value == null) {
