@@ -90,4 +90,22 @@ public class DeveloperMockValueLooperTest {
         next = looper.getNextMockValue();
         assertThat(next, is(equalTo(values.get(2))));
     }
+
+    @Test
+    public void getNumberOfMockValuesForSingleMockList() {
+        List<String> values = Arrays.asList("one");
+        DeveloperMockListOfValues value = Mockito.mock(DeveloperMockListOfValues.class);
+        Mockito.when(value.getMockValues()).thenReturn(values);
+        DeveloperMockValueLooper looper = new DeveloperMockValueLooper(value);
+        assertThat(looper.getNumberOfMockValues(), is(equalTo(1)));
+    }
+
+    @Test
+    public void getNumberOfMockValuesForMultiMockList() {
+        List<String> values = Arrays.asList("one", "two", "three");
+        DeveloperMockListOfValues value = Mockito.mock(DeveloperMockListOfValues.class);
+        Mockito.when(value.getMockValues()).thenReturn(values);
+        DeveloperMockValueLooper looper = new DeveloperMockValueLooper(value);
+        assertThat(looper.getNumberOfMockValues(), is(equalTo(3)));
+    }
 }

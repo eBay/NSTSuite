@@ -23,6 +23,10 @@ public class DeveloperMockValueLooper {
         return value;
     }
 
+    public int getNumberOfMockValues() {
+        return mockValues.size();
+    }
+
     private void init(DeveloperMockTypeDecoder mockValues) {
 
         if (mockValues instanceof DeveloperMockValue) {
