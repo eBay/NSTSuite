@@ -425,6 +425,10 @@ public class DeveloperMockExport {
                 throw new IllegalStateException("Path should always be known.");
             }
 
+            // When we are on the last step of the path we need to perform the correct operation to grow the Map.
+            // If the current mapNode is a Map, add a list of Map<String, Object> to the mapNode for each element
+            // in the list.
+            // If the current MapNode is a List, add a list of Map<String, Object> to each element in the list.
             if (mapNode instanceof Map) {
                 List<Object> list = new ArrayList<>(initializeArraySize);
                 for (int i = 0; i < initializeArraySize; i++) {
@@ -432,13 +436,18 @@ public class DeveloperMockExport {
                 }
                 ((Map) mapNode).put(step, list);
             } else if (mapNode instanceof List) {
-                HashMap<String, Object> listObject = new HashMap<>();
-                List<Object> list = new ArrayList<>(initializeArraySize);
-                for (int i = 0; i < initializeArraySize; i++) {
-                    list.add(new HashMap<String, Object>());
+                List mapNodeList = (List) mapNode;
+                for (int i = 0; i < mapNodeList.size(); i++) {
+
+                    HashMap<String, Object> listObject = new HashMap<>();
+                    List<Object> list = new ArrayList<>(initializeArraySize);
+                    for (int j = 0; j < initializeArraySize; j++) {
+                        list.add(new HashMap<String, Object>());
+                    }
+
+                    listObject.put(step, list);
+                    mapNodeList.set(i, listObject);
                 }
-                listObject.put(step, list);
-                ((List) mapNode).add(listObject);
             } else {
                 throw new IllegalStateException("Encountered node type that does not match expectations." + mapNode);
             }

@@ -1,9 +1,6 @@
 package com.ebay.tool.thinmodelgen.gui.menu.export;
 
-import com.ebay.jsonpath.JsonPathExecutor;
-import com.ebay.jsonpath.TMJPBooleanCheck;
-import com.ebay.jsonpath.TMJPListOfIntegerCheck;
-import com.ebay.jsonpath.TMJPListOfStringCheck;
+import com.ebay.jsonpath.*;
 import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
 import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockListOfValues;
 import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.SmallestToLargestArrayPathComparator;
@@ -280,5 +277,87 @@ public class DeveloperMockExportTest {
         export.populateJsonMapWithMockValues(validationSetModel);
         Map<String, Object> actualMap = export.getJsonMap();
         assertThat(actualMap, is(equalTo(new HashMap<>())));
+ //       EXPRESS WHAT WE THINK WE WANT TO SEE FROM THE CONFIGURATION AND COMPARE THE JSON OBJECTS.
+    }
+
+    @Test
+    public void jsonMapWithOneArrayAndWildCardPathHasAsManyNodesAsMockValues() throws Exception {
+
+        NodeModel firstModel = getStringNodeModel("testStringObject", "$.first.second.third[*].name", Arrays.asList("bob", "nancy", "jan"));
+        NodeModel[] nodeModels = new NodeModel[] {firstModel};
+
+        ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
+
+        export.populateArrayPathToArraySizeMap(validationSetModel);
+        export.populateJsonMapArrays();
+        export.populateJsonMapWithMockValues(validationSetModel);
+        Map<String, Object> actualMap = export.getJsonMap();
+        JSONObject jsonObject = new JSONObject(actualMap);
+        String actualJson = jsonObject.toString();
+        String expectedJson = "{\"first\":{\"second\":{\"third\":[{\"name\":\"bob\"},{\"name\":\"nancy\"},{\"name\":\"jan\"}]}}}";
+        assertThat(actualJson, is(equalTo(expectedJson)));
+    }
+
+    @Test
+    public void jsonMapWithTwoArraysAndWildCardPathsHasAsManyNodesAsMockValues() throws Exception {
+
+        NodeModel firstModel = getStringNodeModel("testStringObject", "$.first.second[*].third[*].name", Arrays.asList("bob", "nancy", "jan"));
+        NodeModel[] nodeModels = new NodeModel[] {firstModel};
+
+        ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
+
+        export.populateArrayPathToArraySizeMap(validationSetModel);
+        export.populateJsonMapArrays();
+        export.populateJsonMapWithMockValues(validationSetModel);
+        Map<String, Object> actualMap = export.getJsonMap();
+        JSONObject jsonObject = new JSONObject(actualMap);
+        String actualJson = jsonObject.toString();
+        String expectedJson = "{\"first\":{\"second\":[{\"third\":[{\"name\":\"bob\"},{\"name\":\"nancy\"},{\"name\":\"jan\"}]}]}}";
+        assertThat(actualJson, is(equalTo(expectedJson)));
+    }
+
+    public void jsonMapWithOneArrayAndWildCardPlusExplicitPathHasAllWildcardMockValuesPlusExplicitMockValueOverride() {
+
+    }
+
+    public void jsonMapWithOneArrayAndWildCardPlustExplicitPathToDifferentNodeUnderSameLeafParentHasAllMockValuesUsed() {
+
+    }
+
+    // ---------------------------------
+
+    private NodeModel getStringNodeModel(String nodeName, String jsonPath, List<String> mockValues) throws IOException {
+        JsonStringType type = new JsonStringType(nodeName);
+        type.updatePath("", jsonPath);
+        TMJPListOfStringCheck typeCheck = new TMJPListOfStringCheck();
+        typeCheck.setMockValues(mockValues);
+        type.updateCheckForPath(jsonPath, typeCheck);
+        String serializedType = JsonBaseTypePersistence.serialize(type);
+        NodeModel model = new NodeModel(null, serializedType);
+        return model;
+    }
+
+    private NodeModel getIntegerNodeModel(String nodeName, String jsonPath, List<Integer> mockValues) throws IOException {
+        JsonIntegerType type = new JsonIntegerType(nodeName);
+        type.updatePath("", jsonPath);
+        TMJPListOfIntegerCheck typeCheck = new TMJPListOfIntegerCheck();
+        typeCheck.setMockValues(mockValues);
+        type.updateCheckForPath(jsonPath, typeCheck);
+        String serializedType = JsonBaseTypePersistence.serialize(type);
+        NodeModel model = new NodeModel(null, serializedType);
+        return model;
+    }
+
+    private NodeModel getBooleanNodeModel(String nodeName, String jsonPath, List<Boolean> mockValues) throws IOException {
+        JsonBooleanType type = new JsonBooleanType(nodeName);
+        type.updatePath("", jsonPath);
+        TMJPListOfBooleanCheck typeCheck = new TMJPListOfBooleanCheck();
+        typeCheck.setMockValues(mockValues);
+        type.updateCheckForPath(jsonPath, typeCheck);
+        String serializedType = JsonBaseTypePersistence.serialize(type);
+        NodeModel model = new NodeModel(null, serializedType);
+        return model;
     }
 }
