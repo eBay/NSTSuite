@@ -62,7 +62,7 @@ public class JsonBaseTypeTest {
   @Test(groups = unitTest)
   public void jsonPathWithWildcardWillReturnList() {
 
-    String path = "$.modules.*.paymentMethods.entries.action";
+    String path = "$.modules.[*].paymentMethods.entries.action";
     boolean result = jsonBaseType.willJsonPathReturnListOfResults(path);
     assertThat(String.format("Path %s must report as returning a list.",  path), result, is(equalTo(true)));
   }
@@ -70,7 +70,7 @@ public class JsonBaseTypeTest {
   @Test(groups = unitTest)
   public void jsonPathWithMultipleWildcardsWillReturnList() {
 
-    String path = "$.modules.*.paymentMethods.*.action";
+    String path = "$.modules.[*].paymentMethods.[*].action";
     boolean result = jsonBaseType.willJsonPathReturnListOfResults(path);
     assertThat(String.format("Path %s must report as returning a list.",  path), result, is(equalTo(true)));
   }
