@@ -10,6 +10,7 @@ import com.ebay.tool.thinmodelgen.jsonschema.type.persistence.JsonBaseTypePersis
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -68,8 +69,11 @@ public class DeveloperMockExport {
             // 4) Write the JSON to file.
             String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, validationSetModel.getValidationSetName());
             JSONObject jsonObject = new JSONObject(jsonMap);
-            String json = jsonObject.toString();
-            // TODO: write jsonMap, as JSON, to file.
+            String json = jsonObject.toString(4);
+            File exportFile = new File(exportPath, fileName);
+            FileWriter fileWriter = new FileWriter(exportFile);
+            fileWriter.write(json);
+            fileWriter.close();
         }
     }
 

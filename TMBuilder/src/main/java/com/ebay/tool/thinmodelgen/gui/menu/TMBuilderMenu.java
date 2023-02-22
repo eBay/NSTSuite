@@ -59,7 +59,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private static final String NEW_VALIDATION_SET = "New...";
 
   private static final String SELECT_VALIDATION_SET = "Select";
-  private static final String REVIEW_VALIDATION_SET_BUTTON = "Review";
+  private static final String REVIEW_VALIDATION_SET_CHECK_BUTTON = "Review Check";
+  private static final String REVIEW_VALIDATION_SET_MOCK_BUTTON = "Review Mock";
   private static final String DISCARD_CHANGES_BUTTON = "Discard Changes";
   private static final String REVIEW_VALIDATION_SET = "Review Set";
   private static final String EDIT_VALIDATION_SET = "Edit Name";
@@ -142,9 +143,13 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     validationMenu = new JMenu(VALIDATION_MENU_TITLE);
     this.add(validationMenu);
 
-    JButton reviewButton = new JButton(REVIEW_VALIDATION_SET_BUTTON);
-    reviewButton.addActionListener(this);
-    this.add(reviewButton);
+    JButton reviewChecksButton = new JButton(REVIEW_VALIDATION_SET_CHECK_BUTTON);
+    reviewChecksButton.addActionListener(this);
+    this.add(reviewChecksButton);
+
+    JButton reviewMocksButton = new JButton(REVIEW_VALIDATION_SET_MOCK_BUTTON);
+    reviewMocksButton.addActionListener(this);
+    this.add(reviewMocksButton);
 
     JButton discardButton = new JButton(DISCARD_CHANGES_BUTTON);
     discardButton.addActionListener(this);
@@ -206,7 +211,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     case REVIEW_VALIDATION_SET:
       doReviewValidationSet(getValidationMenuInvokerText(e));
       break;
-    case REVIEW_VALIDATION_SET_BUTTON:
+    case REVIEW_VALIDATION_SET_CHECK_BUTTON:
       doReviewValidationSet(currentValidationSet);
       break;
     case DISCARD_CHANGES_BUTTON:
