@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockListOfValues;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockListOfValues;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinModelSerializer, DeveloperMockListOfValues<Double> {
@@ -108,12 +109,17 @@ public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinMo
   // ----------------------------------------------
 
   @Override
+  public DeveloperMockType getMockType() {
+    return DeveloperMockType.LIST_OF_DOUBLE;
+  }
+
+  @Override
   public List<Double> getMockValues() {
     return developerMockValues;
   }
 
   @Override
-  @TMCheckData(inputName = "Mock values", inputDescription = "The mock double values to use when producing developer mocks.", getterMethodName = "getMockValues")
+  @TMCheckData(inputName = "Mock values", inputDescription = "The mock double values to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValues")
   public void setMockValues(List<Double> values) {
     if (values == null || values.isEmpty()) {
       developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;

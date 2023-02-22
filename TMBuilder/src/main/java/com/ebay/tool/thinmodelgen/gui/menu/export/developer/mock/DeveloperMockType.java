@@ -1,4 +1,4 @@
-package com.ebay.tool.thinmodelgen.gui.menu.export;
+package com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock;
 
 public enum DeveloperMockType {
     BOOLEAN,

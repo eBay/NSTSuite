@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.nullValue;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
@@ -267,5 +268,12 @@ public class TMJPStringCheckTest {
 
     TMJPStringCheck clone = new TMJPStringCheck(original);
     assertThat("Clone MUST have mock value set to expected.", clone.getMockValue(), is(equalTo("Bar")));
+  }
+
+  @Test
+  public void getDeveloperMockType() {
+    TMJPStringCheck check = new TMJPStringCheck();
+    DeveloperMockType type = check.getMockType();
+    assertThat(type, is(equalTo(DeveloperMockType.STRING)));
   }
 }

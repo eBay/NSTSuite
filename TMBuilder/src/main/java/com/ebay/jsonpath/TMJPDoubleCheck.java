@@ -1,7 +1,8 @@
 package com.ebay.jsonpath;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerializer, DeveloperMockValue<Double> {
@@ -48,12 +49,17 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
   // ----------------------------------------------
 
   @Override
+  public DeveloperMockType getMockType() {
+    return DeveloperMockType.DOUBLE;
+  }
+
+  @Override
   public Double getMockValue() {
     return developerMockValue;
   }
 
   @Override
-  @TMCheckData(inputName = "Mock value", inputDescription = "The mock double value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock double value to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValue")
   public void setMockValue(Double value) {
 
     if (value == null) {

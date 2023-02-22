@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
@@ -129,5 +130,12 @@ public class TMJPIntegerCheckTest {
     TMJPIntegerCheck clone = new TMJPIntegerCheck(original);
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5)));
     assertThat("Clone MUST have mock value set to expected.", clone.getMockValue(), is(equalTo(11)));
+  }
+
+  @Test
+  public void getDeveloperMockType() {
+    TMJPIntegerCheck check = new TMJPIntegerCheck();
+    DeveloperMockType type = check.getMockType();
+    assertThat(type, is(equalTo(DeveloperMockType.INTEGER)));
   }
 }

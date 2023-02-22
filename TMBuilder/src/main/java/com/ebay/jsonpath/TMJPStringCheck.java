@@ -3,7 +3,8 @@ package com.ebay.jsonpath;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockValue;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockValue;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPStringCheck extends JPStringCheck implements ThinModelSerializer, DeveloperMockValue<String> {
@@ -105,12 +106,17 @@ public class TMJPStringCheck extends JPStringCheck implements ThinModelSerialize
   // ----------------------------------------------
 
   @Override
+  public DeveloperMockType getMockType() {
+    return DeveloperMockType.STRING;
+  }
+
+  @Override
   public String getMockValue() {
     return developerMockValue;
   }
 
   @Override
-  @TMCheckData(inputName = "Mock value", inputDescription = "The mock String value to use when producing developer mocks.", getterMethodName = "getMockValue")
+  @TMCheckData(inputName = "Mock value", inputDescription = "The mock String value to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValue")
   public void setMockValue(String value) {
 
     if (value == null) {

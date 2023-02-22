@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockListOfValues;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockListOfValues;
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements ThinModelSerializer, DeveloperMockListOfValues<Boolean> {
@@ -106,12 +107,17 @@ public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements Thin
   // ----------------------------------------------
 
   @Override
+  public DeveloperMockType getMockType() {
+    return DeveloperMockType.LIST_OF_BOOLEAN;
+  }
+
+  @Override
   public List<Boolean> getMockValues() {
     return developerMockValues;
   }
 
   @Override
-  @TMCheckData(inputName = "Mock values", inputDescription = "The mock boolean values to use when producing developer mocks.", getterMethodName = "getMockValues")
+  @TMCheckData(inputName = "Mock values", inputDescription = "The mock boolean values to use when producing developer mocks. Array indexes with a wildcard [*] default to 1 (index 0).", getterMethodName = "getMockValues")
   public void setMockValues(List<Boolean> values) {
     if (values == null || values.isEmpty()) {
       developerMockValues = DEFAULT_DEVELOPER_MOCK_VALUES;
