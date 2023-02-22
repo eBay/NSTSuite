@@ -418,6 +418,27 @@ public class DeveloperMockExportTest {
     }
 
     @Test
+    public void booleanMocksExplicitAndWildCardPaths() throws Exception {
+
+        NodeModel firstModel = getListOfBooleanNodeModel("testStringObject", "$.first.second[*].third[*].on", Arrays.asList(false));
+        NodeModel secondModel = getBooleanNodeModel("testStringObject", "$.first.second[0].third[1].on", true);
+        NodeModel[] nodeModels = new NodeModel[] {secondModel, firstModel};
+
+        ValidationSetModel validationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(validationSetModel.getData()).thenReturn(nodeModels);
+
+        export.populateArrayPathToArraySizeMap(validationSetModel);
+        export.populateJsonMapArrays();
+        export.populateJsonMapWithMockValues(validationSetModel);
+        Map<String, Object> actualMap = export.getJsonMap();
+        JSONObject jsonObject = new JSONObject(actualMap);
+        String actualJson = jsonObject.toString();
+        String expectedJson = "{\"first\":{\"second\":[{\"third\":[{\"on\":false},{\"on\":true}]}]}}";
+
+        assertThat(actualJson, is(equalTo(expectedJson)));
+    }
+
+    @Test
     public void integerMocks() throws Exception {
 
         NodeModel firstModel = getListOfIntegerNodeModel("testStringObject", "$.first.second[*].val", Arrays.asList(1,2,3));

@@ -7,6 +7,8 @@ import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
 import com.ebay.tool.thinmodelgen.jsonschema.type.JsonBaseType;
 import com.ebay.tool.thinmodelgen.jsonschema.type.persistence.JsonBaseTypePersistence;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -43,6 +45,7 @@ public class DeveloperMockExport {
 
         for (ValidationSetModel validationSetModel : validationSetModels) {
 
+            String json = getMockForValidationSet(coreValidationSet, validationSetModel);
 
             // Write the JSON to file.
             String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, validationSetModel.getValidationSetName());
@@ -53,14 +56,14 @@ public class DeveloperMockExport {
         }
     }
 
-    public String getMockForValidationSet(ValidationSetModel validationSetModel) throws IOException, ClassNotFoundException {
+    public String getMockForValidationSet(ValidationSetModel coreValidationSet, ValidationSetModel validationSetModel) throws IOException, ClassNotFoundException {
 
         // Steps:
 
         // 1) Take each validation set JSON path and for each array in the path add the array, and index size,
         // to the arrayPathToArraySizeMap (only applying maximum index size as determined by the largest
         // explicit array index found on the JSON path). Wildcard array indexes default to length 1.
-        populateArrayPathToArraySizeMap(coreValidaitonSet);
+        populateArrayPathToArraySizeMap(coreValidationSet);
         populateArrayPathToArraySizeMap(validationSetModel);
 
         // 2) Populate the jsonMap with the array elements from the arrayPathToArraySizeMap, using ensureCapacity()
@@ -78,8 +81,8 @@ public class DeveloperMockExport {
         // $.root.next[1].step[*].key - will set/overwrite every step.key on the first next index.
         populateJsonMapWithMockValues(validationSetModel);
 
-        JSONObject jsonObject = new JSONObject(jsonMap);
-        return jsonObject.toString(4);
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(jsonMap);
     }
 
     /**
@@ -142,7 +145,7 @@ public class DeveloperMockExport {
         if (currentNode == null || pathSteps == null || pathSteps.length == 0 || mockValueLooper == null) {
             return;
         } else if (pathSteps.length == 1) {
-            if (currentNode.get(pathSteps[0]) == null || mockValueLooper.getNumberOfMockValues() == 1) {
+            if (currentNode.get(pathSteps[0]) == null || !mockValueLooper.containsArrayValues()) {
                 currentNode.put(pathSteps[0], mockValueLooper.getNextMockValue());
             } else {
                 // Do this to keep the populated list always in the same order.

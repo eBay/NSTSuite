@@ -214,6 +214,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       case REVIEW_VALIDATION_SET_CHECK_BUTTON:
         doReviewValidationSet(currentValidationSet);
         break;
+      case REVIEW_VALIDATION_SET_MOCK_BUTTON:
+        doReviewMock(currentValidationSet);
+        break;
       case DISCARD_CHANGES_BUTTON:
         doDiscardChanges();
         break;
@@ -376,6 +379,42 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       JTextArea textArea = new JTextArea(25, 125);
       textArea.setText(message);
+      textArea.setEditable(false);
+
+      JScrollPane scrollPane = new JScrollPane(textArea);
+      JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      displayErrorDialog(String.format("An error occurred when reviewing validation set: %s \nERROR: %s", validationSetName, e.getMessage()), "Review Validation Set Error");
+    }
+  }
+
+  private void doReviewMock(String validationSetName) {
+    try {
+      LinkedHashMap<String, NodeModel[]> tempCache = getTemporaryValidationSetCache();
+
+      ValidationSetModel coreValidationSet = null;
+      for (Entry<String, NodeModel[]> entry : tempCache.entrySet()) {
+        if (entry.getKey().equals(ExportConstants.CORE_VALIDATION_SET)) {
+          coreValidationSet = new ValidationSetModel(entry.getKey(), entry.getValue());
+          break;
+        }
+      }
+
+      // Find the validation set to show
+      ValidationSetModel setModel = null;
+      for (Entry<String, NodeModel[]> entry : tempCache.entrySet()) {
+        if (entry.getKey().equals(getConvertedValidationSetName(validationSetName))) {
+          setModel = new ValidationSetModel(entry.getKey(), entry.getValue());
+          break;
+        }
+      }
+
+      String json = new DeveloperMockExport().getMockForValidationSet(coreValidationSet, setModel);
+
+      JTextArea textArea = new JTextArea(25, 125);
+      textArea.setText(json);
       textArea.setEditable(false);
 
       JScrollPane scrollPane = new JScrollPane(textArea);
