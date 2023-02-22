@@ -162,76 +162,76 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     String actionCommand = e.getActionCommand();
 
     switch (actionCommand) {
-    case NEW:
-      if (confirmCreateNew() && doLoadSchemaFile()) {
-        currentTmbFile = null;
-        currentExportFile = null;
-        currentDeveloperMockExportFile = null;
-        resetValidationSetCache();
-        currentValidationSet = DEFAULT_VALIDATION_SET;
-        setValidationSetNameAsMenuTitle(DEFAULT_VALIDATION_SET);
+      case NEW:
+        if (confirmCreateNew() && doLoadSchemaFile()) {
+          currentTmbFile = null;
+          currentExportFile = null;
+          currentDeveloperMockExportFile = null;
+          resetValidationSetCache();
+          currentValidationSet = DEFAULT_VALIDATION_SET;
+          setValidationSetNameAsMenuTitle(DEFAULT_VALIDATION_SET);
 
-        try {
-          addCurrentValidationSetToCache();
-        } catch (Exception i) {
-          i.printStackTrace();
+          try {
+            addCurrentValidationSetToCache();
+          } catch (Exception i) {
+            i.printStackTrace();
+          }
+
+          updateExportFilePath(null);
+          setDefaultValidationSetMenuItems();
         }
-
-        updateExportFilePath(null);
-        setDefaultValidationSetMenuItems();
-      }
-      break;
-    case OPEN:
-      doOpenFile();
-      break;
-    case SAVE_AS:
-      doSaveAs();
-      break;
-    case SAVE:
-      doSave();
-      break;
-    case EXPORT_TM_CHECKS_TO:
-      doExportTo();
-      break;
+        break;
+      case OPEN:
+        doOpenFile();
+        break;
+      case SAVE_AS:
+        doSaveAs();
+        break;
+      case SAVE:
+        doSave();
+        break;
+      case EXPORT_TM_CHECKS_TO:
+        doExportTo();
+        break;
       case EXPORT_DEVELOPER_MOCKS_TO:
         doExportDeveloperMocksTo();
         break;
-    case NEW_VALIDATION_SET:
-      doNewValidationSet();
-      break;
-    case SELECT_VALIDATION_SET:
-      try {
-        addCurrentValidationSetToCache();
-      } catch (Exception j) {
-        j.printStackTrace();
-      }
+      case NEW_VALIDATION_SET:
+        doNewValidationSet();
+        break;
+      case SELECT_VALIDATION_SET:
+        try {
+          addCurrentValidationSetToCache();
+        } catch (Exception j) {
+          j.printStackTrace();
+        }
 
-      doLoadValidationSetFromCache(getValidationMenuInvokerText(e));
-      break;
-    case REVIEW_VALIDATION_SET:
-      doReviewValidationSet(getValidationMenuInvokerText(e));
-      break;
-    case REVIEW_VALIDATION_SET_CHECK_BUTTON:
-      doReviewValidationSet(currentValidationSet);
-      break;
-    case DISCARD_CHANGES_BUTTON:
-      doDiscardChanges();
-      break;
-    case EDIT_VALIDATION_SET:
-      doEditValidationSet(getValidationMenuInvokerText(e));
-      break;
-    case DELETE_VALIDATION_SET:
-      doDeleteValidationSet(getValidationMenuInvokerText(e));
-      break;
-    default:
-      // Default is to handle the export to TM checks or developer mocks.
-      // Inspect the source JMenuItem to determine which menu item was selected.
-      if (e.getSource() == tmCheckExportFilePath) {
-        doExportToStoredFile();
-      } else if (e.getSource() == developerMockExportFilePath) {
-        doDeveloperMockExportToStoredFile();
-      }
-      break;
+        doLoadValidationSetFromCache(getValidationMenuInvokerText(e));
+        break;
+      case REVIEW_VALIDATION_SET:
+        doReviewValidationSet(getValidationMenuInvokerText(e));
+        break;
+      case REVIEW_VALIDATION_SET_CHECK_BUTTON:
+        doReviewValidationSet(currentValidationSet);
+        break;
+      case DISCARD_CHANGES_BUTTON:
+        doDiscardChanges();
+        break;
+      case EDIT_VALIDATION_SET:
+        doEditValidationSet(getValidationMenuInvokerText(e));
+        break;
+      case DELETE_VALIDATION_SET:
+        doDeleteValidationSet(getValidationMenuInvokerText(e));
+        break;
+      default:
+        // Default is to handle the export to TM checks or developer mocks.
+        // Inspect the source JMenuItem to determine which menu item was selected.
+        if (e.getSource() == tmCheckExportFilePath) {
+          doExportToStoredFile();
+        } else if (e.getSource() == developerMockExportFilePath) {
+          doDeveloperMockExportToStoredFile();
+        }
+        break;
     }
 
     setFileNameInAppWindow();
