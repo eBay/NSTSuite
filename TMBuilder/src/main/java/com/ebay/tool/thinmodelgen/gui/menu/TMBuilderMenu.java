@@ -880,6 +880,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       currentExportPath = relativeExportPath;
     }
 
+    String currentMockPath = null;
+    if (currentDeveloperMockExportFile != null) {
+      String relativeMockPath = convertPathToRelativePath(currentTmbFile.getCanonicalPath(), currentDeveloperMockExportFile.getCanonicalPath());
+      currentMockPath = relativeMockPath;
+    }
+
     int setModelLength = validationSetCache == null ? 0 : validationSetCache.size();
     ValidationSetModel[] validationSets = new ValidationSetModel[setModelLength];
 
@@ -897,7 +903,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     // TODO: refactor this class - reduce number of methods (better encapsulate
     // functionality) and standardize model loading, usage and writing.
     SchemaParserPayload payload = TMFileSingleton.getInstance().getPayload();
-    FileModel fileModel = new FileModel(TMGuiConstants.APP_NAME, currentSchemaPath, validationSets, currentExportPath, payload);
+    FileModel fileModel = new FileModel(TMGuiConstants.APP_NAME, currentSchemaPath, validationSets, currentExportPath, currentMockPath, payload);
     TMFileSingleton.getInstance().setFileModel(fileModel);
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();

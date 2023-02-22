@@ -9,7 +9,7 @@ public class TMFileSingleton {
   private FileModel sessionFileModel;
 
   private TMFileSingleton() {
-    sessionFileModel = new FileModel(null, null, new NodeModel[] {}, null, null);
+    sessionFileModel = new FileModel(null, null, new NodeModel[] {}, null, null, null);
   }
 
   public static TMFileSingleton getInstance() {
