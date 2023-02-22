@@ -61,7 +61,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private static final String SELECT_VALIDATION_SET = "Select";
   private static final String REVIEW_VALIDATION_SET_CHECK_BUTTON = "Review Check";
   private static final String REVIEW_VALIDATION_SET_MOCK_BUTTON = "Review Mock";
-  private static final String DISCARD_CHANGES_BUTTON = "Discard Changes";
+  private static final String DISCARD_VALIDATION_CHANGES = "Discard Changes";
   private static final String REVIEW_VALIDATION_SET = "Review Set";
   private static final String EDIT_VALIDATION_SET = "Edit Name";
   private static final String DELETE_VALIDATION_SET = "Delete Set";
@@ -142,18 +142,6 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     // Validation Set Menu
     validationMenu = new JMenu(VALIDATION_MENU_TITLE);
     this.add(validationMenu);
-
-    JButton reviewChecksButton = new JButton(REVIEW_VALIDATION_SET_CHECK_BUTTON);
-    reviewChecksButton.addActionListener(this);
-    this.add(reviewChecksButton);
-
-    JButton reviewMocksButton = new JButton(REVIEW_VALIDATION_SET_MOCK_BUTTON);
-    reviewMocksButton.addActionListener(this);
-    this.add(reviewMocksButton);
-
-    JButton discardButton = new JButton(DISCARD_CHANGES_BUTTON);
-    discardButton.addActionListener(this);
-    this.add(discardButton);
   }
 
   @Override
@@ -217,7 +205,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       case REVIEW_VALIDATION_SET_MOCK_BUTTON:
         doReviewMock(currentValidationSet);
         break;
-      case DISCARD_CHANGES_BUTTON:
+      case DISCARD_VALIDATION_CHANGES:
         doDiscardChanges();
         break;
       case EDIT_VALIDATION_SET:
@@ -269,6 +257,21 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     JMenuItem newItemMenuItem = new JMenuItem(NEW_VALIDATION_SET);
     newItemMenuItem.addActionListener(this);
     validationMenu.add(newItemMenuItem);
+
+    // Discard Changes
+    JMenuItem discardMenuItem = new JMenuItem(DISCARD_VALIDATION_CHANGES);
+    discardMenuItem.addActionListener(this);
+    validationMenu.add(discardMenuItem);
+
+    // Review checks
+    JMenuItem reviewChecksItem = new JMenuItem(REVIEW_VALIDATION_SET_CHECK_BUTTON);
+    reviewChecksItem.addActionListener(this);
+    validationMenu.add(reviewChecksItem);
+
+    // Review mocks
+    JMenuItem reviewMocksButton = new JMenuItem(REVIEW_VALIDATION_SET_MOCK_BUTTON);
+    reviewMocksButton.addActionListener(this);
+    validationMenu.add(reviewMocksButton);
 
     addValidationSetMenuItem(DEFAULT_VALIDATION_SET);
   }
@@ -366,6 +369,10 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     try {
       LinkedHashMap<String, NodeModel[]> tempCache = getTemporaryValidationSetCache();
 
+      if (tempCache == null) {
+        return;
+      }
+
       ValidationSetModel setModel = null;
       for (Entry<String, NodeModel[]> entry : tempCache.entrySet()) {
         if (entry.getKey().equals(getConvertedValidationSetName(validationSetName))) {
@@ -393,6 +400,10 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private void doReviewMock(String validationSetName) {
     try {
       LinkedHashMap<String, NodeModel[]> tempCache = getTemporaryValidationSetCache();
+
+      if (tempCache == null) {
+        return;
+      }
 
       ValidationSetModel coreValidationSet = null;
       for (Entry<String, NodeModel[]> entry : tempCache.entrySet()) {
@@ -490,11 +501,18 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private String getConvertedValidationSetName(String validationSetName) {
+    if (validationSetName == null) {
+      return null;
+    }
     return validationSetName.equals(DEFAULT_VALIDATION_SET) ? DEFAULT_VALIDATION_KEY : validationSetName;
   }
 
   private boolean currentValidationSetHasChanges() throws IOException {
     String currentValidationSet = getConvertedCurrentValidationSetName();
+
+    if (currentValidationSet == null) {
+      return false;
+    }
 
     // Create temporary model with current changes
     NodeModel[] currentTempData = fileOperationHandler.getJsonPathCheckData().toArray(new NodeModel[0]);

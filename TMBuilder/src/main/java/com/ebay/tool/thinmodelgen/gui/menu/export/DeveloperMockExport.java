@@ -56,15 +56,17 @@ public class DeveloperMockExport {
         }
     }
 
-    public String getMockForValidationSet(ValidationSetModel coreValidationSet, ValidationSetModel validationSetModel) throws IOException, ClassNotFoundException {
+    public String getMockForValidationSet(ValidationSetModel coreValidationSetModel, ValidationSetModel validationSetModel) throws IOException, ClassNotFoundException {
 
         // Steps:
 
         // 1) Take each validation set JSON path and for each array in the path add the array, and index size,
         // to the arrayPathToArraySizeMap (only applying maximum index size as determined by the largest
         // explicit array index found on the JSON path). Wildcard array indexes default to length 1.
-        populateArrayPathToArraySizeMap(coreValidationSet);
-        populateArrayPathToArraySizeMap(validationSetModel);
+        populateArrayPathToArraySizeMap(coreValidationSetModel);
+        if (coreValidationSetModel != validationSetModel) {
+            populateArrayPathToArraySizeMap(validationSetModel);
+        }
 
         // 2) Populate the jsonMap with the array elements from the arrayPathToArraySizeMap, using ensureCapacity()
         // for those list nodes.
@@ -79,7 +81,10 @@ public class DeveloperMockExport {
         // $.root.next[1].step[2].key - will set/overwrite only one key node at the specified array indexes noted
         // $.root.next[*].step[2].key - will set/overwrite every 2nd step.key
         // $.root.next[1].step[*].key - will set/overwrite every step.key on the first next index.
-        populateJsonMapWithMockValues(validationSetModel);
+        populateJsonMapWithMockValues(coreValidationSetModel);
+        if (coreValidationSetModel != validationSetModel) {
+            populateJsonMapWithMockValues(validationSetModel);
+        }
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(jsonMap);
