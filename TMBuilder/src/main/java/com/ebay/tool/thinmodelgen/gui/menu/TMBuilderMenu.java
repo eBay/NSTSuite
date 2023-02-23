@@ -46,6 +46,7 @@ import com.google.gson.GsonBuilder;
 @SuppressWarnings("serial")
 public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFileManagerObserver {
 
+  private static final int VALIDATION_SET_INDEX_PAD = 4;
   private static final String NEW = "New";
   private static final String OPEN = "Open";
   private static final String SAVE_AS = "Save As";
@@ -461,7 +462,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
         }
 
         // Add one to ignore 'New...' menu item
-        validationMenu.getPopupMenu().remove(findIndexOfValidationSet(validationSetName) + 4);
+        validationMenu.getPopupMenu().remove(findIndexOfValidationSet(validationSetName) + VALIDATION_SET_INDEX_PAD);
         validationSetCache.remove(validationSetName);
       }
 
@@ -566,7 +567,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     resetValidationSetCache();
 
     // Add one to ignore 'New...' menu item
-    JMenuItem validationMenuItemToBeReplaced = validationMenu.getItem(replaceIndex + 1);
+    JMenuItem validationMenuItemToBeReplaced = validationMenu.getItem(replaceIndex + VALIDATION_SET_INDEX_PAD);
     String previousName = validationMenuItemToBeReplaced.getText();
     validationMenuItemToBeReplaced.setText(replacementName);
 
