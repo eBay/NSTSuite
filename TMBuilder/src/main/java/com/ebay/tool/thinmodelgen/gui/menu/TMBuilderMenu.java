@@ -461,7 +461,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
         }
 
         // Add one to ignore 'New...' menu item
-        validationMenu.getPopupMenu().remove(findIndexOfValidationSet(validationSetName) + 1);
+        validationMenu.getPopupMenu().remove(findIndexOfValidationSet(validationSetName) + 4);
         validationSetCache.remove(validationSetName);
       }
 
