@@ -772,7 +772,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     doSave();
 
-    JFileChooser fc = new JFileChooser();
+    JFileChooser fc = new JFileChooser(currentExportFile);
     fc.setAcceptAllFileFilterUsed(false);
     fc.setFileFilter(new JavaFileFilter());
 
@@ -790,7 +790,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     doSave();
 
-    JFileChooser fc = new JFileChooser();
+    JFileChooser fc = new JFileChooser(currentDeveloperMockExportFile);
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setAcceptAllFileFilterUsed(false);
     fc.setFileFilter(new JavaFileFilter());
@@ -933,6 +933,14 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     } else {
       currentExportFile = null;
       updateExportFilePath(null);
+    }
+
+    if (fileModel.getMockFilePath() != null) {
+      String exportMockPath = resolveRelativePath(currentTmbFile.getCanonicalPath(), fileModel.getMockFilePath());
+      updateExportDeveloperMocksFilePath(exportMockPath);
+    } else {
+      currentDeveloperMockExportFile = null;
+      updateExportDeveloperMocksFilePath(null);
     }
 
     resetValidationSetCache();
