@@ -240,7 +240,12 @@ public class JsonPathEditor implements SchemaEventListener, ActionListener, Focu
 
   @Override
   public void focusLost(FocusEvent e) {
+
     System.out.println("focus lost");
+
+    if (!e.isTemporary()) {
+      saveJsonPathChanges();
+    }
   }
 
   // --------------------------------------

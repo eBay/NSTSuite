@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -58,11 +60,12 @@ public class DoubleComponent extends BaseComponent {
     this.add(doubleTextField, integerTextFieldConstraints);
   }
 
-  class DoubleTextField extends JTextField implements ActionListener {
+  class DoubleTextField extends JTextField implements ActionListener, FocusListener {
 
     public DoubleTextField(int cols) {
       super(cols);
       this.addActionListener(this);
+      this.addFocusListener(this);
     }
 
     @Override
@@ -72,7 +75,23 @@ public class DoubleComponent extends BaseComponent {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+      recordValue();
+    }
 
+    @Override
+    public void focusGained(FocusEvent e) {
+
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+
+      if (!e.isTemporary()) {
+        recordValue();
+      }
+    }
+
+    private void recordValue() {
       String text = this.getText();
       Double value = null;
 
