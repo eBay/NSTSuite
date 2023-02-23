@@ -522,7 +522,7 @@ public class DeveloperMockExport {
             String path = String.join(".", pathHistory);
             Integer initializeArraySize = arrayPathToArraySizeMap.get(path);
             if (initializeArraySize == null) {
-                throw new IllegalStateException("Path should always be known.");
+                throw new IllegalStateException("Path should always be known:" + path);
             }
 
             // When we are on the last step of the path we need to perform the correct operation to grow the Map.
