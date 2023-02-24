@@ -116,6 +116,16 @@ public class JsonMapStructureProcessor {
             Map map = (Map) node;
             if (map.containsKey(step)) {
                 node = map.get(step);
+                if (node instanceof List) {
+                    // We have to do something tricky here. Because we always pluck off the next step from the
+                    // splitJsonPath array when we enter this method, and we are going to rely on the array iteration
+                    // portion of this method we need to append the step back onto the splitJsonPath array.
+                    List<String> tempSplitJsonPath = new ArrayList<>();
+                    tempSplitJsonPath.add(step);
+                    tempSplitJsonPath.addAll(Arrays.asList(splitJsonPath));
+                    splitJsonPath = tempSplitJsonPath.toArray(new String[tempSplitJsonPath.size()]);
+                    traversedSteps.remove(traversedSteps.size()-1);
+                }
                 setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, node);
             } else {
                 if (isArrayStep) {
