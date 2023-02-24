@@ -44,6 +44,30 @@ public class DeveloperMockProcessorUtility {
     }
 
     /**
+     * Get the array index from the step. EG: 'foo[1]' would return index 1.
+     * For an array with a wildcard index '*' -1 will be returned.
+     * @param step Step to evaluate.
+     * @return Array index or -1 if the array index is wildcard '*'.
+     * @throws IllegalArgumentException If the step does not contain an array index.
+     * @throws NumberFormatException If the array index value is unable to be parsed as an int.
+     */
+    public static int getArrayIndexFromStep(String step) throws IllegalArgumentException, NumberFormatException {
+
+        if (!isJsonPathStepAnArray(step)) {
+            throw new IllegalArgumentException(String.format("Path step %s does not contain an array index.", step));
+        }
+
+        step = step.substring(step.indexOf("[") + 1);
+        step = step.substring(0, step.indexOf("]"));
+
+        if (step.equals("*")) {
+            return -1;
+        } else {
+            return Integer.parseInt(step);
+        }
+    }
+
+    /**
      * Get the primitive type of the check associated with the specified path.
      * @param jsonBaseType JsonBaseType instance to get check for based on the path.
      * @param path Path to use with the JsonBaseType to extract the primitive type of the check.

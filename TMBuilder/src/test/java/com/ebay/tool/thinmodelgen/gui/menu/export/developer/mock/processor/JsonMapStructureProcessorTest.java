@@ -311,7 +311,30 @@ public class JsonMapStructureProcessorTest {
         HashMap<String, Object> actualJsonMap = new HashMap<>();
         processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
 
-        List<HashMap<String, Object>> fooList = new ArrayList<HashMap<String, Object>>();
+        List<Object> fooList = new ArrayList<>();
+        fooList.add(null);
+        HashMap<String, Object> expectedJsonMap = new HashMap<>();
+        expectedJsonMap.put("foo", fooList);
+
+        String actual = gson.toJson(actualJsonMap);
+        String expected = gson.toJson(expectedJsonMap);
+
+        assertThat(actual, is(equalTo(expected)));
+    }
+
+    @Test
+    public void setupJsonMapWithArrayAtEndOfPathAndMultipleIndexes() {
+        String[] path = new String[] {"$", "foo[*]"};
+        List<String> traversedPath = new ArrayList<>();
+        TreeMap<String, Integer> treeMap = new TreeMap<>(new SmallestToLargestArrayPathComparator());
+        treeMap.put("$.foo", 3);
+        HashMap<String, Object> actualJsonMap = new HashMap<>();
+        processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
+
+        List<Object> fooList = new ArrayList<>();
+        fooList.add(null);
+        fooList.add(null);
+        fooList.add(null);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
         expectedJsonMap.put("foo", fooList);
 
@@ -332,6 +355,7 @@ public class JsonMapStructureProcessorTest {
         processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
 
         List<HashMap<String, Object>> barList = new ArrayList<HashMap<String, Object>>();
+        barList.add(null);
         HashMap<String, Object> fooObject = new HashMap<>();
         fooObject.put("bar", barList);
         List<HashMap<String, Object>> fooList = new ArrayList<HashMap<String, Object>>();

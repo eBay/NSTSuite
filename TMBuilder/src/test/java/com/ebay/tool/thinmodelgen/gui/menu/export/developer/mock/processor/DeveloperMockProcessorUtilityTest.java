@@ -58,6 +58,37 @@ public class DeveloperMockProcessorUtilityTest {
         assertThat(actual, is(equalTo(expected)));
     }
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testGetArrayIndexFromStepWithNullStep() {
+        DeveloperMockProcessorUtility.getArrayIndexFromStep(null);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testGetArrayIndexFromStepWithNonArrayStep() {
+        DeveloperMockProcessorUtility.getArrayIndexFromStep("foo");
+    }
+
+    @Test(expectedExceptions = NumberFormatException.class)
+    public void testGetArrayIndexFromStepWithNumberFormatException() {
+        DeveloperMockProcessorUtility.getArrayIndexFromStep("foo[a]");
+    }
+
+    @DataProvider(name = "getArrayIndexFromStepValues")
+    public Object[][] getArrayIndexFromStepValues() {
+        return new Object[][] {
+                { "foo[*]", -1 },
+                { "foo[0]", 0 },
+                { "foo[1]", 1 },
+                { "foo[10]", 10 }
+        };
+    }
+
+    @Test(dataProvider = "getArrayIndexFromStepValues")
+    public void testGetArrayIndexFromStep(String step, int expected) {
+        int actual = DeveloperMockProcessorUtility.getArrayIndexFromStep(step);
+        assertThat(actual, is(equalTo(expected)));
+    }
+
     @Test(expectedExceptions = NullPointerException.class)
     public void testGetPrimitiveTypeForCheckWithNullJsonBaseType() throws Exception {
         DeveloperMockProcessorUtility.getPrimitiveTypeForCheck(null, "");

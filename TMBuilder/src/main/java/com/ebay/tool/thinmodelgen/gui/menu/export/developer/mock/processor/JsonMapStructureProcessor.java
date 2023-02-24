@@ -17,7 +17,7 @@ public class JsonMapStructureProcessor {
      * @param coreValidationSetModel Core validation set model.
      * @param customValidationSetModel Custom validation set model.
      */
-    public Map<String, Object> getJsonMapForValidations(TreeMap<String, Integer> arrayPathToSizeMap, ValidationSetModel coreValidationSetModel, ValidationSetModel customValidationSetModel) {
+    public static Map<String, Object> getJsonMapForValidations(TreeMap<String, Integer> arrayPathToSizeMap, ValidationSetModel coreValidationSetModel, ValidationSetModel customValidationSetModel) {
 
         Map<String, Object> jsonMap = new HashMap<>();
 
@@ -39,7 +39,7 @@ public class JsonMapStructureProcessor {
      * @param arrayPathToSizeMap Array to size lookup map.
      * @param jsonMap JSON map we are building up.
      */
-    protected void processNodeModels(NodeModel[] nodeModels, TreeMap<String, Integer> arrayPathToSizeMap, Map<String, Object> jsonMap) {
+    protected static void processNodeModels(NodeModel[] nodeModels, TreeMap<String, Integer> arrayPathToSizeMap, Map<String, Object> jsonMap) {
 
         for (NodeModel nodeModel : nodeModels) {
             JsonBaseType jsonBaseType;
@@ -60,7 +60,7 @@ public class JsonMapStructureProcessor {
      * @param arrayPathToSizeMap Array path to size map for checking array sizes as we build up the jsonMap.
      * @param jsonMap Map to build up of our JSON.
      */
-    protected void processJsonBaseTypeCheckPaths(JsonBaseType jsonBaseType, TreeMap<String, Integer> arrayPathToSizeMap, Map<String, Object> jsonMap) {
+    protected static void processJsonBaseTypeCheckPaths(JsonBaseType jsonBaseType, TreeMap<String, Integer> arrayPathToSizeMap, Map<String, Object> jsonMap) {
 
         String[] savedPaths = jsonBaseType.getSavedPathsForNode();
 
@@ -78,7 +78,7 @@ public class JsonMapStructureProcessor {
      * @param arrayPathToSizeMap Existing arrayPathToSizeMap - used to check array sizes.
      * @param node Start with the root node of the String/Object tree Map.
      */
-    protected void setupJsonMap(String[] splitJsonPath, List<String> traversedSteps, TreeMap<String, Integer> arrayPathToSizeMap, Object node) {
+    protected static void setupJsonMap(String[] splitJsonPath, List<String> traversedSteps, TreeMap<String, Integer> arrayPathToSizeMap, Object node) {
 
         String step = splitJsonPath[0];
         splitJsonPath = Arrays.copyOfRange(splitJsonPath, 1, splitJsonPath.length);
@@ -103,7 +103,12 @@ public class JsonMapStructureProcessor {
             if (map.containsKey(step)) {
                 return;
             } else if (isArrayStep) {
-                map.put(step, new ArrayList<Object>());
+                int arraySize = arrayPathToSizeMap.get(currentArrayPath);
+                List<Object> newArray = new ArrayList<Object>();
+                for (int i = 0; i < arraySize; i++) {
+                    newArray.add(null);
+                }
+                map.put(step, newArray);
             } else {
                 map.put(step, new Object());
             }
