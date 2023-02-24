@@ -1,8 +1,5 @@
 package com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.processor;
 
-import com.ebay.jsonpath.JsonPathExecutor;
-import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockTypeDecoder;
-import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockValueLooper;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
 import com.ebay.tool.thinmodelgen.jsonschema.type.JsonBaseType;
@@ -10,7 +7,7 @@ import com.ebay.tool.thinmodelgen.jsonschema.type.JsonBaseType;
 import java.io.IOException;
 import java.util.*;
 
-public class JsonMapProcessor {
+public class JsonMapStructureProcessor {
 
     /**
      * Populate a JSON map, that will be serialized as the JSON mock, with all of the JSON paths from the check definitions.
@@ -88,14 +85,30 @@ public class JsonMapProcessor {
         traversedSteps.add(step);
         String currentArrayPath = String.join(".", traversedSteps);
 
-        // Once we have exhausted all of the steps in our path we are done.
-        // Head back up the recursive call chain.
-        if (splitJsonPath.length == 0) {
+        if (step.equals("$")) {
+            setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, node);
             return;
         }
 
-        if (step.equals("$")) {
-            setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, node);
+        boolean isArrayStep = DeveloperMockProcessorUtility.isJsonPathStepAnArray(step);
+        if (step.contains("[")) {
+            step = step.substring(0, step.indexOf("["));
+        }
+
+        // Once we get to the last step in our path, splitJsonPath will have the last step removed, we are done.
+        // Add the correct leaf node and then head back up the recursive call chain.
+        if (splitJsonPath.length == 0) {
+
+            Map map = (Map) node;
+            if (map.containsKey(step)) {
+                return;
+            } else if (isArrayStep) {
+                map.put(step, new ArrayList<Object>());
+            } else {
+                map.put(step, new Object());
+            }
+
+            return;
         }
 
         if (node instanceof Map) {
@@ -105,7 +118,7 @@ public class JsonMapProcessor {
                 node = map.get(step);
                 setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, node);
             } else {
-                if (DeveloperMockProcessorUtility.isJsonPathStepAnArray(step)) {
+                if (isArrayStep) {
                     // We don't need to worry about leaf nodes.
                     // For that reason, every array will contain a map.
                     // Initialize the array with n number of maps based on the array size.
@@ -118,6 +131,7 @@ public class JsonMapProcessor {
                     } else {
                         throw new IllegalStateException("Array size MUST be known to proceed.");
                     }
+
                     map.put(step, newArray);
                     // We have to do something tricky here. Because we always pluck off the next step from the
                     // splitJsonPath array when we enter this method, and we are going to rely on the array iteration
@@ -126,12 +140,12 @@ public class JsonMapProcessor {
                     tempSplitJsonPath.add(step);
                     tempSplitJsonPath.addAll(Arrays.asList(splitJsonPath));
                     splitJsonPath = tempSplitJsonPath.toArray(new String[tempSplitJsonPath.size()]);
+                    traversedSteps.remove(traversedSteps.size()-1);
                     setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, newArray);
                 } else {
                     Map<String, Object> newNode = new HashMap<>();
                     map.put(step, newNode);
-                    node = newNode;
-                    setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, node);
+                    setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, newNode);
                 }
             }
 
