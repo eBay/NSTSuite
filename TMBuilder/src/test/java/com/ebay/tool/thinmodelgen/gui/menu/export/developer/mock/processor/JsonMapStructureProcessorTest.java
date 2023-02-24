@@ -11,6 +11,7 @@ import com.ebay.tool.thinmodelgen.jsonschema.type.JsonFloatType;
 import com.ebay.tool.thinmodelgen.jsonschema.type.JsonStringType;
 import com.ebay.tool.thinmodelgen.jsonschema.type.persistence.JsonBaseTypePersistence;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.mockito.Mockito;
@@ -29,7 +30,7 @@ import static org.testng.Assert.*;
 public class JsonMapStructureProcessorTest {
 
     private JsonMapStructureProcessor processor = new JsonMapStructureProcessor();
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().serializeNulls().create();;
 
     @Test
     public void testGetJsonMapForValidationsCoreAndCustom() throws Exception {
@@ -68,8 +69,8 @@ public class JsonMapStructureProcessorTest {
 
         // Define expected
         HashMap<String, Object> foo = new HashMap<>();
-        foo.put("bar", new Object());
-        foo.put("fuzzy", new Object());
+        foo.put("bar", null);
+        foo.put("fuzzy", null);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
         expectedJsonMap.put("foo", foo);
 
@@ -103,7 +104,7 @@ public class JsonMapStructureProcessorTest {
 
         // Define expected
         HashMap<String, Object> foo = new HashMap<>();
-        foo.put("bar", new Object());
+        foo.put("bar", null);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
         expectedJsonMap.put("foo", foo);
 
@@ -134,12 +135,12 @@ public class JsonMapStructureProcessorTest {
 
         // Define expected
         HashMap<String, Object> fuzzyMap = new HashMap<>();
-        fuzzyMap.put("wuzzy", new Object());
+        fuzzyMap.put("wuzzy", null);
         List<Map<String, Object>> fuzzyList = new ArrayList<>();
         fuzzyList.add(fuzzyMap);
         fuzzyList.add(fuzzyMap);
         HashMap<String, Object> foo = new HashMap<>();
-        foo.put("bar", new Object());
+        foo.put("bar", null);
         foo.put("fuzzy", fuzzyList);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
         expectedJsonMap.put("foo", foo);
@@ -164,12 +165,12 @@ public class JsonMapStructureProcessorTest {
 
         // Define expected
         HashMap<String, Object> fuzzyMap = new HashMap<>();
-        fuzzyMap.put("wuzzy", new Object());
+        fuzzyMap.put("wuzzy", null);
         List<Map<String, Object>> fuzzyList = new ArrayList<>();
         fuzzyList.add(fuzzyMap);
         fuzzyList.add(fuzzyMap);
         HashMap<String, Object> foo = new HashMap<>();
-        foo.put("bar", new Object());
+        foo.put("bar", null);
         foo.put("fuzzy", fuzzyList);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
         expectedJsonMap.put("foo", foo);
@@ -189,7 +190,7 @@ public class JsonMapStructureProcessorTest {
         processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
 
         HashMap<String, Object> foo = new HashMap<>();
-        foo.put("bar", new Object());
+        foo.put("bar", null);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
         expectedJsonMap.put("foo", foo);
 
@@ -216,9 +217,9 @@ public class JsonMapStructureProcessorTest {
 
         // Define expected
         HashMap<String, Object> fuzzy = new HashMap<>();
-        fuzzy.put("wuzzy", new Object());
+        fuzzy.put("wuzzy", null);
         HashMap<String, Object> foo = new HashMap<>();
-        foo.put("bar", new Object());
+        foo.put("bar", null);
         foo.put("fuzzy", fuzzy);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
         expectedJsonMap.put("foo", foo);
@@ -239,7 +240,7 @@ public class JsonMapStructureProcessorTest {
         processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
 
         HashMap<String, Object> fooObject = new HashMap<>();
-        fooObject.put("bar", new Object());
+        fooObject.put("bar", null);
         List<HashMap<String, Object>> fooList = new ArrayList<HashMap<String, Object>>();
         fooList.add(fooObject);
         HashMap<String, Object> expectedJsonMap = new HashMap<>();
@@ -261,7 +262,7 @@ public class JsonMapStructureProcessorTest {
         processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
 
         HashMap<String, Object> fooObject = new HashMap<>();
-        fooObject.put("bar", new Object());
+        fooObject.put("bar", null);
         List<HashMap<String, Object>> fooList = new ArrayList<HashMap<String, Object>>();
         fooList.add(fooObject);
         fooList.add(fooObject);
@@ -286,7 +287,7 @@ public class JsonMapStructureProcessorTest {
         processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
 
         HashMap<String, Object> barObject = new HashMap<>();
-        barObject.put("end", new Object());
+        barObject.put("end", null);
         List<HashMap<String, Object>> barList = new ArrayList<HashMap<String, Object>>();
         barList.add(barObject);
         HashMap<String, Object> fooObject = new HashMap<>();
@@ -390,12 +391,12 @@ public class JsonMapStructureProcessorTest {
 
         // Setup expected
         HashMap<String, Object> barObject = new HashMap<>();
-        barObject.put("end", new Object());
+        barObject.put("end", null);
         List<HashMap<String, Object>> barList = new ArrayList<HashMap<String, Object>>();
         barList.add(barObject);
 
         HashMap<String, Object> whoObject = new HashMap<>();
-        whoObject.put("fan", new Object());
+        whoObject.put("fan", null);
         List<HashMap<String, Object>> whoList = new ArrayList<HashMap<String, Object>>();
         whoList.add(whoObject);
 

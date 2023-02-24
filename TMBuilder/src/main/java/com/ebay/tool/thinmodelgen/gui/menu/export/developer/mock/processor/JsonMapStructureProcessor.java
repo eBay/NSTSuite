@@ -110,7 +110,7 @@ public class JsonMapStructureProcessor {
                 }
                 map.put(step, newArray);
             } else {
-                map.put(step, new Object());
+                map.put(step, null);
             }
 
             return;
