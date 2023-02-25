@@ -13,7 +13,14 @@ import java.util.*;
 
 public class JsonMapPopulateProcessor {
 
-    protected void populateJsonMapWithMockValues(ValidationSetModel validationSetModel, Map<String, Object> rootNode) throws IOException, ClassNotFoundException {
+    /**
+     * Add mock values from the validation set model to the JSON map.
+     * @param validationSetModel Validation set model with mock values to add to JSON.
+     * @param rootNode Root of the JSON map tree.
+     * @throws IOException Pass through.
+     * @throws ClassNotFoundException Pass through.
+     */
+    public static void populateJsonMapWithMockValues(ValidationSetModel validationSetModel, Map<String, Object> rootNode) throws IOException, ClassNotFoundException {
 
         NodeModel[] nodes = validationSetModel.getData();
 
@@ -39,7 +46,13 @@ public class JsonMapPopulateProcessor {
         }
     }
 
-    protected void populateJsonModel(DeveloperMockValueLooper mockValueLooper, String[] jsonPathSteps, Object node) {
+    /**
+     * Recursively traverse the json tree and add the mock value to the leaf node.
+     * @param mockValueLooper Mock value looper instance.
+     * @param jsonPathSteps JSON path steps to traverse.
+     * @param node Node to look for next JSON path step on.
+     */
+    protected static void populateJsonModel(DeveloperMockValueLooper mockValueLooper, String[] jsonPathSteps, Object node) {
 
         String step = jsonPathSteps[0];
 
@@ -63,8 +76,15 @@ public class JsonMapPopulateProcessor {
                 }
             } else {
                 Map map = (Map) node;
-                map.put(step, mockValueLooper.getNextMockValue());
+                if (mockValueLooper.containsArrayValues()) {
+                    if (map.get(step) == null) {
+                        map.put(step, mockValueLooper.getNextMockValue());
+                    }
+                } else {
+                    map.put(step, mockValueLooper.getNextMockValue());
+                }
             }
+            return;
         }
 
         jsonPathSteps = Arrays.copyOfRange(jsonPathSteps, 1, jsonPathSteps.length);
@@ -92,75 +112,5 @@ public class JsonMapPopulateProcessor {
             Object nextNode = map.get(step);
             populateJsonModel(mockValueLooper, jsonPathSteps, nextNode);
         }
-
-
-
-//        String[] jsonPathSteps = jsonPath.split("\\.");
-//        Map<String, Object> mapNode = jsonMap;
-//        for (int i = 1; i <= jsonPathSteps.length - 2; i++) {
-//
-//            String jsonPathStep = jsonPathSteps[i];
-//            Integer index = null;
-//
-//            if (jsonPathStep.endsWith("]")) {
-//                String jsonArrayIndex = jsonPathStep.substring(jsonPathStep.indexOf("["));
-//                jsonArrayIndex.replace("[", "");
-//                jsonArrayIndex.replace("]", "");
-//
-//                index = Integer.parseInt(jsonArrayIndex);
-//                jsonPathStep = jsonPathStep.substring(0, jsonPathStep.indexOf("]"));
-//            }
-//
-//            if (mapNode.containsKey(jsonPathStep)) {
-//
-//                // If index == null we are dealing with an object.
-//                // Else we are dealing with an existing array.
-//                if (index == null) {
-//                    mapNode = (Map<String, Object>) mapNode.get(jsonPathStep);
-//                } else {
-//                    List<Map<String, Object>> listNode = (List<Map<String, Object>>) mapNode.get(jsonPathStep);
-//
-//                    // If the index exists, continue down that path. Otherwise, add it.
-//                    Map<String, Object> mapElement = listNode.get(index);
-//
-//                    if (mapElement == null) {
-//                        mapElement = new HashMap<>();
-//                        listNode.add(index, mapElement);
-//                    }
-//
-//                    mapNode = mapElement;
-//                }
-//            } else if (index == null) {
-//                Map<String, Object> mapElement = new HashMap<>();
-//                mapNode.put(jsonPathStep, mapElement);
-//                mapNode = mapElement;
-//            } else {
-//                Map<String, Object> mapElement = new HashMap<>();
-//                List<Map<String, Object>> listNode = new ArrayList<>();
-//                listNode.add(index, mapElement);
-//                mapNode.put(jsonPathStep, listNode);
-//                mapNode = mapElement;
-//            }
-//        }
-//
-//        String jsonPathStep = jsonPathSteps[jsonPathSteps.length - 1];
-//
-//        if (jsonPathStep.endsWith("]")) {
-//            String jsonArrayIndex = jsonPathStep.substring(jsonPathStep.indexOf("["));
-//            jsonArrayIndex.replace("[", "");
-//            jsonArrayIndex.replace("]", "");
-//
-//            int index = Integer.parseInt(jsonArrayIndex);
-//            if (mapNode.containsKey(jsonPathStep)) {
-//                List<Object> leafList = (List<Object>) mapNode.get(jsonPathStep);
-//                leafList.add(index, mockValue.getMockValue());
-//            } else {
-//                List<Object> leafList = new ArrayList<>();
-//                leafList.add(index, mockValue.getMockValue());
-//                mapNode.put(jsonPathStep, leafList);
-//            }
-//        } else {
-//            mapNode.put(jsonPathStep, mockValue.getMockValue());
-//        }
     }
 }
