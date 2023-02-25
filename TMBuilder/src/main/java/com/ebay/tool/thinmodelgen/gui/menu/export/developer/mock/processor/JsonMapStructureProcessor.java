@@ -4,6 +4,7 @@ import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
 import com.ebay.tool.thinmodelgen.jsonschema.type.JsonBaseType;
 
+import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.util.*;
 
@@ -103,12 +104,18 @@ public class JsonMapStructureProcessor {
             if (map.containsKey(step)) {
                 return;
             } else if (isArrayStep) {
-                int arraySize = arrayPathToSizeMap.get(currentArrayPath);
-                List<Object> newArray = new ArrayList<Object>();
-                for (int i = 0; i < arraySize; i++) {
-                    newArray.add(null);
+                try {
+                    int arraySize = arrayPathToSizeMap.get(currentArrayPath);
+                    List<Object> newArray = new ArrayList<Object>();
+                    for (int i = 0; i < arraySize; i++) {
+                        newArray.add(null);
+                    }
+                    map.put(step, newArray);
+                } catch (NullPointerException e) {
+                    System.out.println("ArrayPathToSizeMap:" + arrayPathToSizeMap);
+                    System.out.println("currentArrayPath:" + currentArrayPath);
+                    e.printStackTrace();
                 }
-                map.put(step, newArray);
             } else {
                 map.put(step, null);
             }
@@ -171,7 +178,9 @@ public class JsonMapStructureProcessor {
             // send each through the recursive processing.
             List listNode = (List) node;
             for (Object obj : listNode) {
-                setupJsonMap(splitJsonPath, traversedSteps, arrayPathToSizeMap, obj);
+                // Need to manage traversedSteps so we don't continue to build up repeated nodes.
+                List<String> traversedStepCopy = new ArrayList<>(traversedSteps);
+                setupJsonMap(splitJsonPath, traversedStepCopy, arrayPathToSizeMap, obj);
             }
         }
     }

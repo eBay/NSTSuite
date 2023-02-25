@@ -413,4 +413,51 @@ public class JsonMapStructureProcessorTest {
 
         assertThat(actual, is(equalTo(expected)));
     }
+
+    @Test
+    public void multipleAppendingToTraversedStepsList() throws Exception {
+
+        // True path this was happening for: $.modules.summary.total.amount.textSpans[1].styles[0]
+        // TextSpans array was size 3. Styles size 1.
+
+        // First array path
+        String[] path = new String[] {"$", "foo[1]", "bar[0]"};
+        List<String> traversedPath = new ArrayList<>();
+        TreeMap<String, Integer> treeMap = new TreeMap<>(new SmallestToLargestArrayPathComparator());
+        treeMap.put("$.foo", 3);
+        treeMap.put("$.foo.bar", 1);
+        HashMap<String, Object> actualJsonMap = new HashMap<>();
+        processor.setupJsonMap(path, traversedPath, treeMap, actualJsonMap);
+
+        // Setup expected
+        List<Object> firstBarList = new ArrayList<>();
+        firstBarList.add(null);
+
+        List<Object> secondBarList = new ArrayList<>();
+        secondBarList.add(null);
+
+        List<Object> thirdBarList = new ArrayList<>();
+        thirdBarList.add(null);
+
+        HashMap<String, Object> firstFooObject = new HashMap<>();
+        firstFooObject.put("bar", firstBarList);
+
+        HashMap<String, Object> secondFooObject = new HashMap<>();
+        secondFooObject.put("bar", secondBarList);
+
+        HashMap<String, Object> thirdFooObject = new HashMap<>();
+        thirdFooObject.put("bar", thirdBarList);
+
+        List<HashMap<String, Object>> fooList = new ArrayList<HashMap<String, Object>>();
+        fooList.add(firstFooObject);
+        fooList.add(secondFooObject);
+        fooList.add(thirdFooObject);
+        HashMap<String, Object> expectedJsonMap = new HashMap<>();
+        expectedJsonMap.put("foo", fooList);
+
+        String actual = gson.toJson(actualJsonMap);
+        String expected = gson.toJson(expectedJsonMap);
+
+        assertThat(actual, is(equalTo(expected)));
+    }
 }
