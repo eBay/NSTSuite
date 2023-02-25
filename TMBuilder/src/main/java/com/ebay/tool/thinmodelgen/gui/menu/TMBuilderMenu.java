@@ -423,7 +423,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
         }
       }
 
-      String json = new DeveloperMockExport().getMockForValidationSet(coreValidationSet, setModel);
+      String json = new DeveloperMockExport().getJsonFromValidationSet(coreValidationSet, setModel);
 
       JTextArea textArea = new JTextArea(25, 125);
       textArea.setText(json);
