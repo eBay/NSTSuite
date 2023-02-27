@@ -1,4 +1,4 @@
-package com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock;
+package com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.processor;
 
 import java.util.Comparator;
 

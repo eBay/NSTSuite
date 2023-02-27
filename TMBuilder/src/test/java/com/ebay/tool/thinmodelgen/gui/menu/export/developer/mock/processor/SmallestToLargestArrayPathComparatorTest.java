@@ -1,5 +1,6 @@
-package com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock;
+package com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.processor;
 
+import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.processor.SmallestToLargestArrayPathComparator;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

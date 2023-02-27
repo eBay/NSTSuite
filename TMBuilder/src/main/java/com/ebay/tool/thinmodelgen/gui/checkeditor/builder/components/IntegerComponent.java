@@ -5,6 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -61,16 +63,30 @@ public class IntegerComponent extends BaseComponent {
     this.add(integerTextField, integerTextFieldConstraints);
   }
 
-  class IntegerTextField extends JTextField implements ActionListener {
+  class IntegerTextField extends JTextField implements ActionListener, FocusListener {
 
     public IntegerTextField(int cols) {
       super(cols);
       this.addActionListener(this);
+      this.addFocusListener(this);
     }
 
     @Override
     protected Document createDefaultModel() {
       return new IntegerDocument();
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+
+      if (!e.isTemporary()) {
+        recordValue();
+      }
     }
 
     class IntegerDocument extends PlainDocument {
@@ -94,7 +110,10 @@ public class IntegerComponent extends BaseComponent {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+      recordValue();
+    }
 
+    private void recordValue() {
       String text = this.getText();
       Integer value = null;
 

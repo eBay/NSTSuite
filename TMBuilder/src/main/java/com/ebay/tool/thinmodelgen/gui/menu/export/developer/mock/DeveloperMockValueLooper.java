@@ -8,6 +8,7 @@ public class DeveloperMockValueLooper {
 
     private List<Object> mockValues;
     private int mockValueIndex = 0;
+    private boolean containsArrayValues = true;
 
     public DeveloperMockValueLooper(DeveloperMockTypeDecoder mockValues) {
         Objects.requireNonNull(mockValues, "MockValues cannot be null.");
@@ -23,8 +24,8 @@ public class DeveloperMockValueLooper {
         return value;
     }
 
-    public int getNumberOfMockValues() {
-        return mockValues.size();
+    public boolean containsArrayValues() {
+        return containsArrayValues;
     }
 
     private void init(DeveloperMockTypeDecoder mockValues) {
@@ -34,10 +35,12 @@ public class DeveloperMockValueLooper {
             Objects.requireNonNull(value, "Mock value MUST never be null.");
             this.mockValues = new ArrayList<>();
             this.mockValues.add(value);
+            this.containsArrayValues = false;
         } else if (mockValues instanceof  DeveloperMockListOfValues) {
             List<Object> values = ((DeveloperMockListOfValues) mockValues).getMockValues();
             Objects.requireNonNull(values, "Mock values MUST never be null.");
             this.mockValues = new ArrayList<>(values);
+            this.containsArrayValues = true;
         }
     }
 }

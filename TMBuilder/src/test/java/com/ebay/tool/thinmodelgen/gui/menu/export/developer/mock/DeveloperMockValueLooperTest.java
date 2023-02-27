@@ -93,11 +93,10 @@ public class DeveloperMockValueLooperTest {
 
     @Test
     public void getNumberOfMockValuesForSingleMockList() {
-        List<String> values = Arrays.asList("one");
-        DeveloperMockListOfValues value = Mockito.mock(DeveloperMockListOfValues.class);
-        Mockito.when(value.getMockValues()).thenReturn(values);
+        DeveloperMockValue value = Mockito.mock(DeveloperMockValue.class);
+        Mockito.when(value.getMockValue()).thenReturn("one");
         DeveloperMockValueLooper looper = new DeveloperMockValueLooper(value);
-        assertThat(looper.getNumberOfMockValues(), is(equalTo(1)));
+        assertThat(looper.containsArrayValues(), is(equalTo(false)));
     }
 
     @Test
@@ -106,6 +105,6 @@ public class DeveloperMockValueLooperTest {
         DeveloperMockListOfValues value = Mockito.mock(DeveloperMockListOfValues.class);
         Mockito.when(value.getMockValues()).thenReturn(values);
         DeveloperMockValueLooper looper = new DeveloperMockValueLooper(value);
-        assertThat(looper.getNumberOfMockValues(), is(equalTo(3)));
+        assertThat(looper.containsArrayValues(), is(equalTo(true)));
     }
 }

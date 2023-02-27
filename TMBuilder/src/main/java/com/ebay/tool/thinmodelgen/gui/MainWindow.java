@@ -23,6 +23,9 @@ public class MainWindow extends JFrame {
   private static MainWindow instance;
 
   private MainWindow() {
+
+    System.setProperty( "apple.laf.useScreenMenuBar", "true" );
+    System.setProperty( "apple.awt.application.name", TMGuiConstants.APP_NAME );
     initialize();
   }
 
@@ -66,13 +69,6 @@ public class MainWindow extends JFrame {
   private void initialize() {
 
     setupExitConfirmation();
-
-    // Try to set consistent look and feel to avoid odd menu bar highlighting in MacOS dark mode.
-    UIManager.put("Menu.selectionForeground", Color.BLACK);
-    UIManager.put("Menu.background", Color.WHITE);
-    UIManager.put("MenuItem.background", Color.WHITE);
-    UIManager.put("MenuItem.foreground", Color.BLACK);
-    UIManager.put("MenuItem.selectionForeground", Color.ORANGE);
 
     Dimension windowDimension = new Dimension(TMGuiConstants.DEFAULT_WINDOW_WIDTH, TMGuiConstants.DEFAULT_WINDOW_HEIGHT);
 
@@ -133,6 +129,6 @@ public class MainWindow extends JFrame {
     helpMessageConstraints.gridwidth = GridBagConstraints.REMAINDER;
     helpMessageConstraints.weightx = 1.0;
     helpMessageConstraints.insets = new Insets(5, 5, 5, 5);
-    this.add(new JLabel("Please press enter to save edited data in input fields."), helpMessageConstraints);
+    this.add(new JLabel("Please press enter to save edited data in combo box field above."), helpMessageConstraints);
   }
 }

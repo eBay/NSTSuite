@@ -46,6 +46,7 @@ import com.google.gson.GsonBuilder;
 @SuppressWarnings("serial")
 public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFileManagerObserver {
 
+  private static final int VALIDATION_SET_INDEX_PAD = 4;
   private static final String NEW = "New";
   private static final String OPEN = "Open";
   private static final String SAVE_AS = "Save As";
@@ -59,8 +60,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private static final String NEW_VALIDATION_SET = "New...";
 
   private static final String SELECT_VALIDATION_SET = "Select";
-  private static final String REVIEW_VALIDATION_SET_BUTTON = "Review";
-  private static final String DISCARD_CHANGES_BUTTON = "Discard Changes";
+  private static final String REVIEW_VALIDATION_SET_CHECK_BUTTON = "Review Check";
+  private static final String REVIEW_VALIDATION_SET_MOCK_BUTTON = "Review Mock";
+  private static final String DISCARD_VALIDATION_CHANGES = "Discard Changes";
   private static final String REVIEW_VALIDATION_SET = "Review Set";
   private static final String EDIT_VALIDATION_SET = "Edit Name";
   private static final String DELETE_VALIDATION_SET = "Delete Set";
@@ -141,14 +143,6 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     // Validation Set Menu
     validationMenu = new JMenu(VALIDATION_MENU_TITLE);
     this.add(validationMenu);
-
-    JButton reviewButton = new JButton(REVIEW_VALIDATION_SET_BUTTON);
-    reviewButton.addActionListener(this);
-    this.add(reviewButton);
-
-    JButton discardButton = new JButton(DISCARD_CHANGES_BUTTON);
-    discardButton.addActionListener(this);
-    this.add(discardButton);
   }
 
   @Override
@@ -157,76 +151,79 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     String actionCommand = e.getActionCommand();
 
     switch (actionCommand) {
-    case NEW:
-      if (confirmCreateNew() && doLoadSchemaFile()) {
-        currentTmbFile = null;
-        currentExportFile = null;
-        currentDeveloperMockExportFile = null;
-        resetValidationSetCache();
-        currentValidationSet = DEFAULT_VALIDATION_SET;
-        setValidationSetNameAsMenuTitle(DEFAULT_VALIDATION_SET);
+      case NEW:
+        if (confirmCreateNew() && doLoadSchemaFile()) {
+          currentTmbFile = null;
+          currentExportFile = null;
+          currentDeveloperMockExportFile = null;
+          resetValidationSetCache();
+          currentValidationSet = DEFAULT_VALIDATION_SET;
+          setValidationSetNameAsMenuTitle(DEFAULT_VALIDATION_SET);
 
-        try {
-          addCurrentValidationSetToCache();
-        } catch (Exception i) {
-          i.printStackTrace();
+          try {
+            addCurrentValidationSetToCache();
+          } catch (Exception i) {
+            i.printStackTrace();
+          }
+
+          updateExportFilePath(null);
+          setDefaultValidationSetMenuItems();
         }
-
-        updateExportFilePath(null);
-        setDefaultValidationSetMenuItems();
-      }
-      break;
-    case OPEN:
-      doOpenFile();
-      break;
-    case SAVE_AS:
-      doSaveAs();
-      break;
-    case SAVE:
-      doSave();
-      break;
-    case EXPORT_TM_CHECKS_TO:
-      doExportTo();
-      break;
+        break;
+      case OPEN:
+        doOpenFile();
+        break;
+      case SAVE_AS:
+        doSaveAs();
+        break;
+      case SAVE:
+        doSave();
+        break;
+      case EXPORT_TM_CHECKS_TO:
+        doExportTo();
+        break;
       case EXPORT_DEVELOPER_MOCKS_TO:
         doExportDeveloperMocksTo();
         break;
-    case NEW_VALIDATION_SET:
-      doNewValidationSet();
-      break;
-    case SELECT_VALIDATION_SET:
-      try {
-        addCurrentValidationSetToCache();
-      } catch (Exception j) {
-        j.printStackTrace();
-      }
+      case NEW_VALIDATION_SET:
+        doNewValidationSet();
+        break;
+      case SELECT_VALIDATION_SET:
+        try {
+          addCurrentValidationSetToCache();
+        } catch (Exception j) {
+          j.printStackTrace();
+        }
 
-      doLoadValidationSetFromCache(getValidationMenuInvokerText(e));
-      break;
-    case REVIEW_VALIDATION_SET:
-      doReviewValidationSet(getValidationMenuInvokerText(e));
-      break;
-    case REVIEW_VALIDATION_SET_BUTTON:
-      doReviewValidationSet(currentValidationSet);
-      break;
-    case DISCARD_CHANGES_BUTTON:
-      doDiscardChanges();
-      break;
-    case EDIT_VALIDATION_SET:
-      doEditValidationSet(getValidationMenuInvokerText(e));
-      break;
-    case DELETE_VALIDATION_SET:
-      doDeleteValidationSet(getValidationMenuInvokerText(e));
-      break;
-    default:
-      // Default is to handle the export to TM checks or developer mocks.
-      // Inspect the source JMenuItem to determine which menu item was selected.
-      if (e.getSource() == tmCheckExportFilePath) {
-        doExportToStoredFile();
-      } else if (e.getSource() == developerMockExportFilePath) {
-        doDeveloperMockExportToStoredFile();
-      }
-      break;
+        doLoadValidationSetFromCache(getValidationMenuInvokerText(e));
+        break;
+      case REVIEW_VALIDATION_SET:
+        doReviewValidationSet(getValidationMenuInvokerText(e));
+        break;
+      case REVIEW_VALIDATION_SET_CHECK_BUTTON:
+        doReviewValidationSet(currentValidationSet);
+        break;
+      case REVIEW_VALIDATION_SET_MOCK_BUTTON:
+        doReviewMock(currentValidationSet);
+        break;
+      case DISCARD_VALIDATION_CHANGES:
+        doDiscardChanges();
+        break;
+      case EDIT_VALIDATION_SET:
+        doEditValidationSet(getValidationMenuInvokerText(e));
+        break;
+      case DELETE_VALIDATION_SET:
+        doDeleteValidationSet(getValidationMenuInvokerText(e));
+        break;
+      default:
+        // Default is to handle the export to TM checks or developer mocks.
+        // Inspect the source JMenuItem to determine which menu item was selected.
+        if (e.getSource() == tmCheckExportFilePath) {
+          doExportToStoredFile();
+        } else if (e.getSource() == developerMockExportFilePath) {
+          doDeveloperMockExportToStoredFile();
+        }
+        break;
     }
 
     setFileNameInAppWindow();
@@ -261,6 +258,21 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     JMenuItem newItemMenuItem = new JMenuItem(NEW_VALIDATION_SET);
     newItemMenuItem.addActionListener(this);
     validationMenu.add(newItemMenuItem);
+
+    // Discard Changes
+    JMenuItem discardMenuItem = new JMenuItem(DISCARD_VALIDATION_CHANGES);
+    discardMenuItem.addActionListener(this);
+    validationMenu.add(discardMenuItem);
+
+    // Review checks
+    JMenuItem reviewChecksItem = new JMenuItem(REVIEW_VALIDATION_SET_CHECK_BUTTON);
+    reviewChecksItem.addActionListener(this);
+    validationMenu.add(reviewChecksItem);
+
+    // Review mocks
+    JMenuItem reviewMocksButton = new JMenuItem(REVIEW_VALIDATION_SET_MOCK_BUTTON);
+    reviewMocksButton.addActionListener(this);
+    validationMenu.add(reviewMocksButton);
 
     addValidationSetMenuItem(DEFAULT_VALIDATION_SET);
   }
@@ -358,6 +370,10 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     try {
       LinkedHashMap<String, NodeModel[]> tempCache = getTemporaryValidationSetCache();
 
+      if (tempCache == null) {
+        return;
+      }
+
       ValidationSetModel setModel = null;
       for (Entry<String, NodeModel[]> entry : tempCache.entrySet()) {
         if (entry.getKey().equals(getConvertedValidationSetName(validationSetName))) {
@@ -371,6 +387,46 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       JTextArea textArea = new JTextArea(25, 125);
       textArea.setText(message);
+      textArea.setEditable(false);
+
+      JScrollPane scrollPane = new JScrollPane(textArea);
+      JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      displayErrorDialog(String.format("An error occurred when reviewing validation set: %s \nERROR: %s", validationSetName, e.getMessage()), "Review Validation Set Error");
+    }
+  }
+
+  private void doReviewMock(String validationSetName) {
+    try {
+      LinkedHashMap<String, NodeModel[]> tempCache = getTemporaryValidationSetCache();
+
+      if (tempCache == null) {
+        return;
+      }
+
+      ValidationSetModel coreValidationSet = null;
+      for (Entry<String, NodeModel[]> entry : tempCache.entrySet()) {
+        if (entry.getKey().equals(ExportConstants.CORE_VALIDATION_SET)) {
+          coreValidationSet = new ValidationSetModel(entry.getKey(), entry.getValue());
+          break;
+        }
+      }
+
+      // Find the validation set to show
+      ValidationSetModel setModel = null;
+      for (Entry<String, NodeModel[]> entry : tempCache.entrySet()) {
+        if (entry.getKey().equals(getConvertedValidationSetName(validationSetName))) {
+          setModel = new ValidationSetModel(entry.getKey(), entry.getValue());
+          break;
+        }
+      }
+
+      String json = new DeveloperMockExport().getJsonFromValidationSet(coreValidationSet, setModel);
+
+      JTextArea textArea = new JTextArea(25, 125);
+      textArea.setText(json);
       textArea.setEditable(false);
 
       JScrollPane scrollPane = new JScrollPane(textArea);
@@ -406,7 +462,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
         }
 
         // Add one to ignore 'New...' menu item
-        validationMenu.getPopupMenu().remove(findIndexOfValidationSet(validationSetName) + 1);
+        validationMenu.getPopupMenu().remove(findIndexOfValidationSet(validationSetName) + VALIDATION_SET_INDEX_PAD);
         validationSetCache.remove(validationSetName);
       }
 
@@ -446,11 +502,18 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private String getConvertedValidationSetName(String validationSetName) {
+    if (validationSetName == null) {
+      return null;
+    }
     return validationSetName.equals(DEFAULT_VALIDATION_SET) ? DEFAULT_VALIDATION_KEY : validationSetName;
   }
 
   private boolean currentValidationSetHasChanges() throws IOException {
     String currentValidationSet = getConvertedCurrentValidationSetName();
+
+    if (currentValidationSet == null) {
+      return false;
+    }
 
     // Create temporary model with current changes
     NodeModel[] currentTempData = fileOperationHandler.getJsonPathCheckData().toArray(new NodeModel[0]);
@@ -504,7 +567,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     resetValidationSetCache();
 
     // Add one to ignore 'New...' menu item
-    JMenuItem validationMenuItemToBeReplaced = validationMenu.getItem(replaceIndex + 1);
+    JMenuItem validationMenuItemToBeReplaced = validationMenu.getItem(replaceIndex + VALIDATION_SET_INDEX_PAD);
     String previousName = validationMenuItemToBeReplaced.getText();
     validationMenuItemToBeReplaced.setText(replacementName);
 
@@ -710,7 +773,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     doSave();
 
-    JFileChooser fc = new JFileChooser();
+    JFileChooser fc = new JFileChooser(currentExportFile);
     fc.setAcceptAllFileFilterUsed(false);
     fc.setFileFilter(new JavaFileFilter());
 
@@ -728,7 +791,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     doSave();
 
-    JFileChooser fc = new JFileChooser();
+    JFileChooser fc = new JFileChooser(currentDeveloperMockExportFile);
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setAcceptAllFileFilterUsed(false);
     fc.setFileFilter(new JavaFileFilter());
@@ -818,6 +881,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       currentExportPath = relativeExportPath;
     }
 
+    String currentMockPath = null;
+    if (currentDeveloperMockExportFile != null) {
+      String relativeMockPath = convertPathToRelativePath(currentTmbFile.getCanonicalPath(), currentDeveloperMockExportFile.getCanonicalPath());
+      currentMockPath = relativeMockPath;
+    }
+
     int setModelLength = validationSetCache == null ? 0 : validationSetCache.size();
     ValidationSetModel[] validationSets = new ValidationSetModel[setModelLength];
 
@@ -835,7 +904,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     // TODO: refactor this class - reduce number of methods (better encapsulate
     // functionality) and standardize model loading, usage and writing.
     SchemaParserPayload payload = TMFileSingleton.getInstance().getPayload();
-    FileModel fileModel = new FileModel(TMGuiConstants.APP_NAME, currentSchemaPath, validationSets, currentExportPath, payload);
+    FileModel fileModel = new FileModel(TMGuiConstants.APP_NAME, currentSchemaPath, validationSets, currentExportPath, currentMockPath, payload);
     TMFileSingleton.getInstance().setFileModel(fileModel);
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -865,6 +934,14 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     } else {
       currentExportFile = null;
       updateExportFilePath(null);
+    }
+
+    if (fileModel.getMockFilePath() != null) {
+      String exportMockPath = resolveRelativePath(currentTmbFile.getCanonicalPath(), fileModel.getMockFilePath());
+      updateExportDeveloperMocksFilePath(exportMockPath);
+    } else {
+      currentDeveloperMockExportFile = null;
+      updateExportDeveloperMocksFilePath(null);
     }
 
     resetValidationSetCache();

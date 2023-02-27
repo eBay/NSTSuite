@@ -8,6 +8,7 @@ public class FileModel {
   private String sourceSchemaFilePath;
   private NodeModel[] data;
   private String exportFilePath;
+  private String mockFilePath;
   private ValidationSetModel[] validationSets;
   private SchemaParserPayload payload;
 
@@ -17,21 +18,23 @@ public class FileModel {
    * and jsonPathNodeName (from the JsonBaseType)
    */
 
-  public FileModel(String fileFormatVersion, String sourceSchemaFilePath, NodeModel[] data, String exportFilePath, SchemaParserPayload payload) {
+  public FileModel(String fileFormatVersion, String sourceSchemaFilePath, NodeModel[] data, String exportFilePath, String mockFilePath, SchemaParserPayload payload) {
     super();
     this.fileFormatVersion = fileFormatVersion;
     this.sourceSchemaFilePath = sourceSchemaFilePath;
     this.data = data;
     this.exportFilePath = exportFilePath;
+    this.mockFilePath = mockFilePath;
     this.payload = payload;
   }
 
-  public FileModel(String fileFormatVersion, String sourceSchemaFilePath, ValidationSetModel[] validationSets, String exportFilePath, SchemaParserPayload payload) {
+  public FileModel(String fileFormatVersion, String sourceSchemaFilePath, ValidationSetModel[] validationSets, String exportFilePath, String mockFilePath, SchemaParserPayload payload) {
     super();
     this.fileFormatVersion = fileFormatVersion;
     this.sourceSchemaFilePath = sourceSchemaFilePath;
     this.validationSets = validationSets;
     this.exportFilePath = exportFilePath;
+    this.mockFilePath = mockFilePath;
     this.payload = payload;
   }
 
@@ -65,6 +68,14 @@ public class FileModel {
 
   public void setExportFilePath(String exportFilePath) {
     this.exportFilePath = exportFilePath;
+  }
+
+  public String getMockFilePath() {
+    return mockFilePath;
+  }
+
+  public void setMockFilePath(String mockFilePath) {
+    this.mockFilePath = mockFilePath;
   }
 
   public ValidationSetModel[] getValidationSets() {
