@@ -106,7 +106,7 @@ public class JsonMapStructureProcessor {
             } else if (isArrayStep) {
                 try {
                     int arraySize = arrayPathToSizeMap.get(currentArrayPath);
-                    List<Object> newArray = new ArrayList<Object>();
+                    List<Object> newArray = new ArrayList<Object>(arraySize);
                     for (int i = 0; i < arraySize; i++) {
                         newArray.add(null);
                     }

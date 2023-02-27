@@ -135,9 +135,7 @@ public class JsonPathEditor implements SchemaEventListener, ActionListener, Focu
     jsonPathComboBox = new JComboBox<>(new String[] { "" });
     jsonPathComboBox.setEditable(true);
     jsonPathComboBox.addActionListener(this);
-
-    comboBoxEditor = (JTextComponent) jsonPathComboBox.getEditor().getEditorComponent();
-    comboBoxEditor.addFocusListener(this);
+    jsonPathComboBox.addFocusListener(this);
 
     GridBagConstraints jsonPathEditFieldConstraints = new GridBagConstraints();
     jsonPathEditFieldConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -235,15 +233,18 @@ public class JsonPathEditor implements SchemaEventListener, ActionListener, Focu
 
   @Override
   public void focusGained(FocusEvent e) {
-    System.out.println("focus gained");
+
   }
 
   @Override
   public void focusLost(FocusEvent e) {
 
-    System.out.println("focus lost");
-
     if (!e.isTemporary()) {
+      if (selectedNodePath == null) {
+        System.out.println("ATTEMPTING TO EDIT COMBO BOX WITHOUT A SELECTED NODE!");
+        return;
+      }
+
       saveJsonPathChanges();
     }
   }

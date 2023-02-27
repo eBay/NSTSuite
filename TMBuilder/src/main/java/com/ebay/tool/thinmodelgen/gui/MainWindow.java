@@ -129,6 +129,6 @@ public class MainWindow extends JFrame {
     helpMessageConstraints.gridwidth = GridBagConstraints.REMAINDER;
     helpMessageConstraints.weightx = 1.0;
     helpMessageConstraints.insets = new Insets(5, 5, 5, 5);
-    this.add(new JLabel("Please press enter to save edited data in input fields."), helpMessageConstraints);
+    this.add(new JLabel("Please press enter to save edited data in combo box field above."), helpMessageConstraints);
   }
 }
