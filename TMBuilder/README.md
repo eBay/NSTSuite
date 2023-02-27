@@ -40,7 +40,7 @@ Executable requires Java 8 or later. Download is available under [releases](http
 </details>
 
 ## Thin Models
-Thin models are model classes supported by JSON path expressions for retrieving leaf node values. Instead of a full POJO structure requiring lengthy dot notation to retreive nested properties, JSON path allows for retrieval of a node or set of nodes to perform an verification of data correctness. This is the second order contract testing check performed where the data of the response is evaluated for correctness as defined in the thin model checks. Once you've defined all of your checks you may export the tests to your check class and the TMBuilder will generate the code for each check you've defined in the TMBuilder.
+Thin models are model classes supported by JSON path expressions for retrieving leaf node values. Instead of a full POJO structure requiring lengthy dot notation to retreive nested properties, JSON path allows for retrieval of a node or set of nodes to perform an verification of data correctness. This is the second order contract testing check performed where the data of the response is evaluated for correctness as defined in the thin model checks. Once you've defined all of your checks, you can generate the code for each check you've defined by exporting them to an associated thin model check file.
 
 The TMBuilder leverages the service schema and visually renders it in a tree structure. The user selects the node(s) where a check is needed and a type specific set of check options are shown based on the node selected. The type checks differ based on the node being part of a list (the JSON path includes an array).
 
