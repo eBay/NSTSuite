@@ -1044,7 +1044,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       String fileName = f.getName();
       int dotIndex = fileName.lastIndexOf(".");
 
-      if (dotIndex < 0) {
+      if (f.isDirectory()) {
+        return true;
+      } else if (dotIndex < 0) {
         return false;
       }
 
@@ -1068,7 +1070,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       String fileName = f.getName();
       int dotIndex = fileName.lastIndexOf(".");
 
-      if (dotIndex < 0) {
+      if (f.isDirectory()) {
+        return true;
+      } else if (dotIndex < 0) {
         return false;
       }
 
@@ -1091,7 +1095,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       String fileName = f.getName();
       int dotIndex = fileName.lastIndexOf(".");
 
-      if (dotIndex < 0) {
+      if (f.isDirectory()) {
+        return true;
+      } else if (dotIndex < 0) {
         return false;
       }
 
