@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.ebay.nst.hosts.manager.PoolType;
 import com.ebay.runtime.arguments.AndroidMocksLocationArgument;
@@ -25,7 +26,7 @@ public class RuntimeConfigManager {
 	// Singleton instance
 	private static RuntimeConfigManager instance = null;
 
-	Map<String, RuntimeConfigValue<?>> arguments = new HashMap<>();
+	private Map<String, RuntimeConfigValue<?>> arguments = new ConcurrentHashMap<>();
 
 	private RuntimeConfigManager() {
 		arguments.put(AndroidMocksLocationArgument.KEY, new AndroidMocksLocationArgument());
@@ -223,9 +224,22 @@ public class RuntimeConfigManager {
 	private void init() {
 
 		String value;
+		String runtimeArgumentKey;
+		// Avoid concurrent modification exception on 'arguments' collection
+		// by updating a new map and then reinitializing 'arguments' with the
+		// contents of the new map.
+		Map<String, RuntimeConfigValue<?>> argumentValues = new HashMap<>();
 		for (Entry<String, RuntimeConfigValue<?>> entry : arguments.entrySet()) {
-			value = System.getProperty(entry.getValue().getRuntimeArgumentKey());
-			entry.getValue().parseRuntimeArgument(value);
+
+			RuntimeConfigValue<?> entryValue = entry.getValue();
+			runtimeArgumentKey = entryValue.getRuntimeArgumentKey();
+
+			value = System.getProperty(runtimeArgumentKey);
+			entryValue.parseRuntimeArgument(value);
+
+			argumentValues.put(runtimeArgumentKey, entryValue);
 		}
+		arguments.clear();
+		arguments.putAll(argumentValues);
 	}
 }
