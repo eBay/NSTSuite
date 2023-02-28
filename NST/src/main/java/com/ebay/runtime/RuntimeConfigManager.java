@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.ebay.nst.hosts.manager.PoolType;
 import com.ebay.runtime.arguments.AndroidMocksLocationArgument;
@@ -25,7 +26,7 @@ public class RuntimeConfigManager {
 	// Singleton instance
 	private static RuntimeConfigManager instance = null;
 
-	Map<String, RuntimeConfigValue<?>> arguments = new HashMap<>();
+	private Map<String, RuntimeConfigValue<?>> arguments = new ConcurrentHashMap<>();
 
 	private RuntimeConfigManager() {
 		arguments.put(AndroidMocksLocationArgument.KEY, new AndroidMocksLocationArgument());
