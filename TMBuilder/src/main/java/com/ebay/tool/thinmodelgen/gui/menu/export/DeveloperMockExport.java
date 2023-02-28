@@ -38,7 +38,10 @@ public class DeveloperMockExport {
 
             String json = getJsonFromValidationSet(coreValidationSet, validationSetModel);
 
-            String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, validationSetModel.getValidationSetName());
+            String validationSetName = validationSetModel.getValidationSetName();
+            validationSetName = camelCaseValidationSetName(validationSetName);
+
+            String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, validationSetName);
             File exportFile = new File(exportPath, fileName);
             FileWriter fileWriter = new FileWriter(exportFile);
             fileWriter.write(json);
@@ -89,5 +92,19 @@ public class DeveloperMockExport {
         }
 
         return null;
+    }
+
+    /**
+     * Apply camel casing to the first letter of the validation set name.
+     * @param validationSetName Validation set name to process.
+     * @return Validation set name with the first letter converted to upper case.
+     */
+    protected String camelCaseValidationSetName(String validationSetName) {
+        if (validationSetName.length() > 0) {
+            String firstCharacter = String.valueOf(validationSetName.charAt(0));
+            firstCharacter = firstCharacter.toUpperCase();
+            validationSetName = firstCharacter + validationSetName.substring(1);
+        }
+        return validationSetName;
     }
 }

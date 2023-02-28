@@ -159,6 +159,20 @@ public class ThinModelExport {
     return getValidationStatementsForNodeModels(Arrays.asList(validationSetModel.getData()));
   }
 
+  /**
+   * Apply camel casing to the first letter of the validation set name.
+   * @param validationSetName Validation set name to process.
+   * @return Validation set name with the first letter converted to lower case.
+   */
+  protected String lowerCaseCamelCaseValidationSetName(String validationSetName) {
+    if (validationSetName.length() > 0) {
+      String firstCharacter = String.valueOf(validationSetName.charAt(0));
+      firstCharacter = firstCharacter.toLowerCase();
+      validationSetName = firstCharacter + validationSetName.substring(1);
+    }
+    return validationSetName;
+  }
+
   private String getValidationStatementsForNodeModels(List<NodeModel> nodeModels) throws IOException, ClassNotFoundException {
     StringBuilder methodBuilder = new StringBuilder();
     for (NodeModel nodeModel : nodeModels) {
@@ -196,7 +210,9 @@ public class ThinModelExport {
     StringBuilder allValidations = new StringBuilder();
 
     for (ValidationSetModel validationSetModel : validationSetModels) {
-      String methodSignature = validationSetModel.getValidationSetName() + "(SoftAssert softAssert)";
+      String validationSetName = validationSetModel.getValidationSetName();
+      validationSetName = lowerCaseCamelCaseValidationSetName(validationSetName);
+      String methodSignature =  validationSetName + "(SoftAssert softAssert)";
       allValidations.append(GENERATED_VALIDATIONS_START_BLOCK);
       allValidations.append("\n");
       allValidations.append(prepareMethodAndStatementsWithMethod(Arrays.asList(validationSetModel.getData()), methodSignature));

@@ -204,6 +204,9 @@ public class ListOfStringComponent extends BaseComponent {
       @Override
       public void actionPerformed(ActionEvent e) {
         String text = inputField.getText();
+        if (text.isEmpty()) {
+          return;
+        }
         inputField.setText("");
         DefaultListModel<String> model = (DefaultListModel<String>) list.getModel();
         model.addElement(text);

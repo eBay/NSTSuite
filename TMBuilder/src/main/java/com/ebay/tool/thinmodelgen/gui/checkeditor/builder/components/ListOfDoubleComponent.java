@@ -204,6 +204,9 @@ public class ListOfDoubleComponent extends BaseComponent {
       @Override
       public void actionPerformed(ActionEvent e) {
         String text = doubleTextField.getText();
+        if (text.isEmpty()) {
+          return;
+        }
         doubleTextField.setText("");
         DefaultListModel<String> model = (DefaultListModel<String>) list.getModel();
         model.addElement(text);
