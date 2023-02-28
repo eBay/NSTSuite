@@ -223,9 +223,22 @@ public class RuntimeConfigManager {
 	private void init() {
 
 		String value;
+		String runtimeArgumentKey;
+		// Avoid concurrent modification exception on 'arguments' collection
+		// by updating a new map and then reinitializing 'arguments' with the
+		// contents of the new map.
+		Map<String, RuntimeConfigValue<?>> argumentValues = new HashMap<>();
 		for (Entry<String, RuntimeConfigValue<?>> entry : arguments.entrySet()) {
-			value = System.getProperty(entry.getValue().getRuntimeArgumentKey());
-			entry.getValue().parseRuntimeArgument(value);
+
+			RuntimeConfigValue<?> entryValue = entry.getValue();
+			runtimeArgumentKey = entryValue.getRuntimeArgumentKey();
+
+			value = System.getProperty(runtimeArgumentKey);
+			entryValue.parseRuntimeArgument(value);
+
+			argumentValues.put(runtimeArgumentKey, entryValue);
 		}
+		arguments.clear();
+		arguments.putAll(argumentValues);
 	}
 }
