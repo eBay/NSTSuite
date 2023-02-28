@@ -207,6 +207,9 @@ public class ListOfIntegerComponent extends BaseComponent {
       @Override
       public void actionPerformed(ActionEvent e) {
         String text = integerTextField.getText();
+        if (text.isEmpty()) {
+          return;
+        }
         integerTextField.setText("");
         DefaultListModel<String> model = (DefaultListModel<String>) list.getModel();
         model.addElement(text);

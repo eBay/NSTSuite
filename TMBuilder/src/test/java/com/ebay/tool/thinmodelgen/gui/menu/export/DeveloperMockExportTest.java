@@ -51,4 +51,23 @@ public class DeveloperMockExportTest {
         assertThat(validations.size(), is(equalTo(1)));
         assertThat(validations.get(0).getValidationSetName(), is(equalTo("FOO")));
     }
+
+    @DataProvider(name = "camelCaseValidationSetNameTestValues")
+    public Object[][] camelCaseValidationSetNameTestValues() {
+        return new Object[][] {
+                { "", "" },
+                { "first", "First" },
+                { "a", "A" },
+                { "AA", "AA" },
+                { "aA", "AA" },
+                { "andBecause", "AndBecause" },
+                { "aa", "Aa" },
+        };
+    }
+
+    @Test(dataProvider = "camelCaseValidationSetNameTestValues")
+    public void camelCaseValidationSetName(String input, String expected) {
+        String actual = export.camelCaseValidationSetName(input);
+        assertThat(actual, is(equalTo(expected)));
+    }
 }

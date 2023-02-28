@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.ebay.test.util.FileParser;
@@ -102,4 +103,24 @@ public class ThinModelExportTest {
 	    String actualFileContents = FileParser.readInFile(exportFile);
 	    assertThat("Generated file contents must match expected.", actualFileContents, is(equalTo(expectedFileContents)));
   }
+
+    @DataProvider(name = "lowerCaseCamelCaseValidationSetNameTestData")
+    public Object[][] lowerCaseCamelCaseValidationSetNameTestData() {
+        return new Object[][] {
+                { "", "" },
+                { "First", "first" },
+                { "a", "a" },
+                { "AA", "aA" },
+                { "aA", "aA" },
+                { "andBecause", "andBecause" },
+                { "Aa", "aa" },
+        };
+    }
+
+    @Test(dataProvider = "lowerCaseCamelCaseValidationSetNameTestData")
+    public void lowerCaseCamelCaseValidationSetName(String input, String expected) {
+        ThinModelExport export = new ThinModelExport();
+        String actual = export.lowerCaseCamelCaseValidationSetName(input);
+        assertThat(actual, is(equalTo(expected)));
+    }
 }
