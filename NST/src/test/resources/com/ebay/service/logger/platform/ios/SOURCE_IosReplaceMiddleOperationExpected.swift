@@ -19,13 +19,13 @@ class SimpleCheckoutExampleTest : ServiceTestBase {
 	let purchaseCheckoutSession = PurchaseCheckoutSession()
 	// END OF AUTO GENERATED MEMBER FIELD CODE BLOCK
 
-	func test_replaceMiddleOperation() {
+	func test_replaceTheMiddleOperation() {
 		
 		// AUTO GENERATED MOCK INJECTION CODE BLOCK - DO NOT MODIFY CONTENTS
 		inject(responses: [
-			"CheckoutModule.EnterCheckoutRequest_1": "IosFuiTestLoggerTest_replaceTheMiddleOperation_1_EnterCheckout.har",
-			"CheckoutModule.SetPaymentRequest_2": "IosFuiTestLoggerTest_replaceTheMiddleOperation_2_SetPayment.har",
-			"CheckoutModule.PurchaseCheckoutRequest_3": "IosFuiTestLoggerTest_replaceTheMiddleOperation_3_PurchaseCheckout.har"
+			"CheckoutModule.EnterCheckoutRequest_1": "IosReplaceMiddleOperation_replaceTheMiddleOperation_1_EnterCheckout.har",
+			"CheckoutModule.SetPaymentRequest_2": "IosReplaceMiddleOperation_replaceTheMiddleOperation_2_SetPayment.har",
+			"CheckoutModule.PurchaseCheckoutRequest_3": "IosReplaceMiddleOperation_replaceTheMiddleOperation_3_PurchaseCheckout.har"
 			])
 		// END OF AUTO GENERATED MOCK INJECTION CODE BLOCK
 

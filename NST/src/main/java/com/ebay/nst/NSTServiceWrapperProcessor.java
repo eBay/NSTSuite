@@ -263,12 +263,11 @@ public final class NSTServiceWrapperProcessor {
 	protected void logRequestDetailsToConsole(NSTServiceWrapper<? extends NSTSchemaValidator> serviceWrapper,
 			NSTHttpRequest request) throws URISyntaxException, IOException, IllegalStateException {
 
-		Reporter.log(String.format("Request: %s", this.getClass().getSimpleName()), true);
-
 		if (request == null) {
 			return;
 		}
 
+		Reporter.log(String.format("Request: %s", request.getClass().getSimpleName()), true);
 		Reporter.log(String.format("Request URL: %s", ServiceUtil.getUrl(serviceWrapper)), true);
 
 		Object payload = request.getPayload();

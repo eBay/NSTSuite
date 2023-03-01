@@ -27,7 +27,7 @@ public class HarLogger implements FormatWriter {
 	public void writeMocks(List<ServiceCallCacheData> calls, String testClassName, String testMethodName) {
 		
 		FormatWriterUtil.removeMockFilesMatchingClassAndMethodName(testClassName, testMethodName);
-		int sequenceCounter = 0;
+		int sequenceCounter = 1;
 
 		for (ServiceCallCacheData call : calls) {
 

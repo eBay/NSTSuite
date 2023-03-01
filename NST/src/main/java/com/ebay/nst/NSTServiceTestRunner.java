@@ -51,8 +51,6 @@ public interface NSTServiceTestRunner extends IHookable {
 
 		hookCallback.runTestMethod(iTestResult);
 
-		TestExecutionEventManager.getInstance().notifyAfterTestMethodObserver(payload);
-
 		try {
 			EbaySoftAssert softAssert = getSoftAssert();
 			if (softAssert != null) {
@@ -62,9 +60,9 @@ public interface NSTServiceTestRunner extends IHookable {
 			iTestResult.setThrowable(t);
 			iTestResult.setStatus(ITestResult.FAILURE);
 		}
-		
+
 		// If the test passed write mocks/tests
-		if (iTestResult.getStatus() == ITestResult.SUCCESS) {
+		if (iTestResult.getStatus() == ITestResult.SUCCESS || iTestResult.getStatus() == ITestResult.STARTED) {
 			ServiceCallCacheManager.getInstance().notifyAfterTestMethodObserver(payload);
 		}
 

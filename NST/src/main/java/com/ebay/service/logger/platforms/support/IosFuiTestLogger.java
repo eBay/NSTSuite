@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import com.ebay.runtime.event.ObserverPayload;
 import org.testng.Reporter;
 
-import com.ebay.service.logger.ServiceLoggerFileNameGenerator;
 import com.ebay.service.logger.call.cache.ServiceCallCacheData;
 import com.ebay.service.logger.platforms.blocksignatures.BlockSignatureType;
 import com.ebay.service.logger.platforms.blocksignatures.PlatformBlockSignatures;
@@ -35,7 +35,7 @@ public class IosFuiTestLogger {
         PlatformLoggerUtil.updatedOperations(fileModel, callLog);
 
         try {
-          writeUpdatedFile(file, fileModel, callLog);
+          writeUpdatedFile(file, fileModel, callLog, className, methodName);
         } catch (IOException | URISyntaxException e) {
           e.printStackTrace();
         }
@@ -43,7 +43,7 @@ public class IosFuiTestLogger {
     }
   }
 
-  private void writeUpdatedFile(File file, GeneralPlatformFileModel fileModel, List<ServiceCallCacheData> callLog) throws IOException, URISyntaxException {
+  private void writeUpdatedFile(File file, GeneralPlatformFileModel fileModel, List<ServiceCallCacheData> callLog, String className, String methodName) throws IOException, URISyntaxException {
 
     StringBuilder methodBlockBuilder = new StringBuilder();
 
@@ -56,7 +56,7 @@ public class IosFuiTestLogger {
     List<String> newImportStatements = PlatformLoggerUtil.getImportStatements(operations);
     List<String> newMemberVariables = PlatformLoggerUtil.getMemberVariableStatements(operations);
     String methodOperationStatements = PlatformLoggerUtil.getMethodBlockStatements(operations, methodContentsIndent);
-    String injectStatements = getInjectStatement(methodContentsIndent, callLog);
+    String injectStatements = getInjectStatement(methodContentsIndent, callLog, className, methodName);
 
     methodBlockBuilder.append(method.getMethodSignature() + "\n");
 
@@ -141,7 +141,7 @@ public class IosFuiTestLogger {
     writer.close();
   }
 
-  private String getInjectStatement(String indent, List<ServiceCallCacheData> callLog) throws URISyntaxException, IOException {
+  private String getInjectStatement(String indent, List<ServiceCallCacheData> callLog, String className, String methodName) throws URISyntaxException, IOException {
 
     if (callLog.size() == 0) {
       return null;
@@ -167,7 +167,7 @@ public class IosFuiTestLogger {
       PlatformApiToFuiMapping apiToFuiMapping = apiToFuiMappingParser.getMappingsForApiName(apiName);
       String platformRequestTypeStatement = apiToFuiMapping.getPlatformRequestTypeStatement();
 
-      String mockFileName = ServiceLoggerFileNameGenerator.getInstance().getCallingClassAndMethodSignature(apiName);
+      String mockFileName = String.format("%s_%s_%d_%s", className, methodName, i+1, apiName);
 
       injectStatement.append("\n");
       injectStatement.append(indent);

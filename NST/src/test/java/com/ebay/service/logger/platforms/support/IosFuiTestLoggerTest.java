@@ -300,7 +300,7 @@ public class IosFuiTestLoggerTest {
     ServiceCallCacheData thirdCall = new ServiceCallCacheData(request, response, purchaseApiName);
     callLog.add(thirdCall);
     
-    logger.updateFuiFile(replaceMiddleOperationTestFile, "replaceMiddleOperation", callLog);
+    logger.updateFuiFile(replaceMiddleOperationTestFile, "replaceTheMiddleOperation", callLog);
 
     compareExpectedVsActualFiles(testFile, expectedFile);
   }
