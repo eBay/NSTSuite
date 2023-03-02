@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 
+import com.ebay.runtime.arguments.DisableConsoleLog;
 import org.json.JSONObject;
 import org.testng.Reporter;
 
@@ -296,6 +297,10 @@ public final class NSTServiceWrapperProcessor {
 
 	protected void logResponseDetailsToConsole(NSTServiceWrapper<? extends NSTSchemaValidator> serviceWrapper,
 			NSTHttpResponse response) {
+
+		if (RuntimeConfigManager.getInstance().getDisableConsoleLogValues().contains(DisableConsoleLog.RESPONSE_PAYLOAD)) {
+			return;
+		}
 
 		if (response == null) {
 			Reporter.log("Response was null - skipping logging response details.", true);
