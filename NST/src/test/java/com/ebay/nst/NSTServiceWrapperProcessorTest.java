@@ -643,6 +643,42 @@ public class NSTServiceWrapperProcessorTest {
 	}
 
 	@Test
+	public void logResponseDetailsToConsoleWhenLoggingEnabled() {
+		System.setOut(new PrintStream(outputStreamCaptor));
+
+		String payload = "{ \"Foo\": \"bar\" }";
+
+		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
+		when(serviceWrapper.getServiceWrapperConsoleOutput(Mockito.any(NSTHttpResponse.class))).thenReturn(null);
+
+		NSTHttpResponse response = mock(NSTHttpResponse.class);
+		when(response.getPayload()).thenReturn(payload);
+
+		processor = new NSTServiceWrapperProcessor();
+		processor.logResponseDetailsToConsole(serviceWrapper, response);
+		assertThat("Console does not contain expected output.", outputStreamCaptor.toString().trim(), containsString(payload));
+	}
+
+	@Test
+	public void doNotLogResponseDetailsToConsoleWhenLoggingDisabled() {
+		System.setOut(new PrintStream(outputStreamCaptor));
+		System.setProperty(DISABLE_LOG_TO_CONSOLE, "RESPONSE_PAYLOAD");
+		RuntimeConfigManager.getInstance().reinitialize();
+
+		String payload = "{ \"Foo\": \"bar\" }";
+
+		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
+		when(serviceWrapper.getServiceWrapperConsoleOutput(Mockito.any(NSTHttpResponse.class))).thenReturn(null);
+
+		NSTHttpResponse response = mock(NSTHttpResponse.class);
+		when(response.getPayload()).thenReturn(payload);
+
+		processor = new NSTServiceWrapperProcessor();
+		processor.logResponseDetailsToConsole(serviceWrapper, response);
+		assertThat("Console contains unexpected output.", outputStreamCaptor.toString().trim(), not(containsString(payload)));
+	}
+
+	@Test
 	public void logResponseDetailsToConsoleWithNullResponse() {
 		System.setOut(new PrintStream(outputStreamCaptor));
 		NSTServiceWrapper serviceWrapper = mock(NSTServiceWrapper.class);
