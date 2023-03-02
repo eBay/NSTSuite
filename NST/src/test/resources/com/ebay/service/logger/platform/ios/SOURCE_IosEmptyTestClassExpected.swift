@@ -21,8 +21,8 @@ class SimpleCheckoutExampleTest : ServiceTestBase {
 		
 		// AUTO GENERATED MOCK INJECTION CODE BLOCK - DO NOT MODIFY CONTENTS
 		inject(responses: [
-			"CheckoutModule.EnterCheckoutRequest_1": "IosFuiTestLoggerTest_addOperationsToEmptyMethod_1_EnterCheckout.har",
-			"CheckoutModule.PurchaseCheckoutRequest_2": "IosFuiTestLoggerTest_addOperationsToEmptyMethod_2_PurchaseCheckout.har"
+			"CheckoutModule.EnterCheckoutRequest_1": "IosEmptyTestClass_firstTest_1_EnterCheckout.har",
+			"CheckoutModule.PurchaseCheckoutRequest_2": "IosEmptyTestClass_firstTest_2_PurchaseCheckout.har"
 			])
 		// END OF AUTO GENERATED MOCK INJECTION CODE BLOCK
 

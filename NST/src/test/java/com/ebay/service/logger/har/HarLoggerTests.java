@@ -96,7 +96,7 @@ public class HarLoggerTests {
 	public void singleCall() throws IOException {
 
 		File expectedOutputFile = new File(outputFolderPath,
-				String.format("HarLoggerTests_singleCall_0_%s.har", SERVICE_WRAPPER_NAME));
+				String.format("HarLoggerTests_singleCall_1_%s.har", SERVICE_WRAPPER_NAME));
 		assertThat(expectedOutputFile, is(not(anExistingFile())));
 
 		ServiceCallCacheData cacheData = new ServiceCallCacheData(request, response, SERVICE_WRAPPER_NAME);
@@ -116,11 +116,11 @@ public class HarLoggerTests {
 	public void multipleCalls() throws IOException {
 
 		File firstExpectedOutputFile = new File(outputFolderPath,
-				String.format("HarLoggerTests_multipleCalls_0_%s.har", SERVICE_WRAPPER_NAME));
+				String.format("HarLoggerTests_multipleCalls_1_%s.har", SERVICE_WRAPPER_NAME));
 		assertThat(firstExpectedOutputFile, is(not(anExistingFile())));
 		
 		File secondExpectedOutputFile = new File(outputFolderPath,
-				String.format("HarLoggerTests_multipleCalls_1_%s.har", SECOND_SERVICE_WRAPPER_NAME));
+				String.format("HarLoggerTests_multipleCalls_2_%s.har", SECOND_SERVICE_WRAPPER_NAME));
 		assertThat(secondExpectedOutputFile, is(not(anExistingFile())));
 		
 		// ----------
