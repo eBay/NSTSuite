@@ -51,18 +51,32 @@ public interface NSTServiceTestRunner extends IHookable {
 
 		hookCallback.runTestMethod(iTestResult);
 
-		try {
-			EbaySoftAssert softAssert = getSoftAssert();
-			if (softAssert != null) {
-				softAssert.assertAll();
-			}
-		} catch (Throwable t) {
-			iTestResult.setThrowable(t);
+		// The latest updates to TestNG seem to have modified the ITestResult status handling.
+		// These are set for the timeout variants of invokeMethod*(). runTestMethod() calls
+		// invokeMethod() and captures the Throwable, if thrown, but does not modify
+		// the ITestResult status. If no exception was thrown we will set the status to SUCCESS
+		// here and carry on.
+		Throwable throwable = iTestResult.getThrowable();
+		if (throwable == null) {
+			iTestResult.setStatus(ITestResult.SUCCESS);
+		} else {
 			iTestResult.setStatus(ITestResult.FAILURE);
 		}
 
+		if (iTestResult.getStatus() == ITestResult.SUCCESS) {
+			try {
+				EbaySoftAssert softAssert = getSoftAssert();
+				if (softAssert != null) {
+					softAssert.assertAll();
+				}
+			} catch (Throwable t) {
+				iTestResult.setThrowable(t);
+				iTestResult.setStatus(ITestResult.FAILURE);
+			}
+		}
+
 		// If the test passed write mocks/tests
-		if (iTestResult.getStatus() == ITestResult.SUCCESS || iTestResult.getStatus() == ITestResult.STARTED) {
+		if (iTestResult.getStatus() == ITestResult.SUCCESS) {
 			ServiceCallCacheManager.getInstance().notifyAfterTestMethodObserver(payload);
 		}
 
