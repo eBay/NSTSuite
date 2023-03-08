@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -68,7 +69,31 @@ public class RuntimeConfigManagerTest {
 		System.clearProperty(CUSTOM_LOGGERS_PACKAGE);
 		System.clearProperty(CustomArgument.KEY);
 	}
-	
+
+	@BeforeMethod
+	private void resetTestContext() {
+		RuntimeConfigManager.getInstance().clearTestContext();
+	}
+
+	@Test(groups = "unitTest")
+	public void testReinitializeWithTestContext(ITestContext iTestContext) {
+		RuntimeConfigManager.getInstance().setTestContext(iTestContext);
+		RuntimeConfigManager.getInstance().reinitialize();
+
+		String mocksLocation = RuntimeConfigManager.getInstance().getIosMocksLocation();
+		assertThat(mocksLocation, is(equalTo("testContextLocation")));
+	}
+
+	@Test(groups = "unitTest")
+	public void testTestContextParameterIsOverridden(ITestContext iTestContext) {
+		System.setProperty(IOS_MOCKS_LOCATION, "iosMocksLocationFromSystem");
+		RuntimeConfigManager.getInstance().setTestContext(iTestContext);
+		RuntimeConfigManager.getInstance().reinitialize();
+
+		String mocksLocation = RuntimeConfigManager.getInstance().getIosMocksLocation();
+		assertThat(mocksLocation, is(equalTo("iosMocksLocationFromSystem")));
+	}
+
 	@Test(groups = "unitTest")
 	public void confirmClearingOfProperties() {
 		

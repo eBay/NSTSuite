@@ -13,4 +13,7 @@
 			<package name="com.ebay.utility.*" />
 		</packages>
 	</test>
+
+	<!--	Utilized in RuntimeConfigManagerTests-->
+	<parameter name="iosMocksLocation" value="testContextLocation"></parameter>
 </suite> 
