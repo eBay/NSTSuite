@@ -1,30 +1,21 @@
 package com.ebay.runtime;
 
+import com.ebay.nst.hosts.manager.PoolType;
+import com.ebay.runtime.arguments.*;
+import com.ebay.service.logger.WhatToWrite;
+import org.testng.ITestContext;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.ebay.nst.hosts.manager.PoolType;
-import com.ebay.runtime.arguments.AndroidMocksLocationArgument;
-import com.ebay.runtime.arguments.AndroidTestsLocationArgument;
-import com.ebay.runtime.arguments.CustomLoggersLocationArgument;
-import com.ebay.runtime.arguments.DisableConsoleLog;
-import com.ebay.runtime.arguments.DisableConsoleLogArgument;
-import com.ebay.runtime.arguments.IosMocksLocationArgument;
-import com.ebay.runtime.arguments.IosTestsLocationArgument;
-import com.ebay.runtime.arguments.Platform;
-import com.ebay.runtime.arguments.PlatformArgument;
-import com.ebay.runtime.arguments.PoolTypeArgument;
-import com.ebay.runtime.arguments.SchemaValidationArgument;
-import com.ebay.runtime.arguments.WhatToWriteArguments;
-import com.ebay.service.logger.WhatToWrite;
-
 public class RuntimeConfigManager {
 
 	// Singleton instance
 	private static RuntimeConfigManager instance = null;
+	private ITestContext testContext = null;
 
 	private Map<String, RuntimeConfigValue<?>> arguments = new ConcurrentHashMap<>();
 
@@ -54,6 +45,22 @@ public class RuntimeConfigManager {
 		}
 
 		return instance;
+	}
+
+	/**
+	 * Set the TestNG test context for use when reinitializing the RuntimeConfigManager.
+	 * Setting this will utilize any TestNG parameters that are set.
+	 * @param testContext The TestNG test context object.
+	 */
+	public void setTestContext(ITestContext testContext) {
+		this.testContext = testContext;
+	}
+
+	/**
+	 * Clear the current instance of ITestContext that would be used to parse runtime parameters.
+	 */
+	public void clearTestContext() {
+		this.testContext = null;
 	}
 
 	/**
@@ -101,9 +108,29 @@ public class RuntimeConfigManager {
 	 * Reset the runtime arguments to the default/command line values specified.
 	 * Call this after internally overriding values or to pickup custom arguments
 	 * added via addRuntimeArgument().
+	 *
+	 * Note that if the TestNG test context is set, then the RuntimeConfigManager will utilize any parameters
+	 * defined in the TestNG test suite XML file. However, any runtime parameters defined at the system level will
+	 * override these parameters / take precedence.
 	 */
 	public void reinitialize() {
 		init();
+
+		if (testContext != null) {
+			for (String key : arguments.keySet()) {
+				String parameter = testContext.getCurrentXmlTest().getParameter(key);
+				RuntimeConfigValue platformValue = RuntimeConfigManager.getInstance().getRuntimeArgument(key);
+
+				if (parameter != null && !parameter.isEmpty()) {
+					platformValue.parseRuntimeArgument(parameter);
+				}
+
+				String value = System.getProperty(key);
+				if (value != null && !value.isEmpty()) {
+					platformValue.parseRuntimeArgument(value);
+				}
+			}
+		}
 	}
 
 	/**

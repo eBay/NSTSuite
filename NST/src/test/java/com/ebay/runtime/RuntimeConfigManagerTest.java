@@ -7,11 +7,9 @@ import static org.hamcrest.Matchers.nullValue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -68,7 +66,39 @@ public class RuntimeConfigManagerTest {
 		System.clearProperty(CUSTOM_LOGGERS_PACKAGE);
 		System.clearProperty(CustomArgument.KEY);
 	}
-	
+
+	@BeforeMethod
+	private void resetTestContext() {
+		RuntimeConfigManager.getInstance().clearTestContext();
+	}
+
+	@Test(groups = "unitTest")
+	public void testReinitializeWithTestContext(ITestContext iTestContext) {
+		Map<String, String> params = iTestContext.getCurrentXmlTest().getAllParameters();
+		params.put("iosMocksLocation", "testContextLocation");
+		iTestContext.getCurrentXmlTest().setParameters(params);
+
+		RuntimeConfigManager.getInstance().setTestContext(iTestContext);
+		RuntimeConfigManager.getInstance().reinitialize();
+
+		String mocksLocation = RuntimeConfigManager.getInstance().getIosMocksLocation();
+		assertThat(mocksLocation, is(equalTo("testContextLocation")));
+	}
+
+	@Test(groups = "unitTest")
+	public void testTestContextParameterIsOverridden(ITestContext iTestContext) {
+		Map<String, String> params = iTestContext.getCurrentXmlTest().getAllParameters();
+		params.put("iosMocksLocation", "testContextLocation");
+		iTestContext.getCurrentXmlTest().setParameters(params);
+
+		System.setProperty(IOS_MOCKS_LOCATION, "iosMocksLocationFromSystem");
+		RuntimeConfigManager.getInstance().setTestContext(iTestContext);
+		RuntimeConfigManager.getInstance().reinitialize();
+
+		String mocksLocation = RuntimeConfigManager.getInstance().getIosMocksLocation();
+		assertThat(mocksLocation, is(equalTo("iosMocksLocationFromSystem")));
+	}
+
 	@Test(groups = "unitTest")
 	public void confirmClearingOfProperties() {
 		
