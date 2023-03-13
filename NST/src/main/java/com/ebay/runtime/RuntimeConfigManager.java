@@ -56,6 +56,9 @@ public class RuntimeConfigManager {
 		this.testContext = testContext;
 	}
 
+	/**
+	 * Clear the current instance of ITestContext that would be used to parse runtime parameters.
+	 */
 	public void clearTestContext() {
 		this.testContext = null;
 	}
