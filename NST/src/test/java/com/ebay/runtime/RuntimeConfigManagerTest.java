@@ -7,10 +7,7 @@ import static org.hamcrest.Matchers.nullValue;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
@@ -77,6 +74,10 @@ public class RuntimeConfigManagerTest {
 
 	@Test(groups = "unitTest")
 	public void testReinitializeWithTestContext(ITestContext iTestContext) {
+		Map<String, String> params = iTestContext.getCurrentXmlTest().getAllParameters();
+		params.put("iosMocksLocation", "testContextLocation");
+		iTestContext.getCurrentXmlTest().setParameters(params);
+
 		RuntimeConfigManager.getInstance().setTestContext(iTestContext);
 		RuntimeConfigManager.getInstance().reinitialize();
 
@@ -86,6 +87,10 @@ public class RuntimeConfigManagerTest {
 
 	@Test(groups = "unitTest")
 	public void testTestContextParameterIsOverridden(ITestContext iTestContext) {
+		Map<String, String> params = iTestContext.getCurrentXmlTest().getAllParameters();
+		params.put("iosMocksLocation", "testContextLocation");
+		iTestContext.getCurrentXmlTest().setParameters(params);
+
 		System.setProperty(IOS_MOCKS_LOCATION, "iosMocksLocationFromSystem");
 		RuntimeConfigManager.getInstance().setTestContext(iTestContext);
 		RuntimeConfigManager.getInstance().reinitialize();
