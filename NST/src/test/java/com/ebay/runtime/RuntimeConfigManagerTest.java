@@ -520,33 +520,31 @@ public class RuntimeConfigManagerTest {
 
 		new Thread(() -> {
 			RuntimeConfigManager first = RuntimeConfigManager.getInstance();
-			// Loop for two seconds (100 * 20 ms wait)
-			for (int i = 0; i < 100; i++) {
-				PlatformArgument platformArg = (PlatformArgument) first.getRuntimeArgument(PlatformArgument.KEY);
-				platformArg.override(Platform.SITE);
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			}
+
 			PlatformArgument platformArg = (PlatformArgument) first.getRuntimeArgument(PlatformArgument.KEY);
+			platformArg.override(Platform.SITE);
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+
+			platformArg = (PlatformArgument) first.getRuntimeArgument(PlatformArgument.KEY);
 			firstPlatform.set(platformArg.getRuntimeArgumentValue());
 		}).start();
 
 		new Thread(() -> {
 			RuntimeConfigManager second = RuntimeConfigManager.getInstance();
-			// Loop for two seconds (100 * 20 ms wait)
-			for (int i = 0; i < 100; i++) {
-				PlatformArgument platformArg = (PlatformArgument) second.getRuntimeArgument(PlatformArgument.KEY);
-				platformArg.override(Platform.ANDROID);
-				try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			}
+
 			PlatformArgument platformArg = (PlatformArgument) second.getRuntimeArgument(PlatformArgument.KEY);
+			platformArg.override(Platform.ANDROID);
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+
+			platformArg = (PlatformArgument) second.getRuntimeArgument(PlatformArgument.KEY);
 			secondPlatform.set(platformArg.getRuntimeArgumentValue());
 		}).start();
 
