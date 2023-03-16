@@ -1,14 +1,14 @@
 package com.ebay.runtime;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
+import com.ebay.runtime.arguments.PlatformArgument;
 import org.testng.ITestContext;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -510,6 +510,57 @@ public class RuntimeConfigManagerTest {
 		argument = (CustomArgument) RuntimeConfigManager.getInstance().getRuntimeArgument(CustomArgument.KEY);
 		runtimeValue = argument.getRuntimeArgumentValue();
 		assertThat(runtimeValue, is(equalTo(true)));
+	}
+
+	@Test
+	public void testThreadSafety() throws Exception {
+
+		AtomicReference<Platform> firstPlatform = new AtomicReference<>(null);
+		AtomicReference<Platform> secondPlatform = new AtomicReference<>(null);
+
+		new Thread(() -> {
+			RuntimeConfigManager first = RuntimeConfigManager.getInstance();
+			// Loop for two seconds (100 * 20 ms wait)
+			for (int i = 0; i < 100; i++) {
+				PlatformArgument platformArg = (PlatformArgument) first.getRuntimeArgument(PlatformArgument.KEY);
+				platformArg.override(Platform.SITE);
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			PlatformArgument platformArg = (PlatformArgument) first.getRuntimeArgument(PlatformArgument.KEY);
+			firstPlatform.set(platformArg.getRuntimeArgumentValue());
+		}).start();
+
+		new Thread(() -> {
+			RuntimeConfigManager second = RuntimeConfigManager.getInstance();
+			// Loop for two seconds (100 * 20 ms wait)
+			for (int i = 0; i < 100; i++) {
+				PlatformArgument platformArg = (PlatformArgument) second.getRuntimeArgument(PlatformArgument.KEY);
+				platformArg.override(Platform.ANDROID);
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			PlatformArgument platformArg = (PlatformArgument) second.getRuntimeArgument(PlatformArgument.KEY);
+			secondPlatform.set(platformArg.getRuntimeArgumentValue());
+		}).start();
+
+		int loopCounter = 0;
+		while ((firstPlatform.get() == null || secondPlatform.get() == null) && loopCounter < 6) {
+			Thread.sleep(1000); // Sleep for a full second.
+			loopCounter++;
+			System.out.println("testThreadSafety loop index: " + loopCounter);
+		}
+		assertThat(firstPlatform.get(), is(notNullValue()));
+		assertThat(secondPlatform.get(), is(notNullValue()));
+		assertThat(firstPlatform.get(), is(not(equalTo(secondPlatform.get()))));
+		assertThat(firstPlatform.get(), is(equalTo(Platform.SITE)));
+		assertThat(secondPlatform.get(), is(equalTo(Platform.ANDROID)));
 	}
 	
 	class CustomArgument implements RuntimeConfigValue<Boolean> {

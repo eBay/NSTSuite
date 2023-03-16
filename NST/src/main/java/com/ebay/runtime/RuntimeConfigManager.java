@@ -13,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RuntimeConfigManager {
 
-	// Singleton instance
-	private static RuntimeConfigManager instance = null;
 	private ITestContext testContext = null;
 
 	private Map<String, RuntimeConfigValue<?>> arguments = new ConcurrentHashMap<>();
@@ -34,17 +32,22 @@ public class RuntimeConfigManager {
 		init();
 	}
 
-	public static RuntimeConfigManager getInstance() {
-
-		if (instance == null) {
-			synchronized (RuntimeConfigManager.class) {
-				if (instance == null) {
-					instance = new RuntimeConfigManager();
-				}
-			}
+	/**
+	 * For the cases where a user is running their tests in parallel we need the RuntimeConfigurationManager singleton
+	 * to be a unique instance per thread. Using ThreadLocal gives us the ability to have a unique instance per thread.
+	 * https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html
+	 *
+	 * This ensures that overrides or reinitialize operations will NOT have bleed over into the other test threads.
+	 */
+	private static final ThreadLocal<RuntimeConfigManager> threadId = new ThreadLocal<RuntimeConfigManager>() {
+		@Override
+		protected RuntimeConfigManager initialValue() {
+			return new RuntimeConfigManager();
 		}
+	};
 
-		return instance;
+	public static RuntimeConfigManager getInstance() {
+		return threadId.get();
 	}
 
 	/**
