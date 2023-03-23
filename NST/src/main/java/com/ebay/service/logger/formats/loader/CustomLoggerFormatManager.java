@@ -112,8 +112,11 @@ public class CustomLoggerFormatManager {
 						FormatWriter formatWriter = (FormatWriter) constructor.newInstance();
 						platformWriters.put(formatWriter.getPlatformAssociation(), formatWriter);
 						break;
-					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException e) {
+						e.printStackTrace();
+						break;
+					} catch (InvocationTargetException e) {
+						e.getTargetException().printStackTrace();
 						e.printStackTrace();
 						break;
 					}
