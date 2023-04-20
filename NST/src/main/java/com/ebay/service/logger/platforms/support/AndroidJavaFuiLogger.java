@@ -33,6 +33,7 @@ public class AndroidJavaFuiLogger {
 
         try {
           writeUpdatedFile(file, fileModel);
+          Reporter.log("Added test class statements to Android test class: " + file, true);
         } catch (IOException | URISyntaxException e) {
           e.printStackTrace();
         }
