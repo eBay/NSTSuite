@@ -28,6 +28,7 @@ public class RuntimeConfigManager {
 		arguments.put(SchemaValidationArgument.KEY, new SchemaValidationArgument());
 		arguments.put(WhatToWriteArguments.KEY, new WhatToWriteArguments());
 		arguments.put(CustomLoggersLocationArgument.KEY, new CustomLoggersLocationArgument());
+		arguments.put(UseNstDefaultMockLogger.KEY, new UseNstDefaultMockLogger());
 
 		init();
 	}
@@ -249,6 +250,15 @@ public class RuntimeConfigManager {
 	 */
 	public String getCustomLoggerFormatPackage() {
 		return (String) arguments.get(CustomLoggersLocationArgument.KEY).getRuntimeArgumentValue();
+	}
+
+	/**
+	 * Check if the NST default logger is to be used.
+	 *
+	 * @return True to use default NST logger, false to use the custom logger if provided.
+	 */
+	public Boolean getUseNstDefaultLogger() {
+		return (Boolean) arguments.get(UseNstDefaultMockLogger.KEY).getRuntimeArgumentValue();
 	}
 
 	private void init() {

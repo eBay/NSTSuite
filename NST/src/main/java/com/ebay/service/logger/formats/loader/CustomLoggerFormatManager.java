@@ -94,7 +94,8 @@ public class CustomLoggerFormatManager {
 		platformWriters.put(Platform.ANDROID, new AndroidLogger());
 
 		String customLoggerPackage = RuntimeConfigManager.getInstance().getCustomLoggerFormatPackage();
-		if (customLoggerPackage == null) {
+		Boolean useNstDefaultLogger = RuntimeConfigManager.getInstance().getUseNstDefaultLogger();
+		if (customLoggerPackage == null || useNstDefaultLogger) {
 			return;
 		}
 
