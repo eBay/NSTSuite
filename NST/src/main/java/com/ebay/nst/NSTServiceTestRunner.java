@@ -34,9 +34,6 @@ public interface NSTServiceTestRunner extends IHookable {
 		String startTestCase = "TestNG:Start %s";
 		String endTestCase = "TestNG:End %s";
 
-		// Clear all overrides.
-		RuntimeConfigManager.getInstance().reinitialize();
-
 		Reporter.setCurrentTestResult(iTestResult);
 
 		String methodName = iTestResult.getMethod().getMethodName();
@@ -50,6 +47,11 @@ public interface NSTServiceTestRunner extends IHookable {
 		TestExecutionEventManager.getInstance().notifyBeforeTestMethodObserver(payload);
 
 		hookCallback.runTestMethod(iTestResult);
+
+		// Clear all runtime overrides.
+		// This needs to occur after the test method executes to enable the use of
+		// @beforeMethod to setup overrides before teach test method executes.
+		RuntimeConfigManager.getInstance().reinitialize();
 
 		// The latest updates to TestNG seem to have modified the ITestResult status handling.
 		// These are set for the timeout variants of invokeMethod*(). runTestMethod() calls
