@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import com.ebay.runtime.arguments.CustomLoggersLocationArgument;
+import com.ebay.runtime.arguments.UseNstDefaultMockLogger;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -26,7 +28,8 @@ import com.ebay.service.logger.platforms.IosLogger;
 
 public class CustomLoggerFormatManagerTest {
 	
-	private static final String CUSTOM_LOGGERS_PACKAGE = "customLoggersPackage";
+	private static final String CUSTOM_LOGGERS_PACKAGE = CustomLoggersLocationArgument.KEY;
+	private static final String OVERRIDE_CUSTOM_LOGGER = UseNstDefaultMockLogger.KEY;
 
 	@BeforeMethod(alwaysRun = true)
 	@AfterMethod(alwaysRun = true)
@@ -54,6 +57,19 @@ public class CustomLoggerFormatManagerTest {
 		RuntimeConfigManager.getInstance().reinitialize();
 		Map<Platform, FormatWriter> loggers = CustomLoggerFormatManager.getInstance().reinitialize().getPlatformLoggers();
 		assertThat(loggers.size(), is(equalTo(4)));
+		assertThat(loggers.get(Platform.SITE), is(instanceOf(HarLogger.class)));
+		assertThat(loggers.get(Platform.MWEB), is(instanceOf(HarLogger.class)));
+		assertThat(loggers.get(Platform.ANDROID), is(instanceOf(AndroidLogger.class)));
+		assertThat(loggers.get(Platform.IOS), is(instanceOf(IosLogger.class)));
+	}
+
+	@Test
+	public void useDefaultLoggerOverrideWhenCustomLoggerAlsoSpecified() {
+
+		System.setProperty(CUSTOM_LOGGERS_PACKAGE, "com.ebay.service.logger.formats.loader.test.classes.all");
+		System.setProperty(OVERRIDE_CUSTOM_LOGGER, "true");
+		RuntimeConfigManager.getInstance().reinitialize();
+		Map<Platform, FormatWriter> loggers = CustomLoggerFormatManager.getInstance().reinitialize().getPlatformLoggers();
 		assertThat(loggers.get(Platform.SITE), is(instanceOf(HarLogger.class)));
 		assertThat(loggers.get(Platform.MWEB), is(instanceOf(HarLogger.class)));
 		assertThat(loggers.get(Platform.ANDROID), is(instanceOf(AndroidLogger.class)));

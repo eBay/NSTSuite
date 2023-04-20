@@ -94,7 +94,10 @@ public class CustomLoggerFormatManager {
 		platformWriters.put(Platform.ANDROID, new AndroidLogger());
 
 		String customLoggerPackage = RuntimeConfigManager.getInstance().getCustomLoggerFormatPackage();
-		if (customLoggerPackage == null) {
+		Boolean useNstDefaultLogger = RuntimeConfigManager.getInstance().getUseNstDefaultLogger();
+		// useNstDefaultLogger will never be null. Boolean.parseBoolean(argumentValue); will parse to true only
+		// if the value is `true` case-insensitive. All other values, including null will parse as false.
+		if (customLoggerPackage == null || useNstDefaultLogger) {
 			return;
 		}
 
