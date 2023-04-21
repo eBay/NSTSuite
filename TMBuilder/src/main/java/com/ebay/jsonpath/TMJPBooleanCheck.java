@@ -1,9 +1,9 @@
 package com.ebay.jsonpath;
 
 import com.ebay.tool.thinmodelgen.gui.checkeditor.annotations.TMCheckData;
+import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockType;
 import com.ebay.tool.thinmodelgen.gui.menu.export.developer.mock.DeveloperMockValue;
-import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelSerializer;
 
 public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSerializer, DeveloperMockValue<Boolean> {
 
@@ -79,6 +79,15 @@ public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSeriali
       builder.append(String.format(".isEqualTo(%b)", getExpectedValue().booleanValue()));
     }
 
+    return builder.toString();
+  }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPBooleanCheck()");
+    if(getExpectedValue() != null) {
+      builder.append(String.format(".isEqualTo(%b)", getExpectedValue().booleanValue()));
+    }
     return builder.toString();
   }
 }

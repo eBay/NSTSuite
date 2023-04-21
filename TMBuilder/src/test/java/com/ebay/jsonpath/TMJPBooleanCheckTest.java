@@ -103,6 +103,14 @@ public class TMJPBooleanCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPBooleanCheck().isEqualTo(true);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPBooleanCheck().isEqualTo(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPBooleanCheckToTMJPBooleanCheck() {
 
     JPBooleanCheck original = new JPBooleanCheck();

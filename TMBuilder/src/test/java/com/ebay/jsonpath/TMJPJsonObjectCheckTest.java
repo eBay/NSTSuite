@@ -221,6 +221,14 @@ public class TMJPJsonObjectCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPJsonObjectCheck();
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPJsonObjectCheck()")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPJsonObjectCheckToTMJPJsonObjectCheck() {
 
     JPJsonObjectCheck original = new JPJsonObjectCheck();

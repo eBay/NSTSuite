@@ -7,4 +7,6 @@ public interface ThinModelSerializer {
    * @return Statements to use in thin model implementation.
    */
   public String getJavaStatements();
+
+  String getKotlinStatements();
 }

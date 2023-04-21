@@ -174,6 +174,14 @@ public class TMJPJsonArrayCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPJsonArrayCheck().hasLength(3).hasMinLength(1).hasMaxLength(4);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPJsonArrayCheck().hasLength(3).hasMinLength(1).hasMaxLength(4)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPJsonArrayCheckToTMJPJsonArrayCheck() {
 
     JPJsonArrayCheck original = new JPJsonArrayCheck();

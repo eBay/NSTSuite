@@ -298,6 +298,14 @@ public class TMJPListOfDoubleCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPListOfDoubleCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(3.1415926535,2.00000)).contains(Arrays.asList(1.0000)).hasAllValuesEqualTo(4.0001);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfDoubleCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(3.1415926535,2.0)).contains(listOf(1.0)).hasAllValuesEqualTo(4.0001)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfDoubleCheckToTMJPListOfDoubleCheck() {
 
     JPListOfDoubleCheck original = new JPListOfDoubleCheck();

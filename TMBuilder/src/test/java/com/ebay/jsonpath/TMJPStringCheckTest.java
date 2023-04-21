@@ -226,6 +226,14 @@ public class TMJPStringCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPStringCheck().hasLength(3).isEqualTo("one").contains("on").hasMinimumNumberOfCharacters(1).hasMaximumNumberOfCharacters(3);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPStringCheck().hasLength(3).isEqualTo(\"one\").contains(\"on\").hasMinimumNumberOfCharacters(1).hasMaximumNumberOfCharacters(3)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPStringCheckToTMJPStringCheck() {
 
     JPStringCheck original = new JPStringCheck();

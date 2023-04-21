@@ -199,4 +199,60 @@ public class TMJPListOfStringCheck extends JPListOfStringCheck implements ThinMo
 
     return builder.toString();
   }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPListOfStringCheck()");
+
+    if (getHasLengthValue() != null) {
+      builder.append(String.format(".hasLength(%d)", getHasLengthValue().intValue()));
+    }
+
+    if (getMinLength() != null) {
+      builder.append(String.format(".hasMinLength(%d)", getMinLength().intValue()));
+    }
+
+    if (getMaxLength() != null) {
+      builder.append(String.format(".hasMaxLength(%d)", getMaxLength().intValue()));
+    }
+
+    if (getIsEqualToValues() != null) {
+      StringBuilder values = new StringBuilder();
+      for (String value : getIsEqualToValues()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("\"%s\"", value));
+      }
+      builder.append(String.format(".isEqualTo(listOf(%s))", values.toString()));
+    }
+
+    if (getContainsValues() != null) {
+      StringBuilder values = new StringBuilder();
+      for (String value : getContainsValues()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("\"%s\"", value));
+      }
+      builder.append(String.format(".contains(listOf(%s))", values.toString()));
+    }
+
+    if (getAllExpectedValue() != null) {
+      builder.append(String.format(".hasAllValuesEqualTo(\"%s\")", getAllExpectedValue()));
+    }
+
+    if (getLimitedToValues() != null) {
+      StringBuilder values = new StringBuilder();
+      for (String value : getLimitedToValues()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("\"%s\"", value));
+      }
+      builder.append(String.format(".isLimitedToValues(listOf(%s))", values.toString()));
+    }
+
+    return builder.toString();
+  }
 }

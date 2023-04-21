@@ -1,12 +1,26 @@
 package com.ebay.tool.thinmodelgen.gui.menu;
 
+import com.ebay.runtime.RuntimeConfigManager;
+import com.ebay.runtime.arguments.Platform;
+import com.ebay.tool.thinmodelgen.gui.MainWindow;
+import com.ebay.tool.thinmodelgen.gui.TMGuiConstants;
+import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManager;
+import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManagerObserver;
+import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
+import com.ebay.tool.thinmodelgen.gui.menu.export.ExportConstants;
+import com.ebay.tool.thinmodelgen.gui.menu.export.KotlinThinModelExport;
+import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelExport;
+import com.ebay.tool.thinmodelgen.gui.menu.filemodel.*;
+import com.ebay.tool.thinmodelgen.jsonschema.parser.SchemaParserPayload;
+import com.ebay.tool.thinmodelgen.utility.MethodNameChecker;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -14,34 +28,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.filechooser.FileFilter;
-
-import com.ebay.tool.thinmodelgen.gui.MainWindow;
-import com.ebay.tool.thinmodelgen.gui.TMGuiConstants;
-import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManager;
-import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManagerObserver;
-import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
-import com.ebay.tool.thinmodelgen.gui.menu.export.ExportConstants;
-import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelExport;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.FileModel;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.FileOperationHandler;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.TMFileSingleton;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
-import com.ebay.tool.thinmodelgen.jsonschema.parser.SchemaParserPayload;
-import com.ebay.tool.thinmodelgen.utility.MethodNameChecker;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @SuppressWarnings("serial")
 public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFileManagerObserver {
@@ -325,7 +311,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doNewValidationSet() {
-    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set name:");
+    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set method name:");
 
     if (name != null) {
       if (MethodNameChecker.isValueValidMethodName(name) && !validationSetCacheContainsSetWithName(name)) {
@@ -354,7 +340,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doEditValidationSet(String validationSetName) {
-    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set name:", validationSetName);
+    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set method name:", validationSetName);
 
     if (editedSetName != null) {
       if (MethodNameChecker.isValueValidMethodName(editedSetName) && !validationSetCacheContainsSetWithName(editedSetName)) {
@@ -382,7 +368,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
         }
       }
 
-      String message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
+      String message = "";
+      if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID))
+        message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
+      else if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID_KOTLIN))
+        message = new KotlinThinModelExport().getValidationStatementsForValidationSet(setModel);
+
       message = message.replaceAll("\t", "").trim();
 
       JTextArea textArea = new JTextArea(25, 125);
@@ -775,7 +766,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     JFileChooser fc = new JFileChooser(currentExportFile);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new JavaFileFilter());
+    fc.setFileFilter(new JavaKotlinFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -794,7 +785,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     JFileChooser fc = new JFileChooser(currentDeveloperMockExportFile);
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new JavaFileFilter());
+    fc.setFileFilter(new JavaKotlinFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -829,11 +820,15 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private void writeExportToFile() {
 
     ThinModelExport thinModelExport = new ThinModelExport();
+    KotlinThinModelExport kotlinThinModelExport = new KotlinThinModelExport();
     String tmbFilePath = "";
 
     try {
       tmbFilePath = currentExportFile.getCanonicalPath();
-      thinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
+      if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID))
+        thinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
+      else if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID_KOTLIN))
+        kotlinThinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
     } catch (ClassNotFoundException | IOException e) {
       e.printStackTrace();
 
@@ -968,12 +963,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     Path filePath = Paths.get(otherFilePath);
     Path tmbPath = Paths.get(tmbFilePath);
-    
+
     if (new File(tmbFilePath).isFile()) {
     	tmbPath = tmbPath.getParent();
     }
-    
-    
+
+
     Path relativePath = tmbPath.relativize(filePath);
     String relative = relativePath.toString();
     System.out.printf("Convert path [%s] to relative path [%s].%n", otherFilePath, relative);
@@ -986,9 +981,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     if (tmbFile.isFile()) {
     	tmbFile = tmbFile.getParentFile();
     }
-    
+
     File combinedPath = new File(tmbFile, path);
-    
+
     if (!combinedPath.exists()) {
     	// TODO: This block is being kept to support existing tmb files.
     	// Plan to remove this in a future release when we expect all
@@ -998,7 +993,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 	    combinedPath = filePath.toFile();
 	    System.out.printf("Resolve path [%s] as [%s].%n", path, combinedPath);
     }
-    
+
     System.out.printf("Resolve path [%s] as [%s].%n", path, combinedPath);
     return combinedPath.toString();
   }
@@ -1087,7 +1082,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
   }
 
-  class JavaFileFilter extends FileFilter {
+  class JavaKotlinFileFilter extends FileFilter {
 
     @Override
     public boolean accept(File f) {
@@ -1103,12 +1098,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       String extension = fileName.substring(dotIndex);
 
-      return extension.equals(".java");
+      return extension.equals(".java") || extension.equals(".kt");
     }
 
     @Override
     public String getDescription() {
-      return "Java (.java)";
+      return "Java (.java)/ Kotlin (.kt)";
     }
 
   }

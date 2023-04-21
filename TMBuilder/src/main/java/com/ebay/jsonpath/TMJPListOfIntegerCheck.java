@@ -184,4 +184,49 @@ public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements Thin
 
     return builder.toString();
   }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPListOfIntegerCheck()");
+
+    if (getHasLength() != null) {
+      builder.append(String.format(".hasLength(%d)", getHasLength().intValue()));
+    }
+
+    if (getMinLength() != null) {
+      builder.append(String.format(".hasMinLength(%d)", getMinLength().intValue()));
+    }
+
+    if (getMaxLength() != null) {
+      builder.append(String.format(".hasMaxLength(%d)", getMaxLength().intValue()));
+    }
+
+    if (getIsEqualToValues() != null) {
+      StringBuilder values = new StringBuilder();
+      for (Integer value : getIsEqualToValues()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("%d", value));
+      }
+      builder.append(String.format(".isEqualTo(listOf(%s))", values.toString()));
+    }
+
+    if (getContainsValues() != null) {
+      StringBuilder values = new StringBuilder();
+      for (Integer value : getContainsValues()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("%d", value));
+      }
+      builder.append(String.format(".contains(listOf(%s))", values.toString()));
+    }
+
+    if (getAllExpectedValue() != null) {
+      builder.append(String.format(".hasAllValuesEqualTo(%d)", getAllExpectedValue()));
+    }
+
+    return builder.toString();
+  }
 }

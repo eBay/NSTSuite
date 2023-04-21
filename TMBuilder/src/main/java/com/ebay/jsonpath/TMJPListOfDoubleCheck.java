@@ -177,4 +177,49 @@ public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinMo
 
     return builder.toString();
   }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPListOfDoubleCheck()");
+
+    if (getHasLength() != null) {
+      builder.append(String.format(".hasLength(%d)", getHasLength().intValue()));
+    }
+
+    if (getMinLength() != null) {
+      builder.append(String.format(".hasMinLength(%d)", getMinLength().intValue()));
+    }
+
+    if (getMaxLength() != null) {
+      builder.append(String.format(".hasMaxLength(%d)", getMaxLength().intValue()));
+    }
+
+    if (getIsEqualToValues() != null) {
+      StringBuilder values = new StringBuilder();
+      for (Double value : getIsEqualToValues()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("%s", DoubleUtility.removeTrailingZeros(value)));
+      }
+      builder.append(String.format(".isEqualTo(listOf(%s))", values.toString()));
+    }
+
+    if (getContainsValues() != null) {
+      StringBuilder values = new StringBuilder();
+      for (Double value : getContainsValues()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("%s", DoubleUtility.removeTrailingZeros(value)));
+      }
+      builder.append(String.format(".contains(listOf(%s))", values.toString()));
+    }
+
+    if (getAllExpectedValue() != null) {
+      builder.append(String.format(".hasAllValuesEqualTo(%s)", DoubleUtility.removeTrailingZeros(getAllExpectedValue())));
+    }
+
+    return builder.toString();
+  }
 }
