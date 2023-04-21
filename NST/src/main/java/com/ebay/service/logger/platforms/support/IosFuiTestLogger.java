@@ -36,6 +36,7 @@ public class IosFuiTestLogger {
 
         try {
           writeUpdatedFile(file, fileModel, callLog, className, methodName);
+          Reporter.log("Added test class statements to iOS test class: " + file, true);
         } catch (IOException | URISyntaxException e) {
           e.printStackTrace();
         }
