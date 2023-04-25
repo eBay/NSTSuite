@@ -56,10 +56,11 @@ public class CustomLoggerFormatManagerTest {
 		
 		RuntimeConfigManager.getInstance().reinitialize();
 		Map<Platform, FormatWriter> loggers = CustomLoggerFormatManager.getInstance().reinitialize().getPlatformLoggers();
-		assertThat(loggers.size(), is(equalTo(4)));
+		assertThat(loggers.size(), is(equalTo(5)));
 		assertThat(loggers.get(Platform.SITE), is(instanceOf(HarLogger.class)));
 		assertThat(loggers.get(Platform.MWEB), is(instanceOf(HarLogger.class)));
 		assertThat(loggers.get(Platform.ANDROID), is(instanceOf(AndroidLogger.class)));
+		assertThat(loggers.get(Platform.ANDROID_KOTLIN), is(instanceOf(AndroidLogger.class)));
 		assertThat(loggers.get(Platform.IOS), is(instanceOf(IosLogger.class)));
 	}
 
