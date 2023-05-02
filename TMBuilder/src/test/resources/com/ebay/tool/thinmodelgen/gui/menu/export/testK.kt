@@ -5,9 +5,8 @@ import com.ebay.jsonpath.JsonPathExecutor
 import com.ebay.nst.NSTServiceModelBase
 import org.json.JSONObject
 import org.testng.asserts.SoftAssert
-import java.util.*
 
-class TestKotlin(jsonRoot: JSONObject?, softAssert: SoftAssert?) :
+class TestKotlin(jsonRoot: JSONObject, softAssert: SoftAssert) :
     NSTServiceModelBase(jsonRoot, softAssert) {
 
     override fun validate(softAssert: SoftAssert) {
@@ -17,7 +16,7 @@ class TestKotlin(jsonRoot: JSONObject?, softAssert: SoftAssert?) :
     // TMB Generated Validation Method
     private fun generatedValidations(softAssert: SoftAssert) {
         val validations: MutableMap<String, JsonPathExecutor> = HashMap()
-        validations.put("$.modules.banners._type", JPStringCheck())
+        validations["$.modules.banners._type"] = JPStringCheck()
         evaluateJsonPaths(validations, softAssert)
     }
 }

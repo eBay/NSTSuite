@@ -118,7 +118,7 @@ public class KotlinThinModelExport {
                     insideValidationMethod = false;
 
                     if (!generatedValidationMethodCallExists) {
-                        fileContents.append(String.format("\t\t%s;\n", GENERATED_VALIDATION_METHOD_CALL));
+                        fileContents.append(String.format("\t\t%s", GENERATED_VALIDATION_METHOD_CALL));
                         generatedValidationMethodCallExists = true;
                     }
                 }
@@ -140,8 +140,8 @@ public class KotlinThinModelExport {
                 continue;
             }
             //endregion
-            fileContents.append(line);
             fileContents.append("\n");
+            fileContents.append(line);
         }
 
         bufferedReader.close();
@@ -213,7 +213,6 @@ public class KotlinThinModelExport {
             allValidations.append(GENERATED_VALIDATIONS_START_BLOCK);
             allValidations.append("\n");
             allValidations.append(prepareMethodAndStatementsWithMethod(Arrays.asList(validationSetModel.getData()), methodSignature));
-            allValidations.append("\n");
         }
         return allValidations.toString();
     }
@@ -224,7 +223,6 @@ public class KotlinThinModelExport {
         String accessModifier = coreValidation ? "private": "";
 
         StringBuilder methodBuilder = new StringBuilder(String.format("\t%s fun %s {\n", accessModifier, convertedMethod));
-        methodBuilder.append("\n");
         methodBuilder.append("\t\tval validations: MutableMap<String, JsonPathExecutor> = HashMap()\n");
 
         methodBuilder.append(getValidationStatementsForNodeModels(nodeModels));
