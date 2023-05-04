@@ -1,31 +1,5 @@
 package com.ebay.tool.thinmodelgen.gui.menu;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.filechooser.FileFilter;
-
 import com.ebay.tool.thinmodelgen.gui.MainWindow;
 import com.ebay.tool.thinmodelgen.gui.TMGuiConstants;
 import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManager;
@@ -33,15 +7,25 @@ import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManagerObserver;
 import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ExportConstants;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelExport;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.FileModel;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.FileOperationHandler;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.TMFileSingleton;
-import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
+import com.ebay.tool.thinmodelgen.gui.menu.filemodel.*;
 import com.ebay.tool.thinmodelgen.jsonschema.parser.SchemaParserPayload;
 import com.ebay.tool.thinmodelgen.utility.MethodNameChecker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 @SuppressWarnings("serial")
 public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFileManagerObserver {
@@ -385,11 +369,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       String message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
       message = message.replaceAll("\t", "").trim();
 
-      JTextArea textArea = new JTextArea(25, 125);
-      textArea.setText(message);
-      textArea.setEditable(false);
+      JTextPane validationTextArea = new JTextPane();
+      validationTextArea.setText(message);
+      validationTextArea.setEditable(false);
+      validationTextArea.setPreferredSize(new Dimension(validationTextArea.getPreferredSize().width, validationTextArea.getPreferredSize().height));
 
-      JScrollPane scrollPane = new JScrollPane(textArea);
+      JScrollPane scrollPane = new JScrollPane(validationTextArea);
       JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
 
     } catch (Exception e) {
@@ -425,11 +410,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       String json = new DeveloperMockExport().getJsonFromValidationSet(coreValidationSet, setModel);
 
-      JTextArea textArea = new JTextArea(25, 125);
-      textArea.setText(json);
-      textArea.setEditable(false);
+      JTextPane validationMock = new JTextPane();
+      validationMock.setText(json);
+      validationMock.setEditable(false);
+      validationMock.setPreferredSize(new Dimension(validationMock.getPreferredSize().width, validationMock.getPreferredSize().height));
 
-      JScrollPane scrollPane = new JScrollPane(textArea);
+      JScrollPane scrollPane = new JScrollPane(validationMock);
       JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
 
     } catch (Exception e) {
