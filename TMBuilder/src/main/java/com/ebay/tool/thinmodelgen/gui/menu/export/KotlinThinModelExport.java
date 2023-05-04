@@ -50,7 +50,7 @@ public class KotlinThinModelExport {
 
         // Class fields
         boolean insideClass = false;
-        CurlyBraceCounter classCounter = new CurlyBraceCounter();
+        CurlyBraceCounter curlyBraceCounter = new CurlyBraceCounter();
 
         // Validation method fields
         boolean insideValidationMethod = false;
@@ -91,9 +91,9 @@ public class KotlinThinModelExport {
 
             if (insideClass && !insideValidationMethod && !insideGeneratedValidationMethod) {
 
-                classCounter.readLine(line);
+                curlyBraceCounter.readLine(line);
 
-                if (classCounter.isBraceCountEmpty()) {
+                if (curlyBraceCounter.isBraceCountEmpty()) {
                     if (fileContents.toString().endsWith("}\n")) {
                         fileContents.append("\n");
                     } else if (fileContents.toString().endsWith("}")) {
@@ -220,7 +220,7 @@ public class KotlinThinModelExport {
     private String prepareMethodAndStatementsWithMethod(List<NodeModel> nodeModels, String methodName) throws IOException, ClassNotFoundException {
         boolean coreValidation = methodName.contains(ExportConstants.CORE_VALIDATION_SET);
         String convertedMethod = coreValidation ? GENERATED_VALIDATION_METHOD_SIGNATURE : methodName;
-        String accessModifier = coreValidation ? "private": "";
+        String accessModifier = coreValidation ? "private" : "";
 
         StringBuilder methodBuilder = new StringBuilder(String.format("\t%s fun %s {\n", accessModifier, convertedMethod));
         methodBuilder.append("\t\tval validations: MutableMap<String, JsonPathExecutor> = HashMap()\n");
