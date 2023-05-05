@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -376,11 +377,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       message = message.replaceAll("\t", "").trim();
 
-      JTextArea textArea = new JTextArea(25, 125);
-      textArea.setText(message);
-      textArea.setEditable(false);
+      JTextPane validationTextArea = new JTextPane();
+      validationTextArea.setText(message);
+      validationTextArea.setEditable(false);
+      validationTextArea.setPreferredSize(new Dimension(validationTextArea.getPreferredSize().width, validationTextArea.getPreferredSize().height));
 
-      JScrollPane scrollPane = new JScrollPane(textArea);
+      JScrollPane scrollPane = new JScrollPane(validationTextArea);
       JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
 
     } catch (Exception e) {
@@ -416,11 +418,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       String json = new DeveloperMockExport().getJsonFromValidationSet(coreValidationSet, setModel);
 
-      JTextArea textArea = new JTextArea(25, 125);
-      textArea.setText(json);
-      textArea.setEditable(false);
+      JTextPane validationMock = new JTextPane();
+      validationMock.setText(json);
+      validationMock.setEditable(false);
+      validationMock.setPreferredSize(new Dimension(validationMock.getPreferredSize().width, validationMock.getPreferredSize().height));
 
-      JScrollPane scrollPane = new JScrollPane(textArea);
+      JScrollPane scrollPane = new JScrollPane(validationMock);
       JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
 
     } catch (Exception e) {
