@@ -1,14 +1,5 @@
 package com.ebay.tool.thinmodelgen.gui.menu.export;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-
 import com.ebay.jsonpath.JsonPathExecutor;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.NodeModel;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.ValidationSetModel;
@@ -16,13 +7,22 @@ import com.ebay.tool.thinmodelgen.jsonschema.type.JsonBaseType;
 import com.ebay.tool.thinmodelgen.jsonschema.type.persistence.JsonBaseTypePersistence;
 import com.ebay.tool.thinmodelgen.utility.CurlyBraceCounter;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
 public class ThinModelExport {
 
   private static final String VALIDATION_METHOD_SIGNATURE = "void validate(SoftAssert softAssert)";
   private static final String CLASS_SIGNATURE = "public class";
   private static final String GENERATED_VALIDATION_METHOD_CALL = "generatedValidations(softAssert)";
   private static final String GENERATED_VALIDATION_METHOD_SIGNATURE = "generatedValidations(SoftAssert softAssert)";
-  private static final String GENERATED_VALIDATIONS_START_BLOCK = "\t// TMB Generated Validation Method";
+  private static final String GENERATED_VALIDATIONS_START_BLOCK = "// TMB Generated Validation Method";
+
+  private static final String GENERATED_TWO_TAB_SPACE = "        ";
+
+  private static final String GENERATED_TAB_SPACE = "    ";
 
   HashSet<String> imports = new HashSet<>();
 
@@ -48,7 +48,7 @@ public class ThinModelExport {
     BufferedReader bufferedReader = new BufferedReader(fileReader);
 
     StringBuilder fileContents = new StringBuilder();
-    String line = null;
+    String line;
 
     // Class fields
     boolean insideClass = false;
@@ -120,7 +120,7 @@ public class ThinModelExport {
           insideValidationMethod = false;
 
           if (!generatedValidationMethodCallExists) {
-            fileContents.append(String.format("\t\t%s;\n", GENERATED_VALIDATION_METHOD_CALL));
+            fileContents.append(String.format(GENERATED_TWO_TAB_SPACE+"%s;\n", GENERATED_VALIDATION_METHOD_CALL));
             generatedValidationMethodCallExists = true;
           }
         }
@@ -198,7 +198,7 @@ public class ThinModelExport {
         if (jsonPathExecutor instanceof ThinModelSerializer) {
           String statements = ((ThinModelSerializer) jsonPathExecutor).getJavaStatements();
           savedJsonPath = savedJsonPath.replace("\"", "\\\"");
-          methodBuilder.append(String.format("\t\tvalidations.put(\"%s\", %s);\n", savedJsonPath, statements));
+          methodBuilder.append(String.format("        validations.put(\"%s\", %s);\n", savedJsonPath, statements));
         }
       }
     }
@@ -213,7 +213,7 @@ public class ThinModelExport {
       String validationSetName = validationSetModel.getValidationSetName();
       validationSetName = lowerCaseCamelCaseValidationSetName(validationSetName);
       String methodSignature =  validationSetName + "(SoftAssert softAssert)";
-      allValidations.append(GENERATED_VALIDATIONS_START_BLOCK);
+      allValidations.append(GENERATED_TAB_SPACE+GENERATED_VALIDATIONS_START_BLOCK);
       allValidations.append("\n");
       allValidations.append(prepareMethodAndStatementsWithMethod(Arrays.asList(validationSetModel.getData()), methodSignature));
       allValidations.append("\n");
@@ -227,19 +227,16 @@ public class ThinModelExport {
     String convertedMethod = coreValidation ? GENERATED_VALIDATION_METHOD_SIGNATURE : methodName;
     String accessModifier = coreValidation ? "private" : "public";
 
-    StringBuilder methodBuilder = new StringBuilder(String.format("\t%s void %s {\n", accessModifier, convertedMethod));
-    methodBuilder.append("\n");
-    methodBuilder.append("\t\tMap<String, JsonPathExecutor> validations = new HashMap<>();\n");
-
+    StringBuilder methodBuilder = new StringBuilder(String.format(GENERATED_TAB_SPACE+"%s void %s {\n", accessModifier, convertedMethod));
+    methodBuilder.append(GENERATED_TWO_TAB_SPACE+"Map<String, JsonPathExecutor> validations = new HashMap<>();\n");
     methodBuilder.append(getValidationStatementsForNodeModels(nodeModels));
-
-    methodBuilder.append("\t\tevaluateJsonPaths(validations, softAssert);\n");
+    methodBuilder.append(GENERATED_TWO_TAB_SPACE+"evaluateJsonPaths(validations, softAssert);\n");
 
     if (!coreValidation) {
       methodBuilder.append("\t\tsoftAssert.assertAll();").append("\n");
     }
 
-    methodBuilder.append("\t}");
+    methodBuilder.append(GENERATED_TAB_SPACE+"}");
 
     return methodBuilder.toString();
   }

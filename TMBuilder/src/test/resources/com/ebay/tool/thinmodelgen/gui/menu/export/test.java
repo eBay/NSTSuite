@@ -24,7 +24,6 @@ public class Test extends ServiceModelBase {
 
     // TMB Generated Validation Method
     private void generatedValidations(SoftAssert softAssert) {
-
         Map<String, JsonPathExecutor> validations = new HashMap<>();
         validations.put("$.modules.banners._type", new JPStringCheck());
         evaluateJsonPaths(validations, softAssert);
