@@ -196,7 +196,7 @@ public class ThinModelExport {
         if (jsonPathExecutor instanceof ThinModelSerializer) {
           String statements = ((ThinModelSerializer) jsonPathExecutor).getJavaStatements();
           savedJsonPath = savedJsonPath.replace("\"", "\\\"");
-          methodBuilder.append(String.format("        validations.put(\"%s\", %s);\n", savedJsonPath, statements));
+          methodBuilder.append(String.format(GENERATED_TWO_TAB_SPACE+"validations.put(\"%s\", %s);\n", savedJsonPath, statements));
         }
       }
     }

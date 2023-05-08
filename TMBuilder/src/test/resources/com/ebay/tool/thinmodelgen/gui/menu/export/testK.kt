@@ -1,10 +1,10 @@
 package com.ebay.tool.thinmodelgen.gui.menu.export
 
-import com.ebay.jsonpath.JPStringCheck
-import com.ebay.jsonpath.JsonPathExecutor
 import com.ebay.nst.NSTServiceModelBase
 import org.json.JSONObject
 import org.testng.asserts.SoftAssert
+import com.ebay.jsonpath.JPStringCheck
+import com.ebay.jsonpath.JsonPathExecutor
 
 class TestKotlin(jsonRoot: JSONObject, softAssert: SoftAssert) :
     NSTServiceModelBase(jsonRoot, softAssert) {

@@ -22,7 +22,11 @@ public class KotlinThinModelExport {
 
     private static final String GENERATED_VALIDATION_METHOD_SIGNATURE = "generatedValidations(softAssert: SoftAssert)";
 
-    private static final String GENERATED_VALIDATIONS_START_BLOCK = "\t// TMB Generated Validation Method";
+    private static final String GENERATED_VALIDATIONS_START_BLOCK = "// TMB Generated Validation Method";
+
+    private static final String GENERATED_TWO_TAB_SPACE = "        ";
+
+    private static final String GENERATED_TAB_SPACE = "    ";
 
     HashSet<String> imports = new HashSet<>();
 
@@ -118,7 +122,7 @@ public class KotlinThinModelExport {
                     insideValidationMethod = false;
 
                     if (!generatedValidationMethodCallExists) {
-                        fileContents.append(String.format("\t\t%s", GENERATED_VALIDATION_METHOD_CALL));
+                        fileContents.append(String.format(GENERATED_TWO_TAB_SPACE+"%s", GENERATED_VALIDATION_METHOD_CALL));
                         generatedValidationMethodCallExists = true;
                     }
                 }
@@ -196,7 +200,7 @@ public class KotlinThinModelExport {
                 if (jsonPathExecutor instanceof ThinModelSerializer) {
                     String statements = ((ThinModelSerializer) jsonPathExecutor).getKotlinStatements();
                     savedJsonPath = savedJsonPath.replace("\"", "\\\"");
-                    methodBuilder.append(String.format("\t\tvalidations[\"%s\"] = %s\n", savedJsonPath, statements));
+                    methodBuilder.append(String.format(GENERATED_TWO_TAB_SPACE+"validations[\"%s\"] = %s\n", savedJsonPath, statements));
                 }
             }
         }
@@ -210,7 +214,7 @@ public class KotlinThinModelExport {
             String validationSetName = validationSetModel.getValidationSetName();
             validationSetName = lowerCaseCamelCaseValidationSetName(validationSetName);
             String methodSignature = validationSetName + "(softAssert: SoftAssert)";
-            allValidations.append(GENERATED_VALIDATIONS_START_BLOCK);
+            allValidations.append(GENERATED_TAB_SPACE+GENERATED_VALIDATIONS_START_BLOCK);
             allValidations.append("\n");
             allValidations.append(prepareMethodAndStatementsWithMethod(Arrays.asList(validationSetModel.getData()), methodSignature));
         }
@@ -222,18 +226,16 @@ public class KotlinThinModelExport {
         String convertedMethod = coreValidation ? GENERATED_VALIDATION_METHOD_SIGNATURE : methodName;
         String accessModifier = coreValidation ? "private" : "";
 
-        StringBuilder methodBuilder = new StringBuilder(String.format("\t%s fun %s {\n", accessModifier, convertedMethod));
-        methodBuilder.append("\t\tval validations: MutableMap<String, JsonPathExecutor> = HashMap()\n");
-
+        StringBuilder methodBuilder = new StringBuilder(String.format(GENERATED_TAB_SPACE+"%s fun %s {\n", accessModifier, convertedMethod));
+        methodBuilder.append(GENERATED_TWO_TAB_SPACE+"val validations: MutableMap<String, JsonPathExecutor> = HashMap()\n");
         methodBuilder.append(getValidationStatementsForNodeModels(nodeModels));
-
-        methodBuilder.append("\t\tevaluateJsonPaths(validations, softAssert)\n");
+        methodBuilder.append(GENERATED_TWO_TAB_SPACE+"evaluateJsonPaths(validations, softAssert)\n");
 
         if (!coreValidation) {
             methodBuilder.append("\t\tsoftAssert.assertAll();").append("\n");
         }
 
-        methodBuilder.append("\t}");
+        methodBuilder.append(GENERATED_TAB_SPACE+"}");
 
         return methodBuilder.toString();
     }
