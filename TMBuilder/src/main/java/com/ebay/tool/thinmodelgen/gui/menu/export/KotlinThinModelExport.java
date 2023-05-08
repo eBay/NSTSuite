@@ -15,17 +15,11 @@ import java.util.List;
 public class KotlinThinModelExport {
 
     private static final String VALIDATION_METHOD_SIGNATURE = "fun validate(softAssert: SoftAssert)";
-
     private static final String CLASS_SIGNATURE = "class";
-
     private static final String GENERATED_VALIDATION_METHOD_CALL = "generatedValidations(softAssert)";
-
     private static final String GENERATED_VALIDATION_METHOD_SIGNATURE = "generatedValidations(softAssert: SoftAssert)";
-
     private static final String GENERATED_VALIDATIONS_START_BLOCK = "// TMB Generated Validation Method";
-
     private static final String GENERATED_TWO_TAB_SPACE = "        ";
-
     private static final String GENERATED_TAB_SPACE = "    ";
 
     HashSet<String> imports = new HashSet<>();
@@ -50,7 +44,7 @@ public class KotlinThinModelExport {
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         StringBuilder fileContents = new StringBuilder();
-        String line = null;
+        String line;
 
         // Class fields
         boolean insideClass = false;
@@ -122,7 +116,7 @@ public class KotlinThinModelExport {
                     insideValidationMethod = false;
 
                     if (!generatedValidationMethodCallExists) {
-                        fileContents.append(String.format(GENERATED_TWO_TAB_SPACE+"%s", GENERATED_VALIDATION_METHOD_CALL));
+                        fileContents.append(String.format(GENERATED_TWO_TAB_SPACE+"%s\n", GENERATED_VALIDATION_METHOD_CALL));
                         generatedValidationMethodCallExists = true;
                     }
                 }
@@ -144,8 +138,8 @@ public class KotlinThinModelExport {
                 continue;
             }
             //endregion
-            fileContents.append("\n");
             fileContents.append(line);
+            fileContents.append("\n");
         }
 
         bufferedReader.close();
@@ -217,6 +211,7 @@ public class KotlinThinModelExport {
             allValidations.append(GENERATED_TAB_SPACE+GENERATED_VALIDATIONS_START_BLOCK);
             allValidations.append("\n");
             allValidations.append(prepareMethodAndStatementsWithMethod(Arrays.asList(validationSetModel.getData()), methodSignature));
+            allValidations.append("\n");
         }
         return allValidations.toString();
     }
