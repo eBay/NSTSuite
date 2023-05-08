@@ -19,9 +19,7 @@ public class ThinModelExport {
   private static final String GENERATED_VALIDATION_METHOD_CALL = "generatedValidations(softAssert)";
   private static final String GENERATED_VALIDATION_METHOD_SIGNATURE = "generatedValidations(SoftAssert softAssert)";
   private static final String GENERATED_VALIDATIONS_START_BLOCK = "// TMB Generated Validation Method";
-
   private static final String GENERATED_TWO_TAB_SPACE = "        ";
-
   private static final String GENERATED_TAB_SPACE = "    ";
 
   HashSet<String> imports = new HashSet<>();
