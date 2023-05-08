@@ -312,7 +312,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doNewValidationSet() {
-    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set method name:");
+    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set method name: " +
+            "\nThis is the name that will be used when generating the validation methods.\n" +
+            "\nPlease confirm that the input dialog looks correct with this additional text.");
 
     if (name != null) {
       if (MethodNameChecker.isValueValidMethodName(name) && !validationSetCacheContainsSetWithName(name)) {
@@ -341,7 +343,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doEditValidationSet(String validationSetName) {
-    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set method name:", validationSetName);
+    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set method name:" +
+            "\nThis is the name that will be used when generating the validation methods. " +
+            "\nPlease confirm that the input dialog looks correct with this additional text.", validationSetName);
 
     if (editedSetName != null) {
       if (MethodNameChecker.isValueValidMethodName(editedSetName) && !validationSetCacheContainsSetWithName(editedSetName)) {
@@ -769,7 +773,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     JFileChooser fc = new JFileChooser(currentExportFile);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new JavaKotlinFileFilter());
+    fc.setFileFilter(new AndroidFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -788,7 +792,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     JFileChooser fc = new JFileChooser(currentDeveloperMockExportFile);
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new JavaKotlinFileFilter());
+    fc.setFileFilter(new AndroidFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1085,7 +1089,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
   }
 
-  class JavaKotlinFileFilter extends FileFilter {
+  class AndroidFileFilter extends FileFilter {
 
     @Override
     public boolean accept(File f) {
