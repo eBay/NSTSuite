@@ -1,8 +1,7 @@
 package com.ebay.service.logger.platforms.util;
 
 import com.ebay.runtime.RuntimeConfigManager;
-import com.ebay.service.logger.formats.filters.JavaFilenameFilter;
-import com.ebay.service.logger.formats.filters.KotlinFilenameFilter;
+import com.ebay.service.logger.formats.filters.AndroidFilenameFilter;
 import com.ebay.service.logger.formats.filters.SwiftFilenameFilter;
 import org.testng.Reporter;
 
@@ -40,18 +39,6 @@ public class PlatformTestFileManager {
       }
       break;
     case ANDROID:
-      path = RuntimeConfigManager.getInstance().getAndroidTestsLocation();
-      if (path == null) {
-    	Reporter.log("Android test class path is undefined. Skipping update of Android test classes.", true);
-        platformOutputDisabled = true;
-        return;
-      }
-      checkDirectory(path);
-      files = platformTestDirectory.listFiles(new JavaFilenameFilter());
-      for (File file : files) {
-        filesInPlatformTestDirectory.add(file);
-      }
-      break;
     case ANDROID_KOTLIN:
       path = RuntimeConfigManager.getInstance().getAndroidTestsLocation();
       if (path == null) {
@@ -60,7 +47,7 @@ public class PlatformTestFileManager {
         return;
       }
       checkDirectory(path);
-      files = platformTestDirectory.listFiles(new KotlinFilenameFilter());
+      files = platformTestDirectory.listFiles(new AndroidFilenameFilter());
       for (File file : files) {
         filesInPlatformTestDirectory.add(file);
       }
