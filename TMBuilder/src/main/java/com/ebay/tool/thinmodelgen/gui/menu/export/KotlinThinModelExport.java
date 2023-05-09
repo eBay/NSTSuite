@@ -77,7 +77,7 @@ public class KotlinThinModelExport {
             }
 
             // A Bit of hack to remove extra new line that gets added after imports, inside the validate method.
-            if(fileContents.toString().endsWith("SoftAssert) {\n\n")) {
+            if (fileContents.toString().endsWith("SoftAssert) {\n\n")) {
                 String trimmed = fileContents.toString().replace("SoftAssert) {\n\n", "SoftAssert) {\n");
                 // Probably a bit expensive process, until if found a better way.
                 fileContents = new StringBuilder();
