@@ -16,6 +16,8 @@ public class KotlinThinModelExport {
 
     private static final String VALIDATION_METHOD_SIGNATURE = "fun validate(softAssert: SoftAssert)";
     private static final String CLASS_SIGNATURE = "class";
+
+    private static final String CLASS_SIGNATURE_SECOND_LINE = "NSTServiceModelBase(jsonRoot, softAssert) {";
     private static final String GENERATED_VALIDATION_METHOD_CALL = "generatedValidations(softAssert)";
     private static final String GENERATED_VALIDATION_METHOD_SIGNATURE = "generatedValidations(softAssert: SoftAssert)";
     private static final String GENERATED_VALIDATIONS_START_BLOCK = "// TMB Generated Validation Method";
@@ -64,8 +66,10 @@ public class KotlinThinModelExport {
 
             imports.remove(line);
 
-            if (line.contains(CLASS_SIGNATURE)) {
-                insideClass = true;
+            // Class signature unlike Java does not end with open curly braces and instead
+            // Ends with a colon. So we are not still insideClass despite reading that line.
+            if (line.contains(CLASS_SIGNATURE) && line.endsWith(":")) {
+                insideClass = false;
 
                 for (String val : imports) {
                     fileContents.append(String.format("%s\n", val));
@@ -74,6 +78,12 @@ public class KotlinThinModelExport {
                 if (imports.size() > 0) {
                     fileContents.append("\n");
                 }
+            }
+
+            // Here we need to check for that second line with curly braces
+            // continuing from class signature in Kotlin to set insideClass as true.
+            if (line.contains(CLASS_SIGNATURE_SECOND_LINE)) {
+                insideClass = true;
             }
 
             // A Bit of hack to remove extra new line that gets added after imports, inside the validate method.
