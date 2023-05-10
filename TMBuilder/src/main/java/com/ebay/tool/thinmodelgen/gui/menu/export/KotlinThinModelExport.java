@@ -16,7 +16,6 @@ public class KotlinThinModelExport {
 
     private static final String VALIDATION_METHOD_SIGNATURE = "fun validate(softAssert: SoftAssert)";
     private static final String CLASS_SIGNATURE = "class";
-
     private static final String CLASS_SIGNATURE_SECOND_LINE = "NSTServiceModelBase(jsonRoot, softAssert) {";
     private static final String GENERATED_VALIDATION_METHOD_CALL = "generatedValidations(softAssert)";
     private static final String GENERATED_VALIDATION_METHOD_SIGNATURE = "generatedValidations(softAssert: SoftAssert)";
