@@ -314,9 +314,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doNewValidationSet() {
-    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set method name: " +
-            "\nThis is the name that will be used when generating the validation methods.\n" +
-            "\nPlease confirm that the input dialog looks correct with this additional text.");
+    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set method name." +
+            "\nThis is the name that will be used when generating the validation methods.");
 
     if (name != null) {
       if (MethodNameChecker.isValueValidMethodName(name) && !validationSetCacheContainsSetWithName(name)) {
@@ -345,9 +344,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doEditValidationSet(String validationSetName) {
-    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set method name:" +
-            "\nThis is the name that will be used when generating the validation methods. " +
-            "\nPlease confirm that the input dialog looks correct with this additional text.", validationSetName);
+    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set method name." +
+            "\nThis is the name that will be used when generating the validation methods.", validationSetName);
 
     if (editedSetName != null) {
       if (MethodNameChecker.isValueValidMethodName(editedSetName) && !validationSetCacheContainsSetWithName(editedSetName)) {
@@ -776,7 +774,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     JFileChooser fc = new JFileChooser(currentExportFile);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new AndroidFileFilter());
+    fc.setFileFilter(new AndroidDialogFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -796,7 +794,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     JFileChooser fc = new JFileChooser(currentDeveloperMockExportFile);
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new AndroidFileFilter());
+    fc.setFileFilter(new AndroidDialogFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1094,7 +1092,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
   }
 
-  class AndroidFileFilter extends FileFilter {
+  // Specific to JChooser Dialog Window
+  class AndroidDialogFileFilter extends FileFilter {
 
     @Override
     public boolean accept(File f) {
