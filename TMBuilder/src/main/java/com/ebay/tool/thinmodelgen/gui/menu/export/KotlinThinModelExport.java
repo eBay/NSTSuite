@@ -66,7 +66,7 @@ public class KotlinThinModelExport {
             imports.remove(line);
 
             // Class signature unlike Java does not end with open curly braces and instead
-            // Ends with a colon. So we are not still insideClass despite reading that line.
+            // Ends with a colon. So we are not still insideClass as false despite reading that line.
             if (line.contains(CLASS_SIGNATURE) && line.endsWith(":")) {
                 insideClass = false;
 
