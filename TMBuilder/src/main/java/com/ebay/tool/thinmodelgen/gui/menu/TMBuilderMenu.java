@@ -1,7 +1,5 @@
 package com.ebay.tool.thinmodelgen.gui.menu;
 
-import com.ebay.runtime.RuntimeConfigManager;
-import com.ebay.runtime.arguments.Platform;
 import com.ebay.tool.thinmodelgen.gui.MainWindow;
 import com.ebay.tool.thinmodelgen.gui.TMGuiConstants;
 import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManager;
@@ -54,8 +52,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private static final String EDIT_VALIDATION_SET = "Edit Name";
   private static final String DELETE_VALIDATION_SET = "Delete Set";
   private static final String VALIDATION_MENU_TITLE = "Validation Sets";
-
   private static final String INVALID_SET_NAME_MESSAGE = "Validation set name must be unique and must be a valid method name (no spaces / numbers / special characters).";
+
+  private static final String KOTLIN_FILE_EXTENSION = ".kt";
 
   private File currentTmbFile = null;
   private File currentSchemaFile = null;
@@ -72,6 +71,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private String currentValidationSet;
 
   private FileOperationHandler fileOperationHandler;
+
+  // Store the selected file format
+  private String selectedFileFormat;
 
   public TMBuilderMenu(FileOperationHandler fileOperationHandler) {
     super();
@@ -374,10 +376,11 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       }
 
       String message = "";
-      if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID))
-        message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
-      else if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID_KOTLIN))
+      // Based on selected file format, choose the export Thin Model Export method
+      if(selectedFileFormat.equals(KOTLIN_FILE_EXTENSION))
         message = new KotlinThinModelExport().getValidationStatementsForValidationSet(setModel);
+      else
+        message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
 
       message = message.replaceAll("\t", "").trim();
 
@@ -777,6 +780,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
+      selectedFileFormat = fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().lastIndexOf("."));
       updateExportFilePath(fc.getSelectedFile().getPath());
     } else {
       return;
@@ -832,10 +836,11 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     try {
       tmbFilePath = currentExportFile.getCanonicalPath();
-      if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID))
-        thinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
-      else if(RuntimeConfigManager.getInstance().getPlatform().equals(Platform.ANDROID_KOTLIN))
+        // Based on selected file format, choose the export Thin Model Export method
+      if(selectedFileFormat.equals(KOTLIN_FILE_EXTENSION))
         kotlinThinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
+      else
+        thinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
     } catch (ClassNotFoundException | IOException e) {
       e.printStackTrace();
 
