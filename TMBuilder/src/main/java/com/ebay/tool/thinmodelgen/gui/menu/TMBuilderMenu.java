@@ -794,7 +794,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     JFileChooser fc = new JFileChooser(currentDeveloperMockExportFile);
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new AndroidDialogFileFilter());
+    fc.setFileFilter(new DeveloperMockExportDirectoryFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -1090,6 +1090,24 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       return ".json / .zip / .yaml / .graphql(s)";
     }
 
+  }
+
+  class DeveloperMockExportDirectoryFilter extends FileFilter {
+
+    @Override
+    public boolean accept(File f) {
+
+      if (f.isDirectory()) {
+        return true;
+      }
+
+      return false;
+    }
+
+    @Override
+    public String getDescription() {
+      return "Any directory";
+    }
   }
 
   // Specific to JChooser Dialog Window
