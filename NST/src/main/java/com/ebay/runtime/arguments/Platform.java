@@ -1,7 +1,7 @@
 package com.ebay.runtime.arguments;
 
 public enum Platform {
-	IOS, ANDROID, MWEB, SITE;
+	IOS, ANDROID, ANDROID_KOTLIN, MWEB, SITE;
 
 	public static Platform getPlatformFrom(String value) {
 

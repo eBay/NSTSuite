@@ -84,4 +84,13 @@ public class TMJPIntegerCheck extends JPIntegerCheck implements ThinModelSeriali
 
     return builder.toString();
   }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPIntegerCheck()");
+    if (getExpectedValue() != null) {
+      builder.append(String.format(".isEqualTo(%d)", getExpectedValue().intValue()));
+    }
+    return builder.toString();
+  }
 }

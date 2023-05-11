@@ -115,6 +115,14 @@ public class TMJPDoubleCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPDoubleCheck().isEqualTo(3.014159000);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPDoubleCheck().isEqualTo(3.014159)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPDoubleCheckToTMJPDoubleCheck() {
 
     JPDoubleCheck original = new JPDoubleCheck();

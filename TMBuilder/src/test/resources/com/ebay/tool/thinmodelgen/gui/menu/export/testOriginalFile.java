@@ -7,11 +7,11 @@ import com.ebay.nst.ServiceModelBase;
 
 public class Test extends ServiceModelBase {
 
-  public Test(JSONObject jsonRoot, SoftAssert softAssert) {
-    super(jsonRoot, softAssert);
-  }
+    public Test(JSONObject jsonObject, SoftAssert softAssert) {
+        super(jsonObject, softAssert);
+    }
 
-  @Override
-  protected void validate(SoftAssert softAssert) {
-  }
+    @Override
+    protected void validate(SoftAssert softAssert) {
+    }
 }

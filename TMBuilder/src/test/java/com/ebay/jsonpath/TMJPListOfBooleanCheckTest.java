@@ -262,6 +262,14 @@ public class TMJPListOfBooleanCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPListOfBooleanCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(true,false)).contains(Arrays.asList(true)).hasAllValuesEqualTo(false);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfBooleanCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(true,false)).contains(listOf(true)).hasAllValuesEqualTo(false)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfBooleanCheckToTMJPListOfBooleanCheck() {
 
     JPListOfBooleanCheck original = new JPListOfBooleanCheck();

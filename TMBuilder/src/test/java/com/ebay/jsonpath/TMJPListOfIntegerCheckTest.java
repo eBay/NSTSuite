@@ -262,6 +262,14 @@ public class TMJPListOfIntegerCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPListOfIntegerCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(1,2)).contains(Arrays.asList(1)).hasAllValuesEqualTo(4);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfIntegerCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(1,2)).contains(listOf(1)).hasAllValuesEqualTo(4)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfIntegerCheckToTMJPListOfIntegerCheck() {
 
     JPListOfIntegerCheck original = new JPListOfIntegerCheck();

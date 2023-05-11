@@ -84,4 +84,13 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
 
     return builder.toString();
   }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPDoubleCheck()");
+    if (getExpectedValue() != null) {
+      builder.append(String.format(".isEqualTo(%s)", DoubleUtility.removeTrailingZeros(getExpectedValue())));
+    }
+    return builder.toString();
+  }
 }

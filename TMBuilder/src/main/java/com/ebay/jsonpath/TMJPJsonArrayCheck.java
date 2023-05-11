@@ -78,4 +78,23 @@ public class TMJPJsonArrayCheck extends JPJsonArrayCheck implements ThinModelSer
 
     return builder.toString();
   }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPJsonArrayCheck()");
+
+    if (getExpectedLength() != null) {
+      builder.append(String.format(".hasLength(%d)", getExpectedLength().intValue()));
+    }
+
+    if (getMinLength() != null) {
+      builder.append(String.format(".hasMinLength(%d)", getMinLength().intValue()));
+    }
+
+    if (getMaxLength() != null) {
+      builder.append(String.format(".hasMaxLength(%d)", getMaxLength().intValue()));
+    }
+
+    return builder.toString();
+  }
 }

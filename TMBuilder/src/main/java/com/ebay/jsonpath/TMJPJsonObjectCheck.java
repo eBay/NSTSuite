@@ -120,6 +120,29 @@ public class TMJPJsonObjectCheck extends JPJsonObjectCheck implements ThinModelS
     return builder.toString();
   }
 
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPJsonObjectCheck()");
+
+    if (getExpectedNumberOfKeys() != null) {
+      builder.append(String.format(".hasNumberOfKeys(%d)", getExpectedNumberOfKeys().intValue()));
+    }
+
+    if (getExpectedKeys() != null) {
+      builder.append(getAppendedValues("keysAreEqualTo", getExpectedKeys()));
+    }
+
+    if (getContainsKeys() != null) {
+      builder.append(getAppendedValues("keysContain", getContainsKeys()));
+    }
+
+    if (getDoesNotContainKeys() != null) {
+      builder.append(getAppendedValues("keysDoNotContain", getDoesNotContainKeys()));
+    }
+
+    return builder.toString();
+  }
+
   private String getAppendedValues(String key, List<String> actualValues) {
       StringBuilder valuesToAppend = new StringBuilder();
       for (String value : actualValues) {

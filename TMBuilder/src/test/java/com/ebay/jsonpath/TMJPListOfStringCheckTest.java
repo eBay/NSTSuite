@@ -325,6 +325,14 @@ public class TMJPListOfStringCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPListOfStringCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList("one","two")).contains(Arrays.asList("one")).hasAllValuesEqualTo("three").isLimitedToValues(Arrays.asList("one","two"));
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfStringCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(\"one\",\"two\")).contains(listOf(\"one\")).hasAllValuesEqualTo(\"three\").isLimitedToValues(listOf(\"one\",\"two\"))")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfStringCheckToTMJPListOfStringCheck() {
 
     JPListOfStringCheck original = new JPListOfStringCheck();

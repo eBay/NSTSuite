@@ -103,6 +103,14 @@ public class TMJPIntegerCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void kotlinThinModelExportCheck() {
+
+    ThinModelSerializer serializer = new TMJPIntegerCheck().isEqualTo(42);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPIntegerCheck().isEqualTo(42)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPIntegerCheckToTMJPIntegerCheck() {
 
     JPIntegerCheck original = new JPIntegerCheck();

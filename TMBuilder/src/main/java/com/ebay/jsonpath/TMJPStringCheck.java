@@ -168,4 +168,42 @@ public class TMJPStringCheck extends JPStringCheck implements ThinModelSerialize
 
     return builder.toString();
   }
+
+  @Override
+  public String getKotlinStatements() {
+    StringBuilder builder = new StringBuilder("JPStringCheck()");
+
+    if (getHasLengthExpectedValue() != null) {
+      builder.append(String.format(".hasLength(%d)", getHasLengthExpectedValue().intValue()));
+    }
+
+    if (getIsEqualToExpectedValue() != null) {
+      builder.append(String.format(".isEqualTo(\"%s\")", getIsEqualToExpectedValue()));
+    }
+
+    if (getIsEqualToOneOfExpectedValue() != null) {
+      StringBuilder values = new StringBuilder();
+      for (String value : getIsEqualToOneOfExpectedValue()) {
+        if (values.length() > 0) {
+          values.append(",");
+        }
+        values.append(String.format("\"%s\"", value));
+      }
+      builder.append(String.format(".isEqualToOneOf(listOf(%s))", values.toString()));
+    }
+
+    if (getContainsValue() != null) {
+      builder.append(String.format(".contains(\"%s\")", getContainsValue()));
+    }
+
+    if (getMinimumNumberOfCharacters() != null) {
+      builder.append(String.format(".hasMinimumNumberOfCharacters(%d)", getMinimumNumberOfCharacters().intValue()));
+    }
+
+    if (getMaximumNumberOfCharacters() != null) {
+      builder.append(String.format(".hasMaximumNumberOfCharacters(%d)", getMaximumNumberOfCharacters().intValue()));
+    }
+
+    return builder.toString();
+  }
 }

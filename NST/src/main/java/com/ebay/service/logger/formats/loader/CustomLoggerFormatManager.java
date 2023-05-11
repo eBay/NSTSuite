@@ -92,6 +92,7 @@ public class CustomLoggerFormatManager {
 		// Add the Android and iOS loggers.
 		platformWriters.put(Platform.IOS, new IosLogger());
 		platformWriters.put(Platform.ANDROID, new AndroidLogger());
+		platformWriters.put(Platform.ANDROID_KOTLIN, new AndroidLogger());
 
 		String customLoggerPackage = RuntimeConfigManager.getInstance().getCustomLoggerFormatPackage();
 		Boolean useNstDefaultLogger = RuntimeConfigManager.getInstance().getUseNstDefaultLogger();

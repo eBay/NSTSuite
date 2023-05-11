@@ -6,6 +6,7 @@ import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManager;
 import com.ebay.tool.thinmodelgen.gui.file.recents.RecentFileManagerObserver;
 import com.ebay.tool.thinmodelgen.gui.menu.export.DeveloperMockExport;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ExportConstants;
+import com.ebay.tool.thinmodelgen.gui.menu.export.KotlinThinModelExport;
 import com.ebay.tool.thinmodelgen.gui.menu.export.ThinModelExport;
 import com.ebay.tool.thinmodelgen.gui.menu.filemodel.*;
 import com.ebay.tool.thinmodelgen.jsonschema.parser.SchemaParserPayload;
@@ -51,8 +52,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private static final String EDIT_VALIDATION_SET = "Edit Name";
   private static final String DELETE_VALIDATION_SET = "Delete Set";
   private static final String VALIDATION_MENU_TITLE = "Validation Sets";
-
   private static final String INVALID_SET_NAME_MESSAGE = "Validation set name must be unique and must be a valid method name (no spaces / numbers / special characters).";
+
+  private static final String KOTLIN_FILE_EXTENSION = ".kt";
 
   private File currentTmbFile = null;
   private File currentSchemaFile = null;
@@ -69,6 +71,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private String currentValidationSet;
 
   private FileOperationHandler fileOperationHandler;
+
+  // Store the selected file format
+  private String selectedFileFormat;
 
   public TMBuilderMenu(FileOperationHandler fileOperationHandler) {
     super();
@@ -309,7 +314,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doNewValidationSet() {
-    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set name:");
+    String name = JOptionPane.showInputDialog(MainWindow.getInstance(), "Enter new validation set method name." +
+            "\nThis is the name that will be used when generating the validation methods.");
 
     if (name != null) {
       if (MethodNameChecker.isValueValidMethodName(name) && !validationSetCacheContainsSetWithName(name)) {
@@ -338,7 +344,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   }
 
   private void doEditValidationSet(String validationSetName) {
-    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set name:", validationSetName);
+    String editedSetName = JOptionPane.showInputDialog(MainWindow.getInstance(), "Edit validation set method name." +
+            "\nThis is the name that will be used when generating the validation methods.", validationSetName);
 
     if (editedSetName != null) {
       if (MethodNameChecker.isValueValidMethodName(editedSetName) && !validationSetCacheContainsSetWithName(editedSetName)) {
@@ -366,7 +373,13 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
         }
       }
 
-      String message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
+      String message = "";
+      // Based on selected file format, choose the export Thin Model Export method
+      if(selectedFileFormat.equals(KOTLIN_FILE_EXTENSION))
+        message = new KotlinThinModelExport().getValidationStatementsForValidationSet(setModel);
+      else
+        message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
+
       message = message.replaceAll("\t", "").trim();
 
       JTextPane validationTextArea = new JTextPane();
@@ -761,10 +774,11 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     JFileChooser fc = new JFileChooser(currentExportFile);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new JavaFileFilter());
+    fc.setFileFilter(new AndroidDialogFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
+      selectedFileFormat = fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().lastIndexOf("."));
       updateExportFilePath(fc.getSelectedFile().getPath());
     } else {
       return;
@@ -780,7 +794,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     JFileChooser fc = new JFileChooser(currentDeveloperMockExportFile);
     fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     fc.setAcceptAllFileFilterUsed(false);
-    fc.setFileFilter(new JavaFileFilter());
+    fc.setFileFilter(new AndroidDialogFileFilter());
 
     int returnVal = fc.showOpenDialog(MainWindow.getInstance());
     if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -815,11 +829,16 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
   private void writeExportToFile() {
 
     ThinModelExport thinModelExport = new ThinModelExport();
+    KotlinThinModelExport kotlinThinModelExport = new KotlinThinModelExport();
     String tmbFilePath = "";
 
     try {
       tmbFilePath = currentExportFile.getCanonicalPath();
-      thinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
+        // Based on selected file format, choose the export Thin Model Export method
+      if(selectedFileFormat.equals(KOTLIN_FILE_EXTENSION))
+        kotlinThinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
+      else
+        thinModelExport.export(currentExportFile, getValidationSetCacheAsModel());
     } catch (ClassNotFoundException | IOException e) {
       e.printStackTrace();
 
@@ -954,12 +973,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
     Path filePath = Paths.get(otherFilePath);
     Path tmbPath = Paths.get(tmbFilePath);
-    
+
     if (new File(tmbFilePath).isFile()) {
     	tmbPath = tmbPath.getParent();
     }
-    
-    
+
+
     Path relativePath = tmbPath.relativize(filePath);
     String relative = relativePath.toString();
     System.out.printf("Convert path [%s] to relative path [%s].%n", otherFilePath, relative);
@@ -972,9 +991,9 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
     if (tmbFile.isFile()) {
     	tmbFile = tmbFile.getParentFile();
     }
-    
+
     File combinedPath = new File(tmbFile, path);
-    
+
     if (!combinedPath.exists()) {
     	// TODO: This block is being kept to support existing tmb files.
     	// Plan to remove this in a future release when we expect all
@@ -984,7 +1003,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 	    combinedPath = filePath.toFile();
 	    System.out.printf("Resolve path [%s] as [%s].%n", path, combinedPath);
     }
-    
+
     System.out.printf("Resolve path [%s] as [%s].%n", path, combinedPath);
     return combinedPath.toString();
   }
@@ -1073,7 +1092,8 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
   }
 
-  class JavaFileFilter extends FileFilter {
+  // Specific to JChooser Dialog Window
+  class AndroidDialogFileFilter extends FileFilter {
 
     @Override
     public boolean accept(File f) {
@@ -1089,12 +1109,12 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       String extension = fileName.substring(dotIndex);
 
-      return extension.equals(".java");
+      return extension.equals(".java") || extension.equals(".kt");
     }
 
     @Override
     public String getDescription() {
-      return "Java (.java)";
+      return "Java (.java)/ Kotlin (.kt)";
     }
 
   }
