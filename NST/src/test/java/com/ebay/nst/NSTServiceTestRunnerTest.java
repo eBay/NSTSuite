@@ -46,6 +46,7 @@ public class NSTServiceTestRunnerTest implements NSTServiceTestRunner {
 
     @BeforeMethod
     public void beforeMethodOverride() {
+        RuntimeConfigManager.getInstance().reinitialize();
         Platform platform = RuntimeConfigManager.getInstance().getPlatform();
         assertThat(platform, is(equalTo(Platform.IOS)));
         PlatformArgument argument = (PlatformArgument) RuntimeConfigManager.getInstance().getRuntimeArgument(PlatformArgument.KEY);
