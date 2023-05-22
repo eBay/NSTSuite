@@ -55,7 +55,7 @@ public class HarRequest {
    */
   public void setHeaders(List<Header> headers) {
     this.headers = new ArrayList<>(headers);
-    for (Header header : headers) {
+    for (Header header : this.headers) {
       if (header.getName().equalsIgnoreCase("Authorization")) {
         header.setValue("Bearer v^obfuscated123");
       }
