@@ -1,6 +1,7 @@
 package com.ebay.service.logger.har;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ebay.nst.NstRequestType;
@@ -48,8 +49,17 @@ public class HarRequest {
     return headers;
   }
 
+  /**
+   * If an Authorization header is included, the value will be obfuscated for security reasons.
+   * @param headers Headers to set.
+   */
   public void setHeaders(List<Header> headers) {
-    this.headers = headers;
+    this.headers = new ArrayList<>(headers);
+    for (Header header : headers) {
+      if (header.getName().equalsIgnoreCase("Authorization")) {
+        header.setValue("Bearer v^obfuscated123");
+      }
+    }
   }
 
   public List<QueryString> getQueryString() {
