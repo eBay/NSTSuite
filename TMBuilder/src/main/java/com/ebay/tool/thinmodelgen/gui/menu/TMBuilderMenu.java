@@ -375,17 +375,20 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
 
       String message = "";
       // Based on selected file format, choose the export Thin Model Export method
-      if(selectedFileFormat.equals(KOTLIN_FILE_EXTENSION))
+      if(KOTLIN_FILE_EXTENSION.equals(selectedFileFormat))
         message = new KotlinThinModelExport().getValidationStatementsForValidationSet(setModel);
       else
         message = new ThinModelExport().getValidationStatementsForValidationSet(setModel);
 
       message = message.replaceAll("\t", "").trim();
+      message = message.replaceAll(ExportConstants.GENERATED_TWO_TAB_SPACE, "").trim();
+      message = message.replaceAll(ExportConstants.GENERATED_TAB_SPACE, "").trim();
 
       JTextPane validationTextArea = new JTextPane();
       validationTextArea.setText(message);
       validationTextArea.setEditable(false);
       validationTextArea.setPreferredSize(new Dimension(validationTextArea.getPreferredSize().width, validationTextArea.getPreferredSize().height));
+      validationTextArea.setMaximumSize(new Dimension(100,200));
 
       JScrollPane scrollPane = new JScrollPane(validationTextArea);
       JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
@@ -427,6 +430,7 @@ public class TMBuilderMenu extends JMenuBar implements ActionListener, RecentFil
       validationMock.setText(json);
       validationMock.setEditable(false);
       validationMock.setPreferredSize(new Dimension(validationMock.getPreferredSize().width, validationMock.getPreferredSize().height));
+      validationMock.setMaximumSize(new Dimension(100,200));
 
       JScrollPane scrollPane = new JScrollPane(validationMock);
       JOptionPane.showMessageDialog(MainWindow.getInstance(), scrollPane, String.format("Review Validation Set Output - %s", validationSetName), JOptionPane.INFORMATION_MESSAGE);
