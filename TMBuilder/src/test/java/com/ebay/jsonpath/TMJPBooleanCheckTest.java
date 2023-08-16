@@ -47,6 +47,32 @@ public class TMJPBooleanCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void passWithBoolNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    TMJPBooleanCheck check = new TMJPBooleanCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failWithBoolNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":true}");
+    TMJPBooleanCheck check = new TMJPBooleanCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(groups = unitTest)
   public void passWithCorrectValueCheck() {
 
     SoftAssert softAssert = new SoftAssert();
@@ -111,21 +137,40 @@ public class TMJPBooleanCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPBooleanCheck().checkIsNull(true).isEqualTo(true);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPBooleanCheck().isEqualTo(true).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPBooleanCheck().checkIsNull(true).isEqualTo(true);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPBooleanCheck().isEqualTo(true).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPBooleanCheckToTMJPBooleanCheck() {
 
     JPBooleanCheck original = new JPBooleanCheck();
     TMJPBooleanCheck clone = new TMJPBooleanCheck(original);
 
     assertThat("Clone MUST have equal check field set to null.", clone.getExpectedValue(), is(nullValue()));
+    assertThat("Clone MUST have null check set to expected.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
   public void convertJPBooleanCheckToTMJPBooleanCheck() {
 
     JPBooleanCheck original = new JPBooleanCheck().isEqualTo(true);
+    original.checkIsNull(true);
     TMJPBooleanCheck clone = new TMJPBooleanCheck(original);
 
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(true)));
+    assertThat("Clone MUST have null check set to expected.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)

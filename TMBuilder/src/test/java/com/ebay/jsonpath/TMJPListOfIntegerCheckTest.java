@@ -49,6 +49,32 @@ public class TMJPListOfIntegerCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(groups = unitTest)
+  public void passNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":null},{\"bar\":null},{\"bar\":null}]}");
+    TMJPListOfIntegerCheck check = new TMJPListOfIntegerCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":null},{\"bar\":2},{\"bar\":3}]}");
+    TMJPListOfIntegerCheck check = new TMJPListOfIntegerCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failPathNotFoundException() {
 
@@ -270,6 +296,22 @@ public class TMJPListOfIntegerCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfIntegerCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(1,2)).contains(Arrays.asList(1)).hasAllValuesEqualTo(4);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPListOfIntegerCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(1,2)).contains(Arrays.asList(1)).hasAllValuesEqualTo(4).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfIntegerCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(1,2)).contains(Arrays.asList(1)).hasAllValuesEqualTo(4);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfIntegerCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(1,2)).contains(listOf(1)).hasAllValuesEqualTo(4).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfIntegerCheckToTMJPListOfIntegerCheck() {
 
     JPListOfIntegerCheck original = new JPListOfIntegerCheck();
@@ -281,6 +323,7 @@ public class TMJPListOfIntegerCheckTest {
     assertThat("Clone MUST have contains values set to null.", clone.getContainsValues(), is(nullValue()));
     assertThat("Clone MUST have is equal to values set to null.", clone.getIsEqualToValues(), is(nullValue()));
     assertThat("Clone MUST have all expected value set to null.", clone.getAllExpectedValue(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
@@ -293,7 +336,7 @@ public class TMJPListOfIntegerCheckTest {
     List<Integer> equalToValues = Arrays.asList(1, 2, 3, 5);
     int allSetTo = 3;
 
-    JPListOfIntegerCheck original = new JPListOfIntegerCheck().hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo);
+    JPListOfIntegerCheck original = new JPListOfIntegerCheck().checkIsNull(true).hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo);
     TMJPListOfIntegerCheck clone = new TMJPListOfIntegerCheck(original);
 
     assertThat("Clone MUST have length set to expected.", clone.getHasLength(), is(equalTo(hasLength)));
@@ -302,6 +345,7 @@ public class TMJPListOfIntegerCheckTest {
     assertThat("Clone MUST have contains values set to expected.", clone.getContainsValues(), is(equalTo(containsValues)));
     assertThat("Clone MUST have is equal to values set to expected.", clone.getIsEqualToValues(), is(equalTo(equalToValues)));
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)

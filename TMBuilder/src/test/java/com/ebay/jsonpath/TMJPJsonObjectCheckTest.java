@@ -51,6 +51,32 @@ public class TMJPJsonObjectCheckTest {
   }
 
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failWithNonNullObject() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":{\"first\":\"A\",\"second\":2,\"third\":true}}");
+    TMJPJsonObjectCheck check = new TMJPJsonObjectCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(groups = "unitTest")
+  public void passWithNullObject() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    TMJPJsonObjectCheck check = new TMJPJsonObjectCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failWithClassCastException() {
 
     SoftAssert softAssert = new SoftAssert();
@@ -229,6 +255,22 @@ public class TMJPJsonObjectCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPJsonObjectCheck().checkIsNull(true);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPJsonObjectCheck().checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPJsonObjectCheck().checkIsNull(true);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPJsonObjectCheck().checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPJsonObjectCheckToTMJPJsonObjectCheck() {
 
     JPJsonObjectCheck original = new JPJsonObjectCheck();
@@ -239,6 +281,7 @@ public class TMJPJsonObjectCheckTest {
     assertThat("Clone MUST have contains keys set to null.", clone.getContainsKeys(), is(nullValue()));
     assertThat("Clone MUST have expected map set to null.", clone.getExpectedMap(), is(nullValue()));
     assertThat("Clone MUST have contains map set to null.", clone.getContainsMap(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
@@ -252,7 +295,7 @@ public class TMJPJsonObjectCheckTest {
     HashMap<String, Object> containsMap = new HashMap<>();
     containsMap.put("CONTAINS", "VALUE");
 
-    JPJsonObjectCheck original = new JPJsonObjectCheck().hasNumberOfKeys(3).keysAreEqualTo(expectedKeys).keysContain(containsKeys).isEqualTo(expectedMap).contains(containsMap);
+    JPJsonObjectCheck original = new JPJsonObjectCheck().checkIsNull(true).hasNumberOfKeys(3).keysAreEqualTo(expectedKeys).keysContain(containsKeys).isEqualTo(expectedMap).contains(containsMap);
     TMJPJsonObjectCheck clone = new TMJPJsonObjectCheck(original);
 
     assertThat("Clone MUST have expected number of keys set to expected.", clone.getExpectedNumberOfKeys(), is(equalTo(3)));
@@ -260,5 +303,6 @@ public class TMJPJsonObjectCheckTest {
     assertThat("Clone MUST have contains keys set to expected.", clone.getContainsKeys(), is(equalTo(containsKeys)));
     assertThat("Clone MUST have expected map set to expected.", clone.getExpectedMap(), is(equalTo(expectedMap)));
     assertThat("Clone MUST have contains map set to expected.", clone.getContainsMap(), is(equalTo(containsMap)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 }

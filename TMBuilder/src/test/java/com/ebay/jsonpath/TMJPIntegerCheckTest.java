@@ -46,6 +46,32 @@ public class TMJPIntegerCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(groups = "unitTest")
+  public void passWithIntegerNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    TMJPIntegerCheck check = new TMJPIntegerCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failWithIntegerNotNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":2}");
+    TMJPIntegerCheck check = new TMJPIntegerCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failWithIntegerMismatch() {
 
@@ -111,21 +137,39 @@ public class TMJPIntegerCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPIntegerCheck().checkIsNull(true).isEqualTo(42);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPIntegerCheck().isEqualTo(42).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPIntegerCheck().checkIsNull(true).isEqualTo(42);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPIntegerCheck().isEqualTo(42).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPIntegerCheckToTMJPIntegerCheck() {
 
     JPIntegerCheck original = new JPIntegerCheck();
     TMJPIntegerCheck clone = new TMJPIntegerCheck(original);
 
     assertThat("Clone MUST have equal check field set to null.", clone.getExpectedValue(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
   public void convertJPIntegerCheckToTMJPIntegerCheck() {
 
-    JPIntegerCheck original = new JPIntegerCheck().isEqualTo(5);
+    JPIntegerCheck original = new JPIntegerCheck().checkIsNull(true).isEqualTo(5);
     TMJPIntegerCheck clone = new TMJPIntegerCheck(original);
 
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)

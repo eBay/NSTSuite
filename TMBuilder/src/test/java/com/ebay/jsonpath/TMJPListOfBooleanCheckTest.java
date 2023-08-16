@@ -49,6 +49,32 @@ public class TMJPListOfBooleanCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(expectedExceptions = AssertionError.class, groups = unitTest)
+  public void failNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":true},{\"bar\":false},{\"bar\":true}]}");
+    TMJPListOfBooleanCheck check = new TMJPListOfBooleanCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(groups = "unitTest")
+  public void passNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":null},{\"bar\":null},{\"bar\":null}]}");
+    TMJPListOfBooleanCheck check = new TMJPListOfBooleanCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failPathNotFoundException() {
 
@@ -270,6 +296,22 @@ public class TMJPListOfBooleanCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfBooleanCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(true,false)).contains(Arrays.asList(true)).hasAllValuesEqualTo(false);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPListOfBooleanCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(true,false)).contains(Arrays.asList(true)).hasAllValuesEqualTo(false).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfBooleanCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(true,false)).contains(Arrays.asList(true)).hasAllValuesEqualTo(false);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfBooleanCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(true,false)).contains(listOf(true)).hasAllValuesEqualTo(false).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfBooleanCheckToTMJPListOfBooleanCheck() {
 
     JPListOfBooleanCheck original = new JPListOfBooleanCheck();
@@ -281,6 +323,7 @@ public class TMJPListOfBooleanCheckTest {
     assertThat("Clone MUST have contains values set to null.", clone.getContainsValues(), is(nullValue()));
     assertThat("Clone MUST have is equal to values set to null.", clone.getIsEqualToValues(), is(nullValue()));
     assertThat("Clone MUST have all expected value set to null.", clone.getAllExpectedValue(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
@@ -293,7 +336,7 @@ public class TMJPListOfBooleanCheckTest {
     List<Boolean> equalToValues = Arrays.asList(true, true, true, false, false);
     boolean allSetTo = false;
 
-    JPListOfBooleanCheck original = new JPListOfBooleanCheck().hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo);
+    JPListOfBooleanCheck original = new JPListOfBooleanCheck().checkIsNull(true).hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo);
     TMJPListOfBooleanCheck clone = new TMJPListOfBooleanCheck(original);
 
     assertThat("Clone MUST have length set to expected.", clone.getHasLength(), is(equalTo(hasLength)));
@@ -302,6 +345,7 @@ public class TMJPListOfBooleanCheckTest {
     assertThat("Clone MUST have contains values set to expected.", clone.getContainsValues(), is(equalTo(containsValues)));
     assertThat("Clone MUST have is equal to values set to expected.", clone.getIsEqualToValues(), is(equalTo(equalToValues)));
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)

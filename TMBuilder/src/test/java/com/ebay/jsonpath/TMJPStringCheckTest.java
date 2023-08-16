@@ -49,6 +49,32 @@ public class TMJPStringCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(groups = unitTest)
+  public void passNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    TMJPStringCheck check = new TMJPStringCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":\"value\"}");
+    TMJPStringCheck check = new TMJPStringCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failClassCastException() {
 
@@ -234,6 +260,22 @@ public class TMJPStringCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckWithNullCheck() {
+
+    ThinModelSerializer serializer = new TMJPStringCheck().checkIsNull(true).hasLength(3).isEqualTo("one").contains("on").hasMinimumNumberOfCharacters(1).hasMaximumNumberOfCharacters(3);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPStringCheck().hasLength(3).isEqualTo(\"one\").contains(\"on\").hasMinimumNumberOfCharacters(1).hasMaximumNumberOfCharacters(3).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckWithNullCheck() {
+
+    ThinModelSerializer serializer = new TMJPStringCheck().checkIsNull(true).hasLength(3).isEqualTo("one").contains("on").hasMinimumNumberOfCharacters(1).hasMaximumNumberOfCharacters(3);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPStringCheck().hasLength(3).isEqualTo(\"one\").contains(\"on\").hasMinimumNumberOfCharacters(1).hasMaximumNumberOfCharacters(3).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPStringCheckToTMJPStringCheck() {
 
     JPStringCheck original = new JPStringCheck();
@@ -245,6 +287,7 @@ public class TMJPStringCheckTest {
     assertThat("Clone MUST have length set to null.", clone.getHasLengthExpectedValue(), is(nullValue()));
     assertThat("Clone MUST have maximum number of characters set to null.", clone.getMaximumNumberOfCharacters(), is(nullValue()));
     assertThat("Clone MUST have minimum number of characters set to null.", clone.getMinimumNumberOfCharacters(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
@@ -257,7 +300,7 @@ public class TMJPStringCheckTest {
     int maximumNumberOfCharacters = 10;
     int minimumNumberOfCharacters = 1;
 
-    JPStringCheck original = new JPStringCheck().isEqualTo(isEqualToExpected).isEqualToOneOf(isEqualToOneOf).contains(containsValue).hasLength(hasLength).hasMaximumNumberOfCharacters(maximumNumberOfCharacters).hasMinimumNumberOfCharacters(minimumNumberOfCharacters);
+    JPStringCheck original = new JPStringCheck().checkIsNull(true).isEqualTo(isEqualToExpected).isEqualToOneOf(isEqualToOneOf).contains(containsValue).hasLength(hasLength).hasMaximumNumberOfCharacters(maximumNumberOfCharacters).hasMinimumNumberOfCharacters(minimumNumberOfCharacters);
     TMJPStringCheck clone = new TMJPStringCheck(original);
 
     assertThat("Clone MUST have equal to expected value set to null.", clone.getIsEqualToExpectedValue(), is(equalTo(isEqualToExpected)));
@@ -266,6 +309,7 @@ public class TMJPStringCheckTest {
     assertThat("Clone MUST have length set to null.", clone.getHasLengthExpectedValue(), is(equalTo(hasLength)));
     assertThat("Clone MUST have maximum number of characters set to null.", clone.getMaximumNumberOfCharacters(), is(equalTo(maximumNumberOfCharacters)));
     assertThat("Clone MUST have minimum number of characters set to null.", clone.getMinimumNumberOfCharacters(), is(equalTo(minimumNumberOfCharacters)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)

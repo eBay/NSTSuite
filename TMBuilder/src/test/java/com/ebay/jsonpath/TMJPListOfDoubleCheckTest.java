@@ -49,6 +49,32 @@ public class TMJPListOfDoubleCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(groups = unitTest)
+  public void passNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":null},{\"bar\":null},{\"bar\":null}]}");
+    TMJPListOfDoubleCheck check = new TMJPListOfDoubleCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":null},{\"bar\":2.5},{\"bar\":3.14}]}");
+    TMJPListOfDoubleCheck check = new TMJPListOfDoubleCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failPathNotFoundException() {
 
@@ -306,6 +332,22 @@ public class TMJPListOfDoubleCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfDoubleCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(3.1415926535,2.00000)).contains(Arrays.asList(1.0000)).hasAllValuesEqualTo(4.0001);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPListOfDoubleCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(3.1415926535,2.0)).contains(Arrays.asList(1.0)).hasAllValuesEqualTo(4.0001).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfDoubleCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(3.1415926535,2.00000)).contains(Arrays.asList(1.0000)).hasAllValuesEqualTo(4.0001);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfDoubleCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(3.1415926535,2.0)).contains(listOf(1.0)).hasAllValuesEqualTo(4.0001).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfDoubleCheckToTMJPListOfDoubleCheck() {
 
     JPListOfDoubleCheck original = new JPListOfDoubleCheck();
@@ -317,6 +359,7 @@ public class TMJPListOfDoubleCheckTest {
     assertThat("Clone MUST have contains values set to null.", clone.getContainsValues(), is(nullValue()));
     assertThat("Clone MUST have is equal to values set to null.", clone.getIsEqualToValues(), is(nullValue()));
     assertThat("Clone MUST have all expected value set to null.", clone.getAllExpectedValue(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
@@ -329,7 +372,7 @@ public class TMJPListOfDoubleCheckTest {
     List<Double> equalToValues = Arrays.asList(1.0, 2.0, 3.0, 5.9);
     double allSetTo = 3.5;
 
-    JPListOfDoubleCheck original = new JPListOfDoubleCheck().hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo);
+    JPListOfDoubleCheck original = new JPListOfDoubleCheck().checkIsNull(true).hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo);
     TMJPListOfDoubleCheck clone = new TMJPListOfDoubleCheck(original);
 
     assertThat("Clone MUST have length set to expected.", clone.getHasLength(), is(equalTo(hasLength)));
@@ -338,6 +381,7 @@ public class TMJPListOfDoubleCheckTest {
     assertThat("Clone MUST have contains values set to expected.", clone.getContainsValues(), is(equalTo(containsValues)));
     assertThat("Clone MUST have is equal to values set to expected.", clone.getIsEqualToValues(), is(equalTo(equalToValues)));
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)
