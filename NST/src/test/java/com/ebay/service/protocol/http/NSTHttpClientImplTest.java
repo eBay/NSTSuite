@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -155,7 +156,16 @@ public class NSTHttpClientImplTest {
 	@Test
 	public void nullConnection() throws Exception {
 	
-		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(null);
+		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(null, StandardCharsets.UTF_8);
+		assertThat(actual.getPayload(), is(nullValue()));
+		assertThat(actual.getHeaders(), is(anEmptyMap()));
+		assertThat(actual.getResponseCode(), is(equalTo(0)));
+	}
+
+	@Test
+	public void nullCharsetUsedToParseResponse() throws Exception {
+
+		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection, null);
 		assertThat(actual.getPayload(), is(nullValue()));
 		assertThat(actual.getHeaders(), is(anEmptyMap()));
 		assertThat(actual.getResponseCode(), is(equalTo(0)));
@@ -165,7 +175,7 @@ public class NSTHttpClientImplTest {
 	public void nullConnectionHeaderFields() throws Exception {
 		
 		when(connection.getHeaderFields()).thenReturn(null);
-		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection);
+		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection, StandardCharsets.UTF_8);
 		assertThat(actual.getHeaders(), is(anEmptyMap()));
 	}
 	
@@ -178,9 +188,29 @@ public class NSTHttpClientImplTest {
 	
 	    InputStream targetStream = new ByteArrayInputStream(payload.getBytes());
 	    when(connection.getInputStream()).thenReturn(targetStream);
-	    NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection);
+	    NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection, StandardCharsets.UTF_8);
 	    assertThat(actual.getPayload(), is(equalTo(payload)));
 		assertThat(actual.getHeaders(), is(equalTo(expectedHeaders)));
 		assertThat(actual.getResponseCode(), is(equalTo(200)));
+	}
+
+	@Test
+	public void parseResponseWithExtendedCharacterSetUsingIsoCharset() throws Exception {
+		InputStream targetStream = new ByteArrayInputStream("©".getBytes(StandardCharsets.UTF_8));
+		when(connection.getInputStream()).thenReturn(targetStream);
+		when(connection.getResponseCode()).thenReturn(200);
+		when(connection.getHeaderFields()).thenReturn(null);
+		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection, StandardCharsets.ISO_8859_1);
+		assertThat(actual.getPayload(), is(equalTo("Â©")));
+	}
+
+	@Test
+	public void parseResponseWithExtendedCharacterSetUsingUtf8Charset() throws Exception {
+		InputStream targetStream = new ByteArrayInputStream("©".getBytes(StandardCharsets.UTF_8));
+		when(connection.getInputStream()).thenReturn(targetStream);
+		when(connection.getResponseCode()).thenReturn(200);
+		when(connection.getHeaderFields()).thenReturn(null);
+		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection, StandardCharsets.UTF_8);
+		assertThat(actual.getPayload(), is(equalTo("©")));
 	}
 }

@@ -2,8 +2,11 @@ package com.ebay.nst;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.ebay.runtime.arguments.DisableConsoleLog;
 import org.json.JSONObject;
@@ -23,12 +26,15 @@ import com.ebay.service.protocol.http.NSTHttpRequest;
 import com.ebay.service.protocol.http.NSTHttpResponse;
 import com.ebay.utility.service.ServiceUtil;
 
+import javax.validation.constraints.NotNull;
+
 public final class NSTServiceWrapperProcessor {
 
 	private boolean disableSchemaValidation = false;
 	private boolean disableRequestResponseLogging = false;
 	private boolean confirmSuccess = true;
 	private NSTHttpClient<NSTHttpRequest, NSTHttpResponse> client;
+	private Charset responseParsingCharset = StandardCharsets.UTF_8;
 
 	/**
 	 * Creates a new service process with the default HttpUrlConnection used for
@@ -136,6 +142,15 @@ public final class NSTServiceWrapperProcessor {
 	public NSTServiceWrapperProcessor resetConfirmSuccess() {
 		confirmSuccess = true;
 		return this;
+	}
+
+	/**
+	 * Set the response parsing charset to use. Default is UTF_8.
+	 * @param responseParsingCharset Response parsing Charset to use when parsing the response.
+	 */
+	public void setResponseParsingCharset(@NotNull Charset responseParsingCharset) {
+		Objects.requireNonNull(responseParsingCharset, "Response parsing charset MUST NOT be null.");
+		this.responseParsingCharset = responseParsingCharset;
 	}
 
 	/**
@@ -292,7 +307,7 @@ public final class NSTServiceWrapperProcessor {
 	protected NSTHttpResponse sendRequest(NSTHttpRequest request)
 			throws URISyntaxException, IOException, IllegalStateException {
 
-		return client.sendRequest(request);
+		return client.sendRequest(request, responseParsingCharset);
 	}
 
 	protected void logResponseDetailsToConsole(NSTServiceWrapper<? extends NSTSchemaValidator> serviceWrapper,
