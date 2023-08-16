@@ -25,6 +25,8 @@ import org.testng.annotations.Test;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,7 +246,7 @@ public class NSTServiceWrapperProcessorTest {
 		when(response.getResponseCode()).thenReturn(200);
 		
 		NSTHttpClient<NSTHttpRequest, NSTHttpResponse> client = mock(NSTHttpClient.class);
-		when(client.sendRequest(Mockito.any(NSTHttpRequest.class))).thenReturn(response);
+		when(client.sendRequest(Mockito.any(NSTHttpRequest.class), Mockito.any(Charset.class))).thenReturn(response);
 
 		processor = new NSTServiceWrapperProcessor(client);
 		JSONObject actualJsonObject = processor.sendRequestAndGetJSONResponse(nstServiceWrapper);
@@ -632,14 +634,29 @@ public class NSTServiceWrapperProcessorTest {
 	public void sendRequest() throws Exception {
 		
 		NSTHttpClient<NSTHttpRequest, NSTHttpResponse> client = mock(NSTHttpClient.class);
-		when(client.sendRequest(Mockito.any(NSTHttpRequest.class))).thenReturn(new NSTHttpResponseImpl());
+		when(client.sendRequest(Mockito.any(NSTHttpRequest.class), Mockito.any(Charset.class))).thenReturn(new NSTHttpResponseImpl());
 		
 		NSTHttpRequest request = mock(NSTHttpRequest.class);
 		
 		processor = new NSTServiceWrapperProcessor(client);
 		processor.sendRequest(request);
 		
-		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class));
+		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class), Mockito.any(Charset.class));
+	}
+
+	@Test
+	public void sendRequestWithAlternateCharacterSetUsedToParseResponse() throws Exception {
+
+		NSTHttpClient<NSTHttpRequest, NSTHttpResponse> client = mock(NSTHttpClient.class);
+		when(client.sendRequest(Mockito.any(NSTHttpRequest.class), Mockito.any(Charset.class))).thenReturn(new NSTHttpResponseImpl());
+
+		NSTHttpRequest request = mock(NSTHttpRequest.class);
+
+		processor = new NSTServiceWrapperProcessor(client);
+		processor.setResponseParsingCharset(StandardCharsets.ISO_8859_1);
+		processor.sendRequest(request);
+
+		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class), Mockito.any(Charset.class));
 	}
 
 	@Test

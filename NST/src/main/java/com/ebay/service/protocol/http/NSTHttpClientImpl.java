@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -19,14 +21,20 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+import javax.validation.constraints.NotNull;
 
 import com.ebay.nst.NstRequestType;
 
 public class NSTHttpClientImpl implements NSTHttpClient<NSTHttpRequest, NSTHttpResponse> {
 
-	@SuppressWarnings("fallthrough")
 	@Override
 	public NSTHttpResponse sendRequest(NSTHttpRequest request) {
+		return sendRequest(request, StandardCharsets.UTF_8);
+	}
+
+	@SuppressWarnings("fallthrough")
+	@Override
+	public NSTHttpResponse sendRequest(NSTHttpRequest request, Charset readResponseCharSet) {
 		
 		Objects.requireNonNull(request, "Request MUST NOT be null.");
 
@@ -78,7 +86,7 @@ public class NSTHttpClientImpl implements NSTHttpClient<NSTHttpRequest, NSTHttpR
 				
 				try {
 					OutputStream os = connection.getOutputStream();
-					byte[] input = payload.getBytes("utf-8");
+					byte[] input = payload.getBytes(readResponseCharSet);
 					os.write(input, 0, input.length);
 				} catch (Exception e) {
 					throw new RuntimeException(String.format("Exception occurred getting %s data from the connection.", requestType.name()), e);
@@ -97,7 +105,7 @@ public class NSTHttpClientImpl implements NSTHttpClient<NSTHttpRequest, NSTHttpR
 
 		NSTHttpResponse response;
 		try {
-			response = parseResponse(connection);
+			response = parseResponse(connection, readResponseCharSet);
 		} catch (IOException e) {
 			throw new RuntimeException("Exception occurred parsing response data.", e);
 		}
@@ -117,11 +125,13 @@ public class NSTHttpClientImpl implements NSTHttpClient<NSTHttpRequest, NSTHttpR
 	 * @return Parsed response body.
 	 * @throws IOException IO Error.
 	 */
-	protected final NSTHttpResponse parseResponse(HttpURLConnection connection) throws IOException {
+	protected final NSTHttpResponse parseResponse(HttpURLConnection connection, @NotNull Charset readResponseCharSet) throws IOException {
 
 		NSTHttpResponseImpl response = new NSTHttpResponseImpl();
 		
 		if (connection == null) {
+			return response;
+		} if (readResponseCharSet == null) {
 			return response;
 		}
 		
@@ -142,7 +152,7 @@ public class NSTHttpClientImpl implements NSTHttpClient<NSTHttpRequest, NSTHttpR
 			}
 		}
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), readResponseCharSet));
 		String inputLine;
 		StringBuffer content = new StringBuffer();
 		while ((inputLine = in.readLine()) != null) {
