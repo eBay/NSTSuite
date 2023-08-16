@@ -8,7 +8,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPStringCheck implements JsonPathExecutor, Serializable {
+public class JPStringCheck implements JsonPathExecutor, NullCheck, Serializable {
 
   /**
    *
@@ -28,6 +28,8 @@ public class JPStringCheck implements JsonPathExecutor, Serializable {
   private Integer minimumNumberOfCharacters = null;
 
   private Integer maximumNumberOfCharacters = null;
+
+  private boolean isNull = false;
 
   /**
    * Run the baseline checks for a String - not null and not empty.
@@ -179,6 +181,11 @@ public class JPStringCheck implements JsonPathExecutor, Serializable {
     }
 
   @Override
+  public void checkIsNull(boolean mustBeNull) {
+    isNull = mustBeNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     String value = null;
@@ -193,7 +200,11 @@ public class JPStringCheck implements JsonPathExecutor, Serializable {
       return;
     }
 
-    softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null string."));
+    if (isNull) {
+      softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null string"));
+    } else {
+      softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null string."));
+    }
 
     if (value == null) {
       return;

@@ -9,7 +9,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPListOfIntegerCheck implements JsonPathExecutor, Serializable {
+public class JPListOfIntegerCheck implements JsonPathExecutor, NullCheck, Serializable {
 
   /**
    *
