@@ -35,6 +35,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.contains;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.testng.AssertJUnit.fail;
 
@@ -641,7 +642,7 @@ public class NSTServiceWrapperProcessorTest {
 		processor = new NSTServiceWrapperProcessor(client);
 		processor.sendRequest(request);
 		
-		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class), Mockito.any(Charset.class));
+		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class), eq(StandardCharsets.UTF_8));
 	}
 
 	@Test
@@ -656,7 +657,7 @@ public class NSTServiceWrapperProcessorTest {
 		processor.setResponseParsingCharset(StandardCharsets.ISO_8859_1);
 		processor.sendRequest(request);
 
-		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class), Mockito.any(Charset.class));
+		verify(client, times(1)).sendRequest(Mockito.any(NSTHttpRequest.class), eq(StandardCharsets.ISO_8859_1));
 	}
 
 	@Test
