@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPDoubleCheck implements JsonPathExecutor, Serializable {
+public class JPDoubleCheck implements JsonPathExecutor, NullCheck, Serializable {
 
   /**
    * Serializable ID.
@@ -15,6 +15,7 @@ public class JPDoubleCheck implements JsonPathExecutor, Serializable {
   private static final long serialVersionUID = -202076040776990133L;
 
   private Double expectedValue = null;
+  private boolean isNull = false;
 
   /**
    * Run the baseline checks for a double - not null.
@@ -45,6 +46,11 @@ public class JPDoubleCheck implements JsonPathExecutor, Serializable {
   }
 
   @Override
+  public void checkIsNull(boolean mustBeNull) {
+    isNull = mustBeNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     Double value = null;
@@ -69,14 +75,18 @@ public class JPDoubleCheck implements JsonPathExecutor, Serializable {
       return;
     }
 
-    softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null double."));
+    if (isNull) {
+      softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null double"));
+    } else {
+      softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null double"));
+    }
 
     if (value == null) {
       return;
     }
 
     if (expectedValue != null) {
-      softAssert.assertEquals(value, expectedValue, AssertMessageBuilder.build(jsonPath, "with values that do not match."));
+      softAssert.assertEquals(value, expectedValue, AssertMessageBuilder.build(jsonPath, "with values that do not match"));
     }
   }
 }

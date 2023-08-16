@@ -66,8 +66,9 @@ public class JPStringCheckTest {
 
     SoftAssert softAssert = new SoftAssert();
 
-    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":\"value\"}");
     JPStringCheck check = new JPStringCheck();
+    check.checkIsNull(true);
     check.processJsonPath("$.foo", softAssert, jsonPathDocument);
 
     softAssert.assertAll();

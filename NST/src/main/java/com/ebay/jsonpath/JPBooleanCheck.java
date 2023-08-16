@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPBooleanCheck implements JsonPathExecutor, Serializable {
+public class JPBooleanCheck implements JsonPathExecutor, NullCheck, Serializable {
 
   /**
    * Serialized ID.
@@ -15,6 +15,7 @@ public class JPBooleanCheck implements JsonPathExecutor, Serializable {
   private static final long serialVersionUID = 888395578771081432L;
 
   private Boolean expectedValue = null;
+  private boolean isNull = false;
 
   /**
    * Run the baseline checks for a boolean - not null.
@@ -45,6 +46,11 @@ public class JPBooleanCheck implements JsonPathExecutor, Serializable {
   }
 
   @Override
+  public void checkIsNull(boolean mustBeNull) {
+    isNull = mustBeNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     Boolean value = null;
@@ -59,14 +65,18 @@ public class JPBooleanCheck implements JsonPathExecutor, Serializable {
       return;
     }
 
-    softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null boolean."));
+    if (isNull) {
+      softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null boolean"));
+    } else {
+      softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null boolean"));
+    }
 
     if (value == null) {
       return;
     }
 
     if (expectedValue != null) {
-      softAssert.assertEquals(value, expectedValue, AssertMessageBuilder.build(jsonPath, "with values that do not match."));
+      softAssert.assertEquals(value, expectedValue, AssertMessageBuilder.build(jsonPath, "with values that do not match"));
     }
   }
 }

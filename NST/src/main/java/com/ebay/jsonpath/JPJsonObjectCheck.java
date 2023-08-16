@@ -11,7 +11,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPJsonObjectCheck implements JsonPathExecutor, Serializable {
+public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck, Serializable {
 
   /**
    *
@@ -24,6 +24,7 @@ public class JPJsonObjectCheck implements JsonPathExecutor, Serializable {
   private LinkedHashMap<String, Object> expectedMap = null;
   private HashMap<String, Object> containsMap = null;
   private List<String> doesNotContainKeys = null;
+  private boolean isNull = false;
 
   /**
    * Make sure the object has the specified number of keys.
@@ -152,6 +153,11 @@ public class JPJsonObjectCheck implements JsonPathExecutor, Serializable {
     return doesNotContainKeys;
   }
 
+  @Override
+  public void checkIsNull(boolean mustBeNull) {
+    isNull = mustBeNull;
+  }
+
   @SuppressWarnings("unlikely-arg-type")
   @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
@@ -168,19 +174,23 @@ public class JPJsonObjectCheck implements JsonPathExecutor, Serializable {
       return;
     }
 
-    softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "because the path does not exist."));
+    if (isNull) {
+      softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "because the path does exist"));
+    } else {
+      softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "because the path does not exist"));
+    }
 
     if (value == null) {
       return;
     }
 
     if (expectedNumberOfKeys != null) {
-      softAssert.assertEquals(value.keySet().size(), expectedNumberOfKeys.intValue(), AssertMessageBuilder.build(jsonPath, "because path did not return an object with the expected number of keys."));
+      softAssert.assertEquals(value.keySet().size(), expectedNumberOfKeys.intValue(), AssertMessageBuilder.build(jsonPath, "because path did not return an object with the expected number of keys"));
     }
 
     if (expectedKeys != null) {
       List<String> actualKeys = Arrays.asList(value.keySet().toArray(new String[0]));
-      softAssert.assertEquals(actualKeys, expectedKeys, AssertMessageBuilder.build(jsonPath, "because path did not return expected set of keys."));
+      softAssert.assertEquals(actualKeys, expectedKeys, AssertMessageBuilder.build(jsonPath, "because path did not return expected set of keys"));
     }
 
     if (containsKeys != null) {
@@ -188,18 +198,18 @@ public class JPJsonObjectCheck implements JsonPathExecutor, Serializable {
       softAssert
           .assertTrue(
               actualKeys.containsAll(containsKeys),
-              AssertMessageBuilder.build(jsonPath, String.format("because path does not contain the keys [%s]. Actual: [%s].", containsKeys, actualKeys)));
+              AssertMessageBuilder.build(jsonPath, String.format("because path does not contain the keys [%s]. Actual: [%s]", containsKeys, actualKeys)));
     }
 
     if (expectedMap != null) {
-      softAssert.assertEquals(value, expectedMap, AssertMessageBuilder.build(jsonPath, "because path does not contain the specified map of key/values."));
+      softAssert.assertEquals(value, expectedMap, AssertMessageBuilder.build(jsonPath, "because path does not contain the specified map of key/values"));
     }
 
     if (containsMap != null) {
       softAssert
           .assertTrue(
               value.entrySet().containsAll(containsMap.entrySet()),
-              AssertMessageBuilder.build(jsonPath, String.format("because path does not contain the key/values [%s]. Actual: [%s].", containsMap.entrySet(), value.entrySet())));
+              AssertMessageBuilder.build(jsonPath, String.format("because path does not contain the key/values [%s]. Actual: [%s]", containsMap.entrySet(), value.entrySet())));
     }
 
     if (doesNotContainKeys != null) {
@@ -207,7 +217,7 @@ public class JPJsonObjectCheck implements JsonPathExecutor, Serializable {
       softAssert
           .assertFalse(
               actualKeys.contains(doesNotContainKeys),
-              AssertMessageBuilder.build(jsonPath, String.format("because path contains one or all of the unexpected keys [%s]. Actual: [%s].", doesNotContainKeys, actualKeys)));
+              AssertMessageBuilder.build(jsonPath, String.format("because path contains one or all of the unexpected keys [%s]. Actual: [%s]", doesNotContainKeys, actualKeys)));
     }
   }
 }

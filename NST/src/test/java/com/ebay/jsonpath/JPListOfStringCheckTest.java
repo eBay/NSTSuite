@@ -43,7 +43,7 @@ public class JPListOfStringCheckTest {
 
     SoftAssert softAssert = new SoftAssert();
 
-    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":null}]}");
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":null},{\"text\":null}]}");
     JPListOfStringCheck check = new JPListOfStringCheck();
     check.checkIsNull(true);
     check.processJsonPath("$.foo[*].text", softAssert, jsonPathDocument);
@@ -56,8 +56,9 @@ public class JPListOfStringCheckTest {
 
     SoftAssert softAssert = new SoftAssert();
 
-    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":null}]}");
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":\"blah\"},{\"text\":null}]}");
     JPListOfStringCheck check = new JPListOfStringCheck();
+    check.checkIsNull(true);
     check.processJsonPath("$.foo[*].text", softAssert, jsonPathDocument);
 
     softAssert.assertAll();

@@ -244,7 +244,7 @@ public class JPListOfStringCheck implements JsonPathExecutor, NullCheck, Seriali
       }
 
       if (isNull) {
-        softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "because the path does exist on index %d of the list of strings"));
+        softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, String.format("because the path does exist on index %d of the list of strings", i)));
       } else {
         softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, String.format("with null value on index %d of the list of strings", i)));
         if (value != null) {
