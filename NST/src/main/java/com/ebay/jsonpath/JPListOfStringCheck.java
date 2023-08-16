@@ -211,6 +211,11 @@ public class JPListOfStringCheck implements JsonPathExecutor, NullCheck, Seriali
   }
 
   @Override
+  public boolean isNullExpected() {
+    return isNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     List<String> values = null;

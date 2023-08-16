@@ -158,6 +158,11 @@ public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck, Serializa
     isNull = mustBeNull;
   }
 
+  @Override
+  public boolean isNullExpected() {
+    return isNull;
+  }
+
   @SuppressWarnings("unlikely-arg-type")
   @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {

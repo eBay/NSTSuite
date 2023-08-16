@@ -51,6 +51,11 @@ public class JPIntegerCheck implements JsonPathExecutor, NullCheck, Serializable
   }
 
   @Override
+  public boolean isNullExpected() {
+    return isNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     Integer value = null;

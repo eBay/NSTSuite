@@ -92,6 +92,11 @@ public class JPJsonArrayCheck implements JsonPathExecutor, NullCheck, Serializab
   }
 
   @Override
+  public boolean isNullExpected() {
+    return isNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     List<Map<String, Object>> values = null;

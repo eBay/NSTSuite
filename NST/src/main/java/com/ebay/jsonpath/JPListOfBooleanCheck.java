@@ -181,6 +181,11 @@ public class JPListOfBooleanCheck implements JsonPathExecutor, NullCheck, Serial
   }
 
   @Override
+  public boolean isNullExpected() {
+    return isNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     List<Boolean> values = null;

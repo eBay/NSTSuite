@@ -7,4 +7,9 @@ public interface NullCheck {
      * @param mustBeNull True to check that the value is null, false to make sure it isn't null.
      */
     void checkIsNull(boolean mustBeNull);
+
+    /**
+     * Check if null is expected for the node.
+     */
+    boolean isNullExpected();
 }

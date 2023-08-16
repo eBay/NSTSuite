@@ -51,6 +51,11 @@ public class JPDoubleCheck implements JsonPathExecutor, NullCheck, Serializable 
   }
 
   @Override
+  public boolean isNullExpected() {
+    return isNull;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     Double value = null;
