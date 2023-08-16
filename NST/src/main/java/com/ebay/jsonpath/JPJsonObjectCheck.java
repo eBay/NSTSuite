@@ -11,7 +11,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck, Serializable {
+public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck<JPJsonObjectCheck>, Serializable {
 
   /**
    *
@@ -154,8 +154,9 @@ public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck, Serializa
   }
 
   @Override
-  public void checkIsNull(boolean mustBeNull) {
+  public JPJsonObjectCheck checkIsNull(boolean mustBeNull) {
     isNull = mustBeNull;
+    return this;
   }
 
   @Override

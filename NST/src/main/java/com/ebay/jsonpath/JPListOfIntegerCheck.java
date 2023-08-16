@@ -9,7 +9,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPListOfIntegerCheck implements JsonPathExecutor, NullCheck, Serializable {
+public class JPListOfIntegerCheck implements JsonPathExecutor, NullCheck<JPListOfIntegerCheck>, Serializable {
 
   /**
    *
@@ -178,8 +178,9 @@ public class JPListOfIntegerCheck implements JsonPathExecutor, NullCheck, Serial
   }
 
   @Override
-  public void checkIsNull(boolean mustBeNull) {
+  public JPListOfIntegerCheck checkIsNull(boolean mustBeNull) {
     isNull = mustBeNull;
+    return this;
   }
 
   @Override
