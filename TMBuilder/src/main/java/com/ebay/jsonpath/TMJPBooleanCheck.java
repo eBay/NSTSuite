@@ -29,9 +29,18 @@ public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSeriali
       this.isEqualTo(source.getExpectedValue());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPBooleanCheck) {
       this.setMockValue(((TMJPBooleanCheck) source).getMockValue());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Boolean result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPBooleanCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -79,6 +88,10 @@ public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSeriali
       builder.append(String.format(".isEqualTo(%b)", getExpectedValue().booleanValue()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -88,6 +101,11 @@ public class TMJPBooleanCheck extends JPBooleanCheck implements ThinModelSeriali
     if(getExpectedValue() != null) {
       builder.append(String.format(".isEqualTo(%b)", getExpectedValue().booleanValue()));
     }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 }

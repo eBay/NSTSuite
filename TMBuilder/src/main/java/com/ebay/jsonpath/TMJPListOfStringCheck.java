@@ -61,9 +61,18 @@ public class TMJPListOfStringCheck extends JPListOfStringCheck implements ThinMo
       this.isLimitedToValues(source.getLimitedToValues());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPListOfStringCheck) {
       this.setMockValues(((TMJPListOfStringCheck) source).getMockValues());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The String values the result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPListOfStringCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -197,6 +206,10 @@ public class TMJPListOfStringCheck extends JPListOfStringCheck implements ThinMo
       builder.append(String.format(".isLimitedToValues(Arrays.asList(%s))", values.toString()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -251,6 +264,10 @@ public class TMJPListOfStringCheck extends JPListOfStringCheck implements ThinMo
         values.append(String.format("\"%s\"", value));
       }
       builder.append(String.format(".isLimitedToValues(listOf(%s))", values.toString()));
+    }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
     }
 
     return builder.toString();

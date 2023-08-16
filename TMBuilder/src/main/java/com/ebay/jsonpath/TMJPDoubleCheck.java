@@ -32,9 +32,18 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
       this.isEqualTo(source.getExpectedValue());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPDoubleCheck) {
       this.setMockValue(((TMJPDoubleCheck) source).getMockValue());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Double result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPDoubleCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -82,6 +91,10 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
       builder.append(String.format(".isEqualTo(%s)", DoubleUtility.removeTrailingZeros(getExpectedValue())));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -91,6 +104,11 @@ public class TMJPDoubleCheck extends JPDoubleCheck implements ThinModelSerialize
     if (getExpectedValue() != null) {
       builder.append(String.format(".isEqualTo(%s)", DoubleUtility.removeTrailingZeros(getExpectedValue())));
     }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 }
