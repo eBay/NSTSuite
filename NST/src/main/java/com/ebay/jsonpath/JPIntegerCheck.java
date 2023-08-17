@@ -15,7 +15,7 @@ public class JPIntegerCheck implements JsonPathExecutor, NullCheck<JPIntegerChec
   private static final long serialVersionUID = 5372890880704649745L;
 
   private Integer expectedValue = null;
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run the baseline checks for an integer - not null.
@@ -47,13 +47,13 @@ public class JPIntegerCheck implements JsonPathExecutor, NullCheck<JPIntegerChec
 
   @Override
   public JPIntegerCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

@@ -29,7 +29,7 @@ public class JPStringCheck implements JsonPathExecutor, NullCheck<JPStringCheck>
 
   private Integer maximumNumberOfCharacters = null;
 
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run the baseline checks for a String - not null and not empty.
@@ -182,13 +182,13 @@ public class JPStringCheck implements JsonPathExecutor, NullCheck<JPStringCheck>
 
   @Override
   public JPStringCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

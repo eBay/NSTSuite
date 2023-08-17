@@ -27,7 +27,7 @@ public class JPListOfBooleanCheck implements JsonPathExecutor, NullCheck<JPListO
   private List<Boolean> containsValues = null;
 
   private Boolean allExpectedValue = null;
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run baseline checks for a list of Booleans - list is not null and indexes
@@ -177,13 +177,13 @@ public class JPListOfBooleanCheck implements JsonPathExecutor, NullCheck<JPListO
 
   @Override
   public JPListOfBooleanCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

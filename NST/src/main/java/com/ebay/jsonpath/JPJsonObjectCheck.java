@@ -24,7 +24,7 @@ public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck<JPJsonObje
   private LinkedHashMap<String, Object> expectedMap = null;
   private HashMap<String, Object> containsMap = null;
   private List<String> doesNotContainKeys = null;
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Make sure the object has the specified number of keys.
@@ -155,13 +155,13 @@ public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck<JPJsonObje
 
   @Override
   public JPJsonObjectCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @SuppressWarnings("unlikely-arg-type")

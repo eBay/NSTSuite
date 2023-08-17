@@ -15,7 +15,7 @@ public class JPBooleanCheck implements JsonPathExecutor, NullCheck<JPBooleanChec
   private static final long serialVersionUID = 888395578771081432L;
 
   private Boolean expectedValue = null;
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run the baseline checks for a boolean - not null.
@@ -47,13 +47,13 @@ public class JPBooleanCheck implements JsonPathExecutor, NullCheck<JPBooleanChec
 
   @Override
   public JPBooleanCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

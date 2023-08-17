@@ -27,7 +27,7 @@ public class JPListOfDoubleCheck implements JsonPathExecutor, NullCheck<JPListOf
   private List<Double> containsValues = null;
 
   private Double allExpectedValue = null;
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run baseline checks for a list of Doubles - list is not null and indexes
@@ -177,13 +177,13 @@ public class JPListOfDoubleCheck implements JsonPathExecutor, NullCheck<JPListOf
 
   @Override
   public JPListOfDoubleCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

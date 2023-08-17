@@ -28,7 +28,7 @@ public class JPListOfIntegerCheck implements JsonPathExecutor, NullCheck<JPListO
 
   private Integer allExpectedValue = null;
 
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run baseline checks for a list of Integers - list is not null and indexes
@@ -179,13 +179,13 @@ public class JPListOfIntegerCheck implements JsonPathExecutor, NullCheck<JPListO
 
   @Override
   public JPListOfIntegerCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

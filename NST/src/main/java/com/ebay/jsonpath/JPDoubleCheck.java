@@ -15,7 +15,7 @@ public class JPDoubleCheck implements JsonPathExecutor, NullCheck<JPDoubleCheck>
   private static final long serialVersionUID = -202076040776990133L;
 
   private Double expectedValue = null;
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run the baseline checks for a double - not null.
@@ -47,13 +47,13 @@ public class JPDoubleCheck implements JsonPathExecutor, NullCheck<JPDoubleCheck>
 
   @Override
   public JPDoubleCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

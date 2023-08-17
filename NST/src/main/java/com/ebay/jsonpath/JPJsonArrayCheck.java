@@ -21,7 +21,7 @@ public class JPJsonArrayCheck implements JsonPathExecutor, NullCheck<JPJsonArray
   private Integer minLength;
 
   private Integer maxLength;
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Set the exact length the JSON array should have.
@@ -88,13 +88,13 @@ public class JPJsonArrayCheck implements JsonPathExecutor, NullCheck<JPJsonArray
 
   @Override
   public JPJsonArrayCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override

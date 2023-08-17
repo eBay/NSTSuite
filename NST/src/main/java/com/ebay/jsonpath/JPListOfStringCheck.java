@@ -30,7 +30,7 @@ public class JPListOfStringCheck implements JsonPathExecutor, NullCheck<JPListOf
 
   private List<String> limitedToValues = null;
 
-  private boolean isNull = false;
+  private boolean nullExpected = false;
 
   /**
    * Run baseline checks for a list of strings - list is not null and indexes
@@ -207,13 +207,13 @@ public class JPListOfStringCheck implements JsonPathExecutor, NullCheck<JPListOf
 
   @Override
   public JPListOfStringCheck checkIsNull(boolean mustBeNull) {
-    isNull = mustBeNull;
+    nullExpected = mustBeNull;
     return this;
   }
 
   @Override
   public boolean isNullExpected() {
-    return isNull;
+    return nullExpected;
   }
 
   @Override
