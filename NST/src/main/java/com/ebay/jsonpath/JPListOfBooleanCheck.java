@@ -201,7 +201,7 @@ public class JPListOfBooleanCheck implements JsonPathExecutor, NullCheck<JPListO
       return;
     }
 
-    if (!isNull) {
+    if (!isNullExpected()) {
       softAssert.assertNotNull(values, AssertMessageBuilder.build(jsonPath, "because the path does not exist"));
     }
 
@@ -219,7 +219,7 @@ public class JPListOfBooleanCheck implements JsonPathExecutor, NullCheck<JPListO
         continue;
       }
 
-      if (isNull) {
+      if (isNullExpected()) {
         softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, String.format("with NON null value on index %d of the list of Booleans", i)));
       } else {
         softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, String.format("with null value on index %d of the list of Booleans", i)));

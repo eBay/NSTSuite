@@ -81,7 +81,7 @@ public class JPDoubleCheck implements JsonPathExecutor, NullCheck<JPDoubleCheck>
       return;
     }
 
-    if (isNull) {
+    if (isNullExpected()) {
       softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null double"));
     } else {
       softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null double"));

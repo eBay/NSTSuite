@@ -180,7 +180,7 @@ public class JPJsonObjectCheck implements JsonPathExecutor, NullCheck<JPJsonObje
       return;
     }
 
-    if (isNull) {
+    if (isNullExpected()) {
       softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "because the path does exist"));
     } else {
       softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "because the path does not exist"));

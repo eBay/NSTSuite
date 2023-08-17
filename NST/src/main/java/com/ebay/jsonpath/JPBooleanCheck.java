@@ -71,7 +71,7 @@ public class JPBooleanCheck implements JsonPathExecutor, NullCheck<JPBooleanChec
       return;
     }
 
-    if (isNull) {
+    if (isNullExpected()) {
       softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null boolean"));
     } else {
       softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null boolean"));

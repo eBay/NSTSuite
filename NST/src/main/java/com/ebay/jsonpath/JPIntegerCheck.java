@@ -71,7 +71,7 @@ public class JPIntegerCheck implements JsonPathExecutor, NullCheck<JPIntegerChec
       return;
     }
 
-    if (isNull) {
+    if (isNullExpected()) {
       softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null integer"));
     } else {
       softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null integer"));

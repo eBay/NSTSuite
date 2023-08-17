@@ -206,7 +206,7 @@ public class JPStringCheck implements JsonPathExecutor, NullCheck<JPStringCheck>
       return;
     }
 
-    if (isNull) {
+    if (isNullExpected()) {
       softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null string"));
     } else {
       softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null string."));
