@@ -57,9 +57,18 @@ public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements Thin
       this.contains(source.getContainsValues());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPListOfIntegerCheck) {
       this.setMockValues(((TMJPListOfIntegerCheck) source).getMockValues());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Integer values the result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPListOfIntegerCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -182,6 +191,10 @@ public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements Thin
       builder.append(String.format(".hasAllValuesEqualTo(%d)", getAllExpectedValue()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -225,6 +238,10 @@ public class TMJPListOfIntegerCheck extends JPListOfIntegerCheck implements Thin
 
     if (getAllExpectedValue() != null) {
       builder.append(String.format(".hasAllValuesEqualTo(%d)", getAllExpectedValue()));
+    }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
     }
 
     return builder.toString();

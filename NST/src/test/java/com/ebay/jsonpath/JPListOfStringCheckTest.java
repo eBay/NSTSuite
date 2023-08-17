@@ -38,6 +38,32 @@ public class JPListOfStringCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(groups = "unitTest")
+  public void passNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":null},{\"text\":null}]}");
+    JPListOfStringCheck check = new JPListOfStringCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].text", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failNotNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":\"blah\"},{\"text\":null}]}");
+    JPListOfStringCheck check = new JPListOfStringCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].text", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failNullMissingNode() {
 

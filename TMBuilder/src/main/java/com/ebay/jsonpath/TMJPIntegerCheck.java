@@ -32,9 +32,18 @@ public class TMJPIntegerCheck extends JPIntegerCheck implements ThinModelSeriali
       this.isEqualTo(source.getExpectedValue());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPIntegerCheck) {
       this.setMockValue(((TMJPIntegerCheck) source).getMockValue());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Integer result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPIntegerCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -82,6 +91,10 @@ public class TMJPIntegerCheck extends JPIntegerCheck implements ThinModelSeriali
       builder.append(String.format(".isEqualTo(%d)", getExpectedValue().intValue()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -91,6 +104,11 @@ public class TMJPIntegerCheck extends JPIntegerCheck implements ThinModelSeriali
     if (getExpectedValue() != null) {
       builder.append(String.format(".isEqualTo(%d)", getExpectedValue().intValue()));
     }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 }

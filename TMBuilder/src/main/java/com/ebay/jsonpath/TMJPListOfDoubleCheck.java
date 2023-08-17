@@ -57,9 +57,18 @@ public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinMo
       this.contains(source.getContainsValues());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPListOfDoubleCheck) {
       this.setMockValues(((TMJPListOfDoubleCheck) source).getMockValues());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Double values the result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPListOfDoubleCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -175,6 +184,10 @@ public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinMo
       builder.append(String.format(".hasAllValuesEqualTo(%s)", DoubleUtility.removeTrailingZeros(getAllExpectedValue())));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -218,6 +231,10 @@ public class TMJPListOfDoubleCheck extends JPListOfDoubleCheck implements ThinMo
 
     if (getAllExpectedValue() != null) {
       builder.append(String.format(".hasAllValuesEqualTo(%s)", DoubleUtility.removeTrailingZeros(getAllExpectedValue())));
+    }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
     }
 
     return builder.toString();

@@ -9,7 +9,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPJsonArrayCheck implements JsonPathExecutor, Serializable {
+public class JPJsonArrayCheck implements JsonPathExecutor, NullCheck<JPJsonArrayCheck>, Serializable {
 
   /**
    *
@@ -21,6 +21,7 @@ public class JPJsonArrayCheck implements JsonPathExecutor, Serializable {
   private Integer minLength;
 
   private Integer maxLength;
+  private boolean nullExpected = false;
 
   /**
    * Set the exact length the JSON array should have.
@@ -86,6 +87,17 @@ public class JPJsonArrayCheck implements JsonPathExecutor, Serializable {
   }
 
   @Override
+  public JPJsonArrayCheck checkIsNull(boolean mustBeNull) {
+    nullExpected = mustBeNull;
+    return this;
+  }
+
+  @Override
+  public boolean isNullExpected() {
+    return nullExpected;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     List<Map<String, Object>> values = null;
@@ -100,28 +112,32 @@ public class JPJsonArrayCheck implements JsonPathExecutor, Serializable {
       return;
     }
 
-    softAssert.assertNotNull(values, AssertMessageBuilder.build(jsonPath, "because the path does not exist."));
+    if (isNullExpected()) {
+      softAssert.assertNull(values, AssertMessageBuilder.build(jsonPath, "because the path does exist"));
+    } else {
+      softAssert.assertNotNull(values, AssertMessageBuilder.build(jsonPath, "because the path does not exist"));
+    }
 
     if (values == null) {
       return;
     }
 
     if (expectedLength != null) {
-      softAssert.assertEquals(values.size(), expectedLength.intValue(), AssertMessageBuilder.build(jsonPath, "because array did not contain the expected number of indexes."));
+      softAssert.assertEquals(values.size(), expectedLength.intValue(), AssertMessageBuilder.build(jsonPath, "because array did not contain the expected number of indexes"));
     }
 
     if (minLength != null) {
       softAssert
           .assertTrue(
               values.size() >= minLength.intValue(),
-              AssertMessageBuilder.build(jsonPath, String.format("because array did not contain the minimum number of indexes %d. Found %d.", minLength, values.size())));
+              AssertMessageBuilder.build(jsonPath, String.format("because array did not contain the minimum number of indexes %d. Found %d", minLength, values.size())));
     }
 
     if (maxLength != null) {
       softAssert
           .assertTrue(
               values.size() <= maxLength.intValue(),
-              AssertMessageBuilder.build(jsonPath, String.format("because array exceeded the maximum number of indexes %d. Found %d.", maxLength, values.size())));
+              AssertMessageBuilder.build(jsonPath, String.format("because array exceeded the maximum number of indexes %d. Found %d", maxLength, values.size())));
     }
   }
 }

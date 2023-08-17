@@ -46,6 +46,32 @@ public class TMJPJsonArrayCheckTest {
   }
 
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failWithNonNullArray() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":\"A\"}]}");
+    TMJPJsonArrayCheck check = new TMJPJsonArrayCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(groups = "unitTest")
+  public void passWithNullArray() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    TMJPJsonArrayCheck check = new TMJPJsonArrayCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failWithClassCastException() {
 
     SoftAssert softAssert = new SoftAssert();
@@ -182,6 +208,22 @@ public class TMJPJsonArrayCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPJsonArrayCheck().checkIsNull(true).hasLength(3).hasMinLength(1).hasMaxLength(4);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPJsonArrayCheck().hasLength(3).hasMinLength(1).hasMaxLength(4).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPJsonArrayCheck().checkIsNull(true).hasLength(3).hasMinLength(1).hasMaxLength(4);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPJsonArrayCheck().hasLength(3).hasMinLength(1).hasMaxLength(4).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPJsonArrayCheckToTMJPJsonArrayCheck() {
 
     JPJsonArrayCheck original = new JPJsonArrayCheck();
@@ -190,16 +232,18 @@ public class TMJPJsonArrayCheckTest {
     assertThat("Clone MUST have expected length set to null.", clone.getExpectedLength(), is(nullValue()));
     assertThat("Clone MUST have max length set to null.", clone.getMaxLength(), is(nullValue()));
     assertThat("Clone MUST have min length set to null.", clone.getMinLength(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
   public void convertJPJsonArrayCheckToTMJPJsonArrayCheck() {
 
-    JPJsonArrayCheck original = new JPJsonArrayCheck().hasLength(3).hasMaxLength(5).hasMinLength(1);
+    JPJsonArrayCheck original = new JPJsonArrayCheck().checkIsNull(true).hasLength(3).hasMaxLength(5).hasMinLength(1);
     TMJPJsonArrayCheck clone = new TMJPJsonArrayCheck(original);
 
     assertThat("Clone MUST have expected length set to expected.", clone.getExpectedLength(), is(equalTo(3)));
     assertThat("Clone MUST have max length set to expected.", clone.getMaxLength(), is(equalTo(5)));
     assertThat("Clone MUST have min length set to expected.", clone.getMinLength(), is(equalTo(1)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 }

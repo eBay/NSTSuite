@@ -32,6 +32,15 @@ public class TMJPJsonArrayCheck extends JPJsonArrayCheck implements ThinModelSer
     if (source.getMinLength() != null) {
       this.hasMinLength(source.getMinLength());
     }
+
+    this.checkIsNull(source.isNullExpected());
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Array result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPJsonArrayCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -76,6 +85,10 @@ public class TMJPJsonArrayCheck extends JPJsonArrayCheck implements ThinModelSer
       builder.append(String.format(".hasMaxLength(%d)", getMaxLength().intValue()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -93,6 +106,10 @@ public class TMJPJsonArrayCheck extends JPJsonArrayCheck implements ThinModelSer
 
     if (getMaxLength() != null) {
       builder.append(String.format(".hasMaxLength(%d)", getMaxLength().intValue()));
+    }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
     }
 
     return builder.toString();

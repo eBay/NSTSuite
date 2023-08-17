@@ -46,6 +46,32 @@ public class TMJPDoubleCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failWithDoubleNotNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":2.0}");
+    TMJPDoubleCheck check = new TMJPDoubleCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(groups = "unitTest")
+  public void passWithDoubleNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    TMJPDoubleCheck check = new TMJPDoubleCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(groups = unitTest)
   public void passWithValueMatch() {
 
@@ -123,21 +149,39 @@ public class TMJPDoubleCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPDoubleCheck().checkIsNull(true).isEqualTo(3.014159000);
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPDoubleCheck().isEqualTo(3.014159).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPDoubleCheck().checkIsNull(true).isEqualTo(3.014159000);
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPDoubleCheck().isEqualTo(3.014159).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPDoubleCheckToTMJPDoubleCheck() {
 
     JPDoubleCheck original = new JPDoubleCheck();
     TMJPDoubleCheck clone = new TMJPDoubleCheck(original);
 
     assertThat("Clone MUST have equal check field set to null.", clone.getExpectedValue(), is(nullValue()));
+    assertThat("Clone MUST have equal null check set to expected.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
   public void convertJPDoubleCheckToTMJPDoubleCheck() {
 
-    JPDoubleCheck original = new JPDoubleCheck().isEqualTo(5.5);
+    JPDoubleCheck original = new JPDoubleCheck().checkIsNull(true).isEqualTo(5.5);
     TMJPDoubleCheck clone = new TMJPDoubleCheck(original);
 
     assertThat("Clone MUST have equal check field set to expected.", clone.getExpectedValue(), is(equalTo(5.5)));
+    assertThat("Clone MUST have equal null check set to expected.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)

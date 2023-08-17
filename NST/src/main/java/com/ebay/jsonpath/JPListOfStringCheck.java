@@ -9,7 +9,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPListOfStringCheck implements JsonPathExecutor, Serializable {
+public class JPListOfStringCheck implements JsonPathExecutor, NullCheck<JPListOfStringCheck>, Serializable {
 
   /**
    *
@@ -29,6 +29,8 @@ public class JPListOfStringCheck implements JsonPathExecutor, Serializable {
   private String allExpectedValue = null;
 
   private List<String> limitedToValues = null;
+
+  private boolean nullExpected = false;
 
   /**
    * Run baseline checks for a list of strings - list is not null and indexes
@@ -204,6 +206,17 @@ public class JPListOfStringCheck implements JsonPathExecutor, Serializable {
   }
 
   @Override
+  public JPListOfStringCheck checkIsNull(boolean mustBeNull) {
+    nullExpected = mustBeNull;
+    return this;
+  }
+
+  @Override
+  public boolean isNullExpected() {
+    return nullExpected;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     List<String> values = null;
@@ -218,7 +231,9 @@ public class JPListOfStringCheck implements JsonPathExecutor, Serializable {
       return;
     }
 
-    softAssert.assertNotNull(values, AssertMessageBuilder.build(jsonPath, "because the path does not exist."));
+    if (!isNullExpected()) {
+      softAssert.assertNotNull(values, AssertMessageBuilder.build(jsonPath, "because the path does not exist"));
+    }
 
     if (values == null) {
       return;
@@ -234,47 +249,51 @@ public class JPListOfStringCheck implements JsonPathExecutor, Serializable {
         continue;
       }
 
-      softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, String.format("with null value on index %d of the list of strings.", i)));
-      if (value != null) {
-        softAssert.assertTrue(!value.isEmpty(), AssertMessageBuilder.build(jsonPath, String.format("with empty value on index %d of the list of strings.", i)));
+      if (isNullExpected()) {
+        softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, String.format("because the path does exist on index %d of the list of strings", i)));
+      } else {
+        softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, String.format("with null value on index %d of the list of strings", i)));
+        if (value != null) {
+          softAssert.assertTrue(!value.isEmpty(), AssertMessageBuilder.build(jsonPath, String.format("with empty value on index %d of the list of strings", i)));
+        }
       }
     }
 
     if (allExpectedValue != null) {
       for (String value : values) {
-        softAssert.assertEquals(value, allExpectedValue, AssertMessageBuilder.build(jsonPath, String.format("because path value %s did not equal expected value %s.", value, allExpectedValue)));
+        softAssert.assertEquals(value, allExpectedValue, AssertMessageBuilder.build(jsonPath, String.format("because path value %s did not equal expected value %s", value, allExpectedValue)));
       }
     }
 
     if (exactLength != null) {
-      softAssert.assertEquals(values.size(), exactLength.intValue(), AssertMessageBuilder.build(jsonPath, "because path did not return expected number of results."));
+      softAssert.assertEquals(values.size(), exactLength.intValue(), AssertMessageBuilder.build(jsonPath, "because path did not return expected number of results"));
     }
 
     if (minLength != null) {
       softAssert
           .assertTrue(
               values.size() >= minLength.intValue(),
-              AssertMessageBuilder.build(jsonPath, String.format("because path did not contain the minimum number of expected results %d. Found %d.", minLength, values.size())));
+              AssertMessageBuilder.build(jsonPath, String.format("because path did not contain the minimum number of expected results %d. Found %d", minLength, values.size())));
     }
 
     if (maxLength != null) {
       softAssert
           .assertTrue(
               values.size() <= maxLength.intValue(),
-              AssertMessageBuilder.build(jsonPath, String.format("because path exceeded the maximum number of expected results %d. Found %d.", maxLength, values.size())));
+              AssertMessageBuilder.build(jsonPath, String.format("because path exceeded the maximum number of expected results %d. Found %d", maxLength, values.size())));
     }
 
     if (expectedValues != null) {
-      softAssert.assertTrue(values.equals(expectedValues), AssertMessageBuilder.build(jsonPath, String.format("because path values %s does not equal expected values %s.", values, expectedValues)));
+      softAssert.assertTrue(values.equals(expectedValues), AssertMessageBuilder.build(jsonPath, String.format("because path values %s does not equal expected values %s", values, expectedValues)));
     }
 
     if (containsValues != null) {
       softAssert
-          .assertTrue(values.containsAll(containsValues), AssertMessageBuilder.build(jsonPath, String.format("because path values %s does not contain all of the values %s.", values, containsValues)));
+          .assertTrue(values.containsAll(containsValues), AssertMessageBuilder.build(jsonPath, String.format("because path values %s does not contain all of the values %s", values, containsValues)));
     }
 
     if (limitedToValues != null) {
-      softAssert.assertTrue(limitedToValues.containsAll(values), AssertMessageBuilder.build(jsonPath, String.format("because path values %s is not limited to the values %s.", values, limitedToValues)));
+      softAssert.assertTrue(limitedToValues.containsAll(values), AssertMessageBuilder.build(jsonPath, String.format("because path values %s is not limited to the values %s", values, limitedToValues)));
     }
   }
 }

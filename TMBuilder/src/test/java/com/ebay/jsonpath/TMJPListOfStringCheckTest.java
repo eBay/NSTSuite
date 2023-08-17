@@ -38,12 +38,38 @@ public class TMJPListOfStringCheckTest {
   }
 
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
-  public void failNullValue() {
+  public void failNonNullValue() {
 
     SoftAssert softAssert = new SoftAssert();
 
     DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":null}]}");
     TMJPListOfStringCheck check = new TMJPListOfStringCheck();
+    check.processJsonPath("$.foo[*].text", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(groups = unitTest)
+  public void passNullValue() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":null}]}");
+    TMJPListOfStringCheck check = new TMJPListOfStringCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].text", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failNullValue() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"text\":\"A\"},{\"text\":\"B\"},{\"text\":\"C\"}]}");
+    TMJPListOfStringCheck check = new TMJPListOfStringCheck();
+    check.checkIsNull(true);
     check.processJsonPath("$.foo[*].text", softAssert, jsonPathDocument);
 
     softAssert.assertAll();
@@ -333,6 +359,22 @@ public class TMJPListOfStringCheckTest {
   }
 
   @Test(groups = unitTest)
+  public void thinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfStringCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList("one","two")).contains(Arrays.asList("one")).hasAllValuesEqualTo("three").isLimitedToValues(Arrays.asList("one","two"));
+    String serialized = serializer.getJavaStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("new JPListOfStringCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList(\"one\",\"two\")).contains(Arrays.asList(\"one\")).hasAllValuesEqualTo(\"three\").isLimitedToValues(Arrays.asList(\"one\",\"two\")).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
+  public void kotlinThinModelExportCheckNull() {
+
+    ThinModelSerializer serializer = new TMJPListOfStringCheck().checkIsNull(true).hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(Arrays.asList("one","two")).contains(Arrays.asList("one")).hasAllValuesEqualTo("three").isLimitedToValues(Arrays.asList("one","two"));
+    String serialized = serializer.getKotlinStatements();
+    MatcherAssert.assertThat("Serialized variant must match expected.", serialized, Matchers.is(Matchers.equalTo("JPListOfStringCheck().hasLength(2).hasMinLength(1).hasMaxLength(3).isEqualTo(listOf(\"one\",\"two\")).contains(listOf(\"one\")).hasAllValuesEqualTo(\"three\").isLimitedToValues(listOf(\"one\",\"two\")).checkIsNull(true)")));
+  }
+
+  @Test(groups = unitTest)
   public void convertDefaultJPListOfStringCheckToTMJPListOfStringCheck() {
 
     JPListOfStringCheck original = new JPListOfStringCheck();
@@ -345,6 +387,7 @@ public class TMJPListOfStringCheckTest {
     assertThat("Clone MUST have is equal to values set to null.", clone.getIsEqualToValues(), is(nullValue()));
     assertThat("Clone MUST have all expected value set to null.", clone.getAllExpectedValue(), is(nullValue()));
     assertThat("Clone MUST have all limited to values set to null.", clone.getLimitedToValues(), is(nullValue()));
+    assertThat("Clone MUST have null check set to false.", clone.isNullExpected(), is(equalTo(false)));
   }
 
   @Test(groups = unitTest)
@@ -358,7 +401,7 @@ public class TMJPListOfStringCheckTest {
     String allSetTo = "MONSTOR";
     List<String> limitedToValues = Arrays.asList("green", "red");
 
-    JPListOfStringCheck original = new JPListOfStringCheck().hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo).isLimitedToValues(limitedToValues);
+    JPListOfStringCheck original = new JPListOfStringCheck().checkIsNull(true).hasLength(hasLength).hasMaxLength(maxLength).hasMinLength(minLength).contains(containsValues).isEqualTo(equalToValues).hasAllValuesEqualTo(allSetTo).isLimitedToValues(limitedToValues);
     TMJPListOfStringCheck clone = new TMJPListOfStringCheck(original);
 
     assertThat("Clone MUST have length set to expected.", clone.getHasLengthValue(), is(equalTo(hasLength)));
@@ -368,6 +411,7 @@ public class TMJPListOfStringCheckTest {
     assertThat("Clone MUST have is equal to values set to expected.", clone.getIsEqualToValues(), is(equalTo(equalToValues)));
     assertThat("Clone MUST have all expected value set to expected.", clone.getAllExpectedValue(), is(equalTo(allSetTo)));
     assertThat("Clone MUST have all limited to values set to null.", clone.getLimitedToValues(), is(equalTo(limitedToValues)));
+    assertThat("Clone MUST have null check set to true.", clone.isNullExpected(), is(equalTo(true)));
   }
 
   @Test(groups = unitTest)

@@ -38,6 +38,32 @@ public class JPListOfIntegerCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(groups = "unitTest")
+  public void passNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":null},{\"bar\":null},{\"bar\":null}]}");
+    JPListOfIntegerCheck check = new JPListOfIntegerCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":[{\"bar\":null},{\"bar\":2},{\"bar\":3}]}");
+    JPListOfIntegerCheck check = new JPListOfIntegerCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo[*].bar", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failPathNotFoundException() {
 

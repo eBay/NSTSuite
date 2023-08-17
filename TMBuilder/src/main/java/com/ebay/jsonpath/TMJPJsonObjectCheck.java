@@ -45,9 +45,18 @@ public class TMJPJsonObjectCheck extends JPJsonObjectCheck implements ThinModelS
       this.contains(source.getContainsMap());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source.getDoesNotContainKeys() != null) {
       this.keysDoNotContain(source.getDoesNotContainKeys());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Object result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPJsonObjectCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -117,6 +126,10 @@ public class TMJPJsonObjectCheck extends JPJsonObjectCheck implements ThinModelS
         builder.append(getAppendedValues("keysDoNotContain", getDoesNotContainKeys()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -138,6 +151,10 @@ public class TMJPJsonObjectCheck extends JPJsonObjectCheck implements ThinModelS
 
     if (getDoesNotContainKeys() != null) {
       builder.append(getAppendedValues("keysDoNotContain", getDoesNotContainKeys()));
+    }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
     }
 
     return builder.toString();

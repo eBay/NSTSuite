@@ -40,6 +40,32 @@ public class JPJsonObjectCheckTest {
     softAssert.assertAll();
   }
 
+  @Test(groups = "unitTest")
+  public void passNull() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":null}");
+    JPJsonObjectCheck check = new JPJsonObjectCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
+  @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
+  public void failNullExpected() {
+
+    SoftAssert softAssert = new SoftAssert();
+
+    DocumentContext jsonPathDocument = JsonPath.using(config).parse("{\"foo\":{\"first\":\"A\",\"second\":2,\"third\":true}}");
+    JPJsonObjectCheck check = new JPJsonObjectCheck();
+    check.checkIsNull(true);
+    check.processJsonPath("$.foo", softAssert, jsonPathDocument);
+
+    softAssert.assertAll();
+  }
+
   @Test(expectedExceptions = AssertionError.class, groups = "unitTest")
   public void failWithClassCastException() {
 

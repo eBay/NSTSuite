@@ -54,9 +54,18 @@ public class TMJPStringCheck extends JPStringCheck implements ThinModelSerialize
       this.hasMinimumNumberOfCharacters(source.getMinimumNumberOfCharacters());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPStringCheck) {
       this.setMockValue(((TMJPStringCheck) source).getMockValue());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The String values the result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPStringCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -166,6 +175,10 @@ public class TMJPStringCheck extends JPStringCheck implements ThinModelSerialize
       builder.append(String.format(".hasMaximumNumberOfCharacters(%d)", getMaximumNumberOfCharacters().intValue()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -202,6 +215,10 @@ public class TMJPStringCheck extends JPStringCheck implements ThinModelSerialize
 
     if (getMaximumNumberOfCharacters() != null) {
       builder.append(String.format(".hasMaximumNumberOfCharacters(%d)", getMaximumNumberOfCharacters().intValue()));
+    }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
     }
 
     return builder.toString();

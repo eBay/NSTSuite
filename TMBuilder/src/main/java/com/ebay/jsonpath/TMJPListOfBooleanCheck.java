@@ -55,9 +55,18 @@ public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements Thin
       this.contains(source.getContainsValues());
     }
 
+    this.checkIsNull(source.isNullExpected());
+
     if (source instanceof TMJPListOfBooleanCheck) {
       this.setMockValues(((TMJPListOfBooleanCheck) source).getMockValues());
     }
+  }
+
+  @Override
+  @TMCheckData(inputName = "Confirm null", inputDescription = "The Boolean values the result returned by the JSON path query must be null.", getterMethodName = "isNullExpected")
+  public TMJPListOfBooleanCheck checkIsNull(boolean mustBeNull) {
+    super.checkIsNull(mustBeNull);
+    return this;
   }
 
   @Override
@@ -173,6 +182,10 @@ public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements Thin
       builder.append(String.format(".hasAllValuesEqualTo(%s)", getAllExpectedValue()));
     }
 
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
+    }
+
     return builder.toString();
   }
 
@@ -216,6 +229,10 @@ public class TMJPListOfBooleanCheck extends JPListOfBooleanCheck implements Thin
 
     if (getAllExpectedValue() != null) {
       builder.append(String.format(".hasAllValuesEqualTo(%s)", getAllExpectedValue()));
+    }
+
+    if (isNullExpected() == true) {
+      builder.append(String.format(".checkIsNull(true)"));
     }
 
     return builder.toString();

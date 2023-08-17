@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.PathNotFoundException;
 
-public class JPIntegerCheck implements JsonPathExecutor, Serializable {
+public class JPIntegerCheck implements JsonPathExecutor, NullCheck<JPIntegerCheck>, Serializable {
 
   /**
    *
@@ -15,6 +15,7 @@ public class JPIntegerCheck implements JsonPathExecutor, Serializable {
   private static final long serialVersionUID = 5372890880704649745L;
 
   private Integer expectedValue = null;
+  private boolean nullExpected = false;
 
   /**
    * Run the baseline checks for an integer - not null.
@@ -45,6 +46,17 @@ public class JPIntegerCheck implements JsonPathExecutor, Serializable {
   }
 
   @Override
+  public JPIntegerCheck checkIsNull(boolean mustBeNull) {
+    nullExpected = mustBeNull;
+    return this;
+  }
+
+  @Override
+  public boolean isNullExpected() {
+    return nullExpected;
+  }
+
+  @Override
   public void processJsonPath(String jsonPath, SoftAssert softAssert, DocumentContext documentContext) {
 
     Integer value = null;
@@ -59,14 +71,18 @@ public class JPIntegerCheck implements JsonPathExecutor, Serializable {
       return;
     }
 
-    softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null integer."));
+    if (isNullExpected()) {
+      softAssert.assertNull(value, AssertMessageBuilder.build(jsonPath, "with non-null integer"));
+    } else {
+      softAssert.assertNotNull(value, AssertMessageBuilder.build(jsonPath, "with null integer"));
+    }
 
     if (value == null) {
       return;
     }
 
     if (expectedValue != null) {
-      softAssert.assertEquals(value, expectedValue, AssertMessageBuilder.build(jsonPath, "with values that do not match."));
+      softAssert.assertEquals(value, expectedValue, AssertMessageBuilder.build(jsonPath, "with values that do not match"));
     }
   }
 }
