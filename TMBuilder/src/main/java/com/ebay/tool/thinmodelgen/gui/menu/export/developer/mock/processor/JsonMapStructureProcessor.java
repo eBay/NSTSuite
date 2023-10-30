@@ -25,10 +25,12 @@ public class JsonMapStructureProcessor {
         // Iterate over each path from both the coreValidationSetModel and the customValidationSetModel, using the
         // arrayPathToSizeMap to initialize array nodes to the right size.
         NodeModel[] coreNodes = coreValidationSetModel.getData();
-        NodeModel[] customNodes = customValidationSetModel.getData();
-
         processNodeModels(coreNodes, arrayPathToSizeMap, jsonMap);
-        processNodeModels(customNodes, arrayPathToSizeMap, jsonMap);
+
+        if (customValidationSetModel != null) {
+            NodeModel[] customNodes = customValidationSetModel.getData();
+            processNodeModels(customNodes, arrayPathToSizeMap, jsonMap);
+        }
 
         return jsonMap;
     }

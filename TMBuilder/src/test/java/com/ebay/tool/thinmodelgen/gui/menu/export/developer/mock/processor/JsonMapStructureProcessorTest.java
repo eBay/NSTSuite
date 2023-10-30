@@ -33,6 +33,38 @@ public class JsonMapStructureProcessorTest {
     private Gson gson = new GsonBuilder().serializeNulls().create();;
 
     @Test
+    public void testGetJsonMapForValidationsCoreAndNullCustomValues() throws Exception {
+
+        JsonBooleanType jsonBooleanType = new JsonBooleanType("Foo");
+        jsonBooleanType.updateCheckForPath("$.foo.bar", new TMJPStringCheck());
+        String booleanSerializedType = JsonBaseTypePersistence.serialize(jsonBooleanType);
+
+        PathNode[] booleanPathNodes = new PathNode[4];
+        booleanPathNodes[0] = new PathNode("$", "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType", 0);
+        booleanPathNodes[1] = new PathNode("foo", "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonObjectType", 0);
+        booleanPathNodes[3] = new PathNode("bar", "class com.ebay.tool.thinmodelgen.jsonschema.type.JsonBooleanType", 0);
+
+        NodeModel booleanNodeModel = new NodeModel(booleanPathNodes, booleanSerializedType);
+        NodeModel[] coreNodeModel = new NodeModel[] {booleanNodeModel};
+        ValidationSetModel coreValidationSet = new ValidationSetModel("core", coreNodeModel);
+
+        TreeMap<String, Integer> treeMap = new TreeMap<>(new SmallestToLargestArrayPathComparator());
+
+        Map actualJsonMap = processor.getJsonMapForValidations(treeMap, coreValidationSet, null);
+
+        // Define expected
+        HashMap<String, Object> foo = new HashMap<>();
+        foo.put("bar", null);
+        HashMap<String, Object> expectedJsonMap = new HashMap<>();
+        expectedJsonMap.put("foo", foo);
+
+        String actual = gson.toJson(actualJsonMap);
+        String expected = gson.toJson(expectedJsonMap);
+
+        assertThat(actual, is(equalTo(expected)));
+    }
+
+    @Test
     public void testGetJsonMapForValidationsCoreAndCustom() throws Exception {
 
         JsonBooleanType jsonBooleanType = new JsonBooleanType("Foo");

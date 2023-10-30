@@ -32,21 +32,27 @@ public class DeveloperMockExport {
     public void export(File exportPath, List<ValidationSetModel> validationSetModels) throws IOException, ClassNotFoundException {
 
         ValidationSetModel coreValidationSet = getCoreValidationSet(validationSetModels);
-
+        String validationSetName = coreValidationSet.getValidationSetName();
+        validationSetName = camelCaseValidationSetName(validationSetName);
+        writeDeveloperMock(exportPath, validationSetName, getJsonFromValidationSet(coreValidationSet, coreValidationSet));
 
         for (ValidationSetModel validationSetModel : validationSetModels) {
 
             String json = getJsonFromValidationSet(coreValidationSet, validationSetModel);
 
-            String validationSetName = validationSetModel.getValidationSetName();
+            validationSetName = validationSetModel.getValidationSetName();
             validationSetName = camelCaseValidationSetName(validationSetName);
 
-            String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, validationSetName);
-            File exportFile = new File(exportPath, fileName);
-            FileWriter fileWriter = new FileWriter(exportFile);
-            fileWriter.write(json);
-            fileWriter.close();
+            writeDeveloperMock(exportPath, validationSetName, json);
         }
+    }
+
+    protected void writeDeveloperMock(File exportPath, String validationSetName, String json) throws IOException {
+        String fileName = String.format(DEVELOPER_MOCK_FILE_NAME_FORMAT, validationSetName);
+        File exportFile = new File(exportPath, fileName);
+        FileWriter fileWriter = new FileWriter(exportFile);
+        fileWriter.write(json);
+        fileWriter.close();
     }
 
     public String getJsonFromValidationSet(ValidationSetModel coreValidationSet, ValidationSetModel customValidationSet) throws IOException, ClassNotFoundException {
@@ -58,8 +64,10 @@ public class DeveloperMockExport {
         TreeMap<String, Integer> arrayPathToArraySizeMap = new TreeMap<>(new SmallestToLargestArrayPathComparator());
         arrayPathToArraySizeMap.putAll(coreValidationArrayPathToArraySizeMap);
 
-        TreeMap<String, Integer> customValidationArrayPathToArraySizeMap = ArrayPathToArraySizeMapProcessor.getArrayPathToArraySizeMap(customValidationSet);
-        arrayPathToArraySizeMap.putAll(customValidationArrayPathToArraySizeMap);
+        if (customValidationSet != null) {
+            TreeMap<String, Integer> customValidationArrayPathToArraySizeMap = ArrayPathToArraySizeMapProcessor.getArrayPathToArraySizeMap(customValidationSet);
+            arrayPathToArraySizeMap.putAll(customValidationArrayPathToArraySizeMap);
+        }
 
         // Build up the jsonMap structure.
         Map<String, Object> jsonMap = new HashMap<>();
@@ -67,7 +75,10 @@ public class DeveloperMockExport {
 
         // Populate the jsonMap with mock values.
         JsonMapPopulateProcessor.populateJsonMapWithMockValues(coreValidationSet, jsonMap);
-        JsonMapPopulateProcessor.populateJsonMapWithMockValues(customValidationSet, jsonMap);
+
+        if (customValidationSet != null) {
+            JsonMapPopulateProcessor.populateJsonMapWithMockValues(customValidationSet, jsonMap);
+        }
 
         // Write the JSON to file.
         String json = gson.toJson(jsonMap);
