@@ -16,13 +16,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class DeveloperMockExportTest {
 
@@ -31,6 +31,45 @@ public class DeveloperMockExportTest {
     @BeforeMethod(alwaysRun = true)
     public void resetDeveloperMockExport() {
         export = new DeveloperMockExport();
+    }
+
+    @Test
+    public void getCoreValidationSetByItselfAndCustomValidationSet() throws Exception {
+
+        DeveloperMockExport exportMock = Mockito.spy(DeveloperMockExport.class);
+        doNothing().when(exportMock).writeDeveloperMock(Mockito.any(File.class), Mockito.anyString(), Mockito.anyString());
+
+        ValidationSetModel coreValidationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(coreValidationSetModel.getValidationSetName()).thenReturn(ExportConstants.CORE_VALIDATION_SET);
+        when(coreValidationSetModel.getData()).thenReturn(new NodeModel[0]);
+
+        ValidationSetModel customValidationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(customValidationSetModel.getValidationSetName()).thenReturn("FOO");
+        when(customValidationSetModel.getData()).thenReturn(new NodeModel[0]);
+
+        List<ValidationSetModel> validations = new ArrayList<>();
+        validations.add(coreValidationSetModel);
+        validations.add(customValidationSetModel);
+
+        exportMock.export(new File(System.getProperty("user.dir")), validations);
+        verify(exportMock, times(2)).writeDeveloperMock(Mockito.any(File.class), Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
+    public void getCoreValidationSetByItself() throws Exception {
+
+        DeveloperMockExport exportMock = Mockito.spy(DeveloperMockExport.class);
+        doNothing().when(exportMock).writeDeveloperMock(Mockito.any(File.class), Mockito.anyString(), Mockito.anyString());
+
+        ValidationSetModel coreValidationSetModel = Mockito.mock(ValidationSetModel.class);
+        when(coreValidationSetModel.getValidationSetName()).thenReturn(ExportConstants.CORE_VALIDATION_SET);
+        when(coreValidationSetModel.getData()).thenReturn(new NodeModel[0]);
+
+        List<ValidationSetModel> validations = new ArrayList<>();
+        validations.add(coreValidationSetModel);
+
+        exportMock.export(new File(System.getProperty("user.dir")), validations);
+        verify(exportMock, times(1)).writeDeveloperMock(Mockito.any(File.class), Mockito.anyString(), Mockito.anyString());
     }
 
     @Test
