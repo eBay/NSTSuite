@@ -1,6 +1,11 @@
 name: Java CI
 run-name: Triggering execution of Java tests
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, edited, reopened, synchronize, ready_for_review]
 jobs:
   run-tests:
     runs-on: ubuntu-latest
