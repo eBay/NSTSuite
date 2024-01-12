@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>30.0-android</version>
+			<version>32.0.0-android</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.java-json-tools</groupId>
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20220924</version>
+			<version>20230227</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
