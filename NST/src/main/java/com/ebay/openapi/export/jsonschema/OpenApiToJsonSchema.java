@@ -179,15 +179,19 @@ public class OpenApiToJsonSchema {
 			if (response == null) {
 				throw new IllegalStateException(String.format("Status code [%s] is not present for request method [%s] and path [%s] in file: %s", statusCode, requestMethod, requestPath, openApiSpecFilePath));
 			}
-	
-			MediaType mediaType = response.getContent().get(MEDIA_TYPE);
-			if (mediaType == null) {
-				throw new IllegalStateException(
-						"Media type [application/json] is not present for status code [200] and request method ["
-								+ requestMethod + "] and path [" + requestPath + "] in file: " + openApiSpecFilePath);
+			
+		//added below check to fix NPE
+		       if(response.getContent() != null) {
+				MediaType mediaType = response.getContent().get(MEDIA_TYPE);
+				if (mediaType == null) {
+					throw new IllegalStateException(
+							"Media type [application/json] is not present for status code [200] and request method ["
+									+ requestMethod + "] and path [" + requestPath + "] in file: " + openApiSpecFilePath);
+				}else{
+					schema = mediaType.getSchema();
+				}
 			}
-	
-			schema = mediaType.getSchema();
+			
 			if (schema == null) {
 				throw new IllegalStateException(
 						"Schema not found for media type [application/json] and status code [200] and request method ["
