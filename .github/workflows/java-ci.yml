@@ -1,5 +1,7 @@
 name: Java CI
 run-name: Triggering execution of Java tests
+permissions:
+  actions: write
 on:
   push:
     branches:
