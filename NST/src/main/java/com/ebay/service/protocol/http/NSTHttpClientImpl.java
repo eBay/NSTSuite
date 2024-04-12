@@ -27,6 +27,16 @@ import com.ebay.nst.NstRequestType;
 
 public class NSTHttpClientImpl implements NSTHttpClient<NSTHttpRequest, NSTHttpResponse> {
 
+	private boolean addNewlineWhenParsingResponse = false;
+
+	/**
+	 * Set to true to add a new line after each line parsed from the response payload. Default is false.
+	 * @param addNewlineWhenParsingResponse True to add a new line after each line parsed from the response payload. Default is false.
+	 */
+	public void setAddNewlineWhenParsingResponse(boolean addNewlineWhenParsingResponse) {
+		this.addNewlineWhenParsingResponse = addNewlineWhenParsingResponse;
+	}
+
 	@Override
 	public NSTHttpResponse sendRequest(NSTHttpRequest request) {
 		return sendRequest(request, StandardCharsets.UTF_8);
@@ -157,6 +167,9 @@ public class NSTHttpClientImpl implements NSTHttpClient<NSTHttpRequest, NSTHttpR
 		StringBuffer content = new StringBuffer();
 		while ((inputLine = in.readLine()) != null) {
 			content.append(inputLine);
+			if (addNewlineWhenParsingResponse) {
+				content.append("\n");
+			}
 		}
 		in.close();
 		response.setPayload(content.toString());

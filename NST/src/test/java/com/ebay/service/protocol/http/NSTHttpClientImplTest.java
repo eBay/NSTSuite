@@ -31,11 +31,12 @@ import com.ebay.nst.NstRequestType;
 
 public class NSTHttpClientImplTest {
 	
-	private NSTHttpClientImpl implementation = new NSTHttpClientImpl();
+	private NSTHttpClientImpl implementation;
 	private HttpURLConnection connection;
 	private URL url;
 	
 	private static final String payload = "{ \"test\": \"payload\" }";
+	private static final String payloadRawWithNewLines = "openapi: 3.0.0\n  info:\n    title: foo";
 	private static final int timeout = 100;
 	private static final String firstHeaderKey = "first";
 	private static final List<String> firstHeaderValues = Arrays.asList("one", "two");
@@ -46,6 +47,9 @@ public class NSTHttpClientImplTest {
 	
 	@BeforeMethod
 	public void beforeEachParseResponseTest() throws IOException {
+
+		// Reset the implementation instance.
+		implementation = new NSTHttpClientImpl();
 		
 		// Mocked connection
 		
@@ -212,5 +216,21 @@ public class NSTHttpClientImplTest {
 		when(connection.getHeaderFields()).thenReturn(null);
 		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection, StandardCharsets.UTF_8);
 		assertThat(actual.getPayload(), is(equalTo("©")));
+	}
+
+	@Test
+	public void parseResponseWithNewlines() throws Exception {
+
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put(firstHeaderKey, firstHeaderValuesExpected);
+		expectedHeaders.put(secondHeaderKey, secondHeaderValuesExpected);
+
+		InputStream targetStream = new ByteArrayInputStream(payloadRawWithNewLines.getBytes());
+		when(connection.getInputStream()).thenReturn(targetStream);
+		implementation.setAddNewlineWhenParsingResponse(true);
+		NSTHttpResponseImpl actual = (NSTHttpResponseImpl) implementation.parseResponse(connection, StandardCharsets.UTF_8);
+		assertThat(actual.getPayload(), is(equalTo(payloadRawWithNewLines+"\n")));
+		assertThat(actual.getHeaders(), is(equalTo(expectedHeaders)));
+		assertThat(actual.getResponseCode(), is(equalTo(200)));
 	}
 }
