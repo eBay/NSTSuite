@@ -3,11 +3,11 @@ on:
   push:
     tags:
       - '*'
+permissions:
+  contents: write
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v2
       - name: Set up Java for publishing to Maven Central Repository
