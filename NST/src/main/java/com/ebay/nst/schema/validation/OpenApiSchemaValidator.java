@@ -5,6 +5,8 @@ import com.ebay.nst.schema.validation.support.SchemaValidationException;
 import com.ebay.nst.schema.validation.support.SchemaValidatorUtil;
 import com.ebay.openapi.export.jsonschema.OpenApiToJsonSchema;
 import com.fasterxml.jackson.databind.JsonNode;
+import io.swagger.v3.parser.core.models.ParseOptions;
+
 import java.util.Objects;
 
 /**
@@ -51,6 +53,7 @@ public class OpenApiSchemaValidator implements NSTRestSchemaValidator {
 	private final boolean allowAdditionalProperties;
 	private final StatusCode statusCode;
 	private final Payload payload;
+	private final ParseOptions parseOptions;
 
 	/**
 	 * Initialize the OpenAPI validator with the following values.
@@ -62,7 +65,7 @@ public class OpenApiSchemaValidator implements NSTRestSchemaValidator {
 	 * @param requestMethod             Request method to apply from the schema definition.
 	 * @param allowAdditionalProperties Allow properties which are not in the schema definition
 	 */
-	private OpenApiSchemaValidator(String schemaResourcePath, String schemaPath, NstRequestType requestMethod, AllowAdditionalProperties allowAdditionalProperties, Payload payload, StatusCode statusCode) {
+	private OpenApiSchemaValidator(String schemaResourcePath, String schemaPath, NstRequestType requestMethod, AllowAdditionalProperties allowAdditionalProperties, Payload payload, StatusCode statusCode, ParseOptions parseOptions) {
 		this.schemaResourcePath = Objects.requireNonNull(schemaResourcePath, "Schema resource path cannot be null.");
 		this.schemaPath = Objects.requireNonNull(schemaPath, "Schema path cannot be null.");
 		this.requestMethod = Objects.requireNonNull(requestMethod, "Request method cannot be null.");
@@ -73,13 +76,14 @@ public class OpenApiSchemaValidator implements NSTRestSchemaValidator {
 		}
 		this.payload = payload;
 		this.statusCode = statusCode;
+		this.parseOptions = parseOptions;
 	}
 
 	@Override
 	public void validate(String responseBody) throws SchemaValidationException {
 
 		OpenApiToJsonSchema openApiToJsonSchema = new OpenApiToJsonSchema(schemaResourcePath, schemaPath,
-				requestMethod, allowAdditionalProperties, payload.getValue(), statusCode.getValue());
+				requestMethod, allowAdditionalProperties, payload.getValue(), statusCode.getValue(), parseOptions);
 		openApiToJsonSchema.convert();
 		JsonNode jsonSchema = openApiToJsonSchema.getJsonSchema();
 
@@ -102,6 +106,7 @@ public class OpenApiSchemaValidator implements NSTRestSchemaValidator {
 		private AllowAdditionalProperties allowAdditionalProperties = AllowAdditionalProperties.YES;
 		private Payload payload = Payload.RESPONSE;
 		private StatusCode statusCode = StatusCode._200;
+		private ParseOptions parseOptions;
 
 		public Builder(String schemaResourcePath, String schemaPath, NstRequestType requestMethod) {
 			this.schemaResourcePath = Objects.requireNonNull(schemaResourcePath, "Schema resource path cannot be null.");
@@ -145,6 +150,16 @@ public class OpenApiSchemaValidator implements NSTRestSchemaValidator {
 		}
 
 		/**
+		 * Set the swagger parsing options. See: https://github.com/swagger-api/swagger-parser/tree/master?tab=readme-ov-file#options
+		 * @param parseOptions Parsing options to use.
+		 * @return Builder instance.
+		 */
+		public Builder setParseOptions(ParseOptions parseOptions) {
+			this.parseOptions = parseOptions;
+			return this;
+		}
+
+		/**
 		 * Create a new OpenApiSchemaValidator instance based on the builder
 		 * configuration.
 		 * 
@@ -152,7 +167,7 @@ public class OpenApiSchemaValidator implements NSTRestSchemaValidator {
 		 */
 		public OpenApiSchemaValidator build() {
 			return new OpenApiSchemaValidator(schemaResourcePath, schemaPath, requestMethod, allowAdditionalProperties,
-					payload, statusCode);
+					payload, statusCode, parseOptions);
 		}
 	}
 
