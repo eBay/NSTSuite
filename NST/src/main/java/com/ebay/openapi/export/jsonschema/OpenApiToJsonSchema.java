@@ -38,6 +38,7 @@ public class OpenApiToJsonSchema {
 	private final List<EbaySchemaTransformer> transformers;
 	private final boolean useRequestModel;
 	private final String statusCode;
+	private final ParseOptions parseOptions;
 
 	/**
 	 * Convert an OpenAPI yaml spec to JSON schema. Call 'convert()' to begin the
@@ -54,6 +55,25 @@ public class OpenApiToJsonSchema {
 	 * @param statusCode				Response code to use.
 	 */
 	public OpenApiToJsonSchema(String openApiSpecFilePath, String requestPath, NstRequestType requestMethod, boolean allowAdditionalProperties, boolean useRequestModel, String statusCode) {
+		this(openApiSpecFilePath, requestPath, requestMethod, allowAdditionalProperties, useRequestModel, statusCode, new ParseOptions());
+	}
+
+	/**
+	 * Convert an OpenAPI yaml spec to JSON schema. Call 'convert()' to begin the
+	 * operation.
+	 *
+	 * @param openApiSpecFilePath       Path to yaml spec to convert.
+	 * @param requestPath               The API request path to evaluate in the schema.
+	 * @param requestMethod             Request method corresponding to the requestPath to
+	 *                                  evaluate.
+	 * @param allowAdditionalProperties when false, validation will fail if properties are
+	 *                                  present which are not defined in the schema
+	 * @param useRequestModel 			True to use the request model path, false to use the
+	 * 									response model path.
+	 * @param statusCode				Response code to use.
+	 * @param parseOptions				Swagger parsing options to use.
+	 */
+	public OpenApiToJsonSchema(String openApiSpecFilePath, String requestPath, NstRequestType requestMethod, boolean allowAdditionalProperties, boolean useRequestModel, String statusCode, ParseOptions parseOptions) {
 		this.openApiSpecFilePath = openApiSpecFilePath;
 		this.requestPath = requestPath;
 		this.requestMethod = requestMethod;
@@ -61,21 +81,11 @@ public class OpenApiToJsonSchema {
 		this.useRequestModel = useRequestModel;
 		this.statusCode = statusCode;
 		this.transformers = createTransformers();
-	}
-
-	/**
-	 * Convert an OpenAPI yaml spec to JSON schema. Call 'convert()' to begin the
-	 * operation.
-	 *
-	 * @param openApiSpecFilePath Path to yaml spec to convert.
-	 * @param requestPath         The API request path to evaluate in the schema.
-	 * @param requestMethod       Request method corresponding to the requestPath to
-	 *                            evaluate.
-	 * @deprecated use {@link OpenApiToJsonSchema#OpenApiToJsonSchema(String, String, NstRequestType, boolean, boolean, String	)}}
-	 */
-	@Deprecated
-	public OpenApiToJsonSchema(String openApiSpecFilePath, String requestPath, NstRequestType requestMethod) {
-		this(openApiSpecFilePath, requestPath, requestMethod, true, false, "200");
+		if (parseOptions != null) {
+			this.parseOptions = parseOptions;
+		} else {
+			this.parseOptions = new ParseOptions();
+		}
 	}
 
 	/**
@@ -107,9 +117,7 @@ public class OpenApiToJsonSchema {
 	 */
 	public void convert() {
 
-		// Parse the OpenAPI yaml
-		ParseOptions options = new ParseOptions();
-		SwaggerParseResult parseResult = new OpenAPIV3Parser().readLocation(openApiSpecFilePath, null, options);
+		SwaggerParseResult parseResult = new OpenAPIV3Parser().readLocation(openApiSpecFilePath, null, parseOptions);
 		if (parseResult == null || parseResult.getOpenAPI() == null) {
 			throw new IllegalStateException("Unable to read yaml file from path: " + openApiSpecFilePath);
 		}

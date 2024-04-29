@@ -1,0 +1,23 @@
+{
+  "numberOfFruit": 100,
+  "typesOfApples": [
+    {
+      "name": "Fuji",
+      "color": 1
+    },
+    {
+      "name": "Gala",
+      "color": "YELLOW"
+    }
+  ],
+  "typesOfBananas": [
+    {
+      "name": "Big Yellow",
+      "color": "YELLOW"
+    },
+    {
+      "name": "Old Brown",
+      "color": 2
+    }
+  ]
+}

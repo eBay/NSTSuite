@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: Root Schema
+  description: >-
+    Root Schema
+  version: 1.0.0
+servers:
+  - url: 'http://ebay.com'
+    description: QATE
+paths:
+  /test:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+components:
+  schemas:
+    TestResponse:
+      type: object
+      properties:
+        numberOfFruit:
+          type: integer
+          format: int32
+        typesOfApples:
+          type: array
+          items:
+            $ref: "#/components/schemas/Apple"
+        typesOfBananas:
+          type: array
+          items:
+            $ref: "#/components/schemas/Banana"
+    Apple:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          enum:
+            - RED
+            - GREEN
+            - YELLOW
+    Banana:
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+          enum:
+            - YELLOW
+            - GREEN
+            - BROWN
