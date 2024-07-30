@@ -3,8 +3,6 @@ package com.ebay.nst.schema.validation.support;
 import java.io.IOException;
 import java.util.Objects;
 
-import org.testng.Reporter;
-
 import com.ebay.utility.timestamp.TimeStamp;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -22,6 +20,19 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory;
 
 public class SchemaValidatorUtil {
 
+	private static final boolean isTestNGAvailable;
+
+	static {
+		boolean testNGAvailable;
+		try {
+			Class.forName("org.testng.Reporter");
+			testNGAvailable = true;
+		} catch (ClassNotFoundException e) {
+			testNGAvailable = false;
+		}
+		isTestNGAvailable = testNGAvailable;
+	}
+
 	public void validate(JsonNode schemaNode, String responseBody) {
 
 		final JsonSchemaFactory factory = JsonSchemaFactory.byDefault();
@@ -29,14 +40,14 @@ public class SchemaValidatorUtil {
 		try {
 			final JsonSchema jsonSchema = factory.getJsonSchema(schemaNode);
 			final JsonNode responseNode = JsonLoader.fromString(responseBody);
-			Reporter.log(String.format("Start json validation at %s", TimeStamp.getCurrentTime()), true);
-			ProcessingReport processingReport = jsonSchema.validateUnchecked(responseNode, true);
-			Reporter.log(String.format("Finish json validation at %s", TimeStamp.getCurrentTime()), true);
+			log(String.format("Start json validation at %s", TimeStamp.getCurrentTime()));
+			ProcessingReport processingReport = jsonSchema.validateUnchecked(responseNode);
+			log(String.format("Finish json validation at %s", TimeStamp.getCurrentTime()));
 
 			if (processingReport.isSuccess()) {
-				Reporter.log("Validate response against schema: Success", true);
+				log("Validate response against schema: Success");
 			} else {
-				Reporter.log("Validate response against schema: Failed", true);
+				log("Validate response against schema: Failed");
 
 				StringBuilder sb = new StringBuilder();
 				for (ProcessingMessage processingMessage : processingReport) {
@@ -82,11 +93,11 @@ public class SchemaValidatorUtil {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			Reporter.log(String.format("IOException from schemaResourcePath. %s", e.getMessage()), true);
+			log(String.format("IOException from schemaResourcePath. %s", e.getMessage()));
 			throw new SchemaValidationException(e.getMessage());
 		} catch (ProcessingException e) {
 			e.printStackTrace();
-			Reporter.log(String.format("ProcessingException from getJsonSchema. %s", e.getMessage()), true);
+			log(String.format("ProcessingException from getJsonSchema. %s", e.getMessage()));
 			throw new SchemaValidationException(e.getMessage());
 		}
 	}
@@ -273,5 +284,13 @@ public class SchemaValidatorUtil {
 		}
 
 		return errorMessage.toString();
+	}
+
+	private void log(String message) {
+		if (isTestNGAvailable) {
+			org.testng.Reporter.log(message, true);
+		} else {
+			System.out.println(message);
+		}
 	}
 }
