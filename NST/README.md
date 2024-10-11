@@ -9,8 +9,8 @@ The output format of the mocks and service client may be overridden for customiz
 
 See REST and GraphQL examples in the test packages:  
 
-* [REST](../NSTTutorials/src/test/java/com/nst/tutorials/rest)
-* [GraphQL](../NSTTutorials/src/test/java/com/nst/tutorials/graphql)
+* [REST](../NSTTutorials)
+* [GraphQL](../NSTTutorials/GraphQLExamples/src/main/java/com/ebay/nst/tutorials/graphql)
 
 NST has test runner hooks for TestNG so please plan to adopt TestNG for your tests.
 
