@@ -14,7 +14,7 @@ import java.io.File;
 public class ResponseLoggerInjectionsTest implements NSTServiceTestRunner {
 
     private static final String RESPONSE_LOGGER_INJECTIONS_PATH = "src/test/java/com/ebay/nst/tutorials/rest/responseloggerinjections";
-    private static final String GENERATED_MOCK_PATH = RESPONSE_LOGGER_INJECTIONS_PATH + "/ResponseLoggerInjectionsTest_exampleResponseLoggerInjectionMockGenerationTest_0_ResponseLoggerInjectionsWrapper.har";
+    private static final String GENERATED_MOCK_PATH = RESPONSE_LOGGER_INJECTIONS_PATH + "/ResponseLoggerInjectionsTest_exampleResponseLoggerInjectionMockGenerationTest_1_ResponseLoggerInjectionsWrapper.har";
 
     @Test
     public void exampleResponseLoggerInjectionMockGenerationTest() throws Exception {
