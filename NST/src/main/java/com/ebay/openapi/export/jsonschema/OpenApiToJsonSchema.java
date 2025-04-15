@@ -335,7 +335,8 @@ public class OpenApiToJsonSchema {
 				EbaySchemaDefinitionsInjectionTransformer.getInstance(),
 				EbaySchemaRefInjectionTransformer.getInstance(),
 				EbayRemoveExampleSetFlagTransformer.getInstance(),
-				EbayNullableTransformer.getInstance()));
+				EbayNullableTransformer.getInstance(),
+				EbayRemoveTypesTransformer.getInstance()));
 		if (!allowAdditionalProperties) {
 			transformers.add(EbayAdditionalPropertiesInjectionTransformer.getInstance());
 		}
