@@ -85,4 +85,28 @@ public class OpenApiSchemaValidatorTest {
 
         validator.validate(testResponsePayload);
     }
+
+    @Test
+    public void schemaValidatePassNullableArray() throws Exception {
+
+        OpenApiSchemaValidator validator = new OpenApiSchemaValidator.Builder("/com/ebay/nst/schema/validation/OpenApiSchemaValidatorTest/schema/nullableArray.yaml", "/test", NstRequestType.GET)
+                .allowAdditionalProperties(OpenApiSchemaValidator.AllowAdditionalProperties.NO)
+                .build();
+
+        String testResponsePayload = ResourceParser.readInResourceFile("/com/ebay/nst/schema/validation/OpenApiSchemaValidatorTest/json/validResponseNullableArray.json");
+
+        validator.validate(testResponsePayload);
+    }
+
+    @Test
+    public void schemaValidatePassNullableArrayItem() throws Exception {
+
+        OpenApiSchemaValidator validator = new OpenApiSchemaValidator.Builder("/com/ebay/nst/schema/validation/OpenApiSchemaValidatorTest/schema/nullableArrayItem.yaml", "/test", NstRequestType.GET)
+                .allowAdditionalProperties(OpenApiSchemaValidator.AllowAdditionalProperties.NO)
+                .build();
+
+        String testResponsePayload = ResourceParser.readInResourceFile("/com/ebay/nst/schema/validation/OpenApiSchemaValidatorTest/json/validResponseNullableArrayItem.json");
+
+        validator.validate(testResponsePayload);
+    }
 }

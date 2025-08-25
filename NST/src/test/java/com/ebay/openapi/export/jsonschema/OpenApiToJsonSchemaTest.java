@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import io.swagger.v3.parser.core.models.ParseOptions;
 import org.testng.annotations.Test;
 
 import com.ebay.nst.NstRequestType;
@@ -275,10 +276,17 @@ public class OpenApiToJsonSchemaTest {
 		assertThat("JSON schemas MUST match.", actualJsonSchema, is(equalTo(expectedJsonSchema)));
 	}
 	
-	@Test
+	@Test(groups = "unitTest")
 	public void testNullableAllOfReference() throws Exception {
 		JsonNode actualJsonSchema = doConversion("/com/ebay/openapi/export/jsonschema/sourceyaml/NullableAllOfReference.yaml", "/test", NstRequestType.GET, false, false, "200");
 		JsonNode expectedJsonSchema = readInResourceJson("/com/ebay/openapi/export/jsonschema/expectedjson/nullableAllOfReference.json");
+		assertThat("JSON schemas MUST match.", actualJsonSchema, is(equalTo(expectedJsonSchema)));
+	}
+
+	@Test(groups = "unitTest")
+	public void testNullablePropertiesAndArray() throws Exception {
+		JsonNode actualJsonSchema = doConversion("/com/ebay/openapi/export/jsonschema/sourceyaml/NullablePropertiesAndArray.yaml", "/test");
+		JsonNode expectedJsonSchema = readInResourceJson("/com/ebay/openapi/export/jsonschema/expectedjson/nullablePropertiesAndArray.json");
 		assertThat("JSON schemas MUST match.", actualJsonSchema, is(equalTo(expectedJsonSchema)));
 	}
 

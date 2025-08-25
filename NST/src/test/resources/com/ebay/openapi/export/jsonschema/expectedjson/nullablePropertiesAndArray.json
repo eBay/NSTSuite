@@ -1,0 +1,39 @@
+{
+  "type": ["object", "null"],
+  "properties": {
+    "apple": {
+      "type": ["string", "null"]
+    },
+    "banana": {
+      "type": ["integer", "null"]
+    },
+    "cherry": {
+      "type": ["array", "null"],
+      "items" : {
+        "type" : ["string", "null"],
+        "format" : "url"
+      }
+    }
+  },
+  "definitions": {
+    "Response": {
+      "type": ["object", "null"],
+      "properties": {
+        "apple": {
+          "type": ["string", "null"]
+        },
+        "banana": {
+          "type": ["integer", "null"]
+        },
+        "cherry": {
+          "type": ["array", "null"],
+          "items" : {
+            "type" : ["string", "null"],
+            "format" : "url"
+          }
+        }
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-04/schema#"
+}
