@@ -31,7 +31,7 @@ public class ThinModelsThinModel extends NSTServiceModelBase {
 
         Map<String, JsonPathExecutor> validations = new HashMap<>();
         validations.put("$.holiday.id", new JPIntegerCheck().isEqualTo(15));
-        validations.put("$.holiday.nameEn", new JPStringCheck().isEqualTo("Canada Day"));
+        validations.put("$.holiday.nameEn", new JPStringCheck().isEqualTo("Discovery Day"));
         evaluateJsonPaths(validations, softAssert);
     }
 }
