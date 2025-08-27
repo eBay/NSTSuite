@@ -15,7 +15,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-          server-id: 'ossrh' # This is the id used in the settings.xml file to identify the repository
+          server-id: 'central' # This is the id used in the settings.xml file to identify the repository
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
