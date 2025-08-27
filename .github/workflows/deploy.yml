@@ -9,12 +9,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Java for publishing to Maven Central Repository
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.8
-          server-id: ossrh
+          distribution: 'temurin'
+          java-version: '8'
+          server-id: 'ossrh' # This is the id used in the settings.xml file to identify the repository
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
