@@ -243,7 +243,7 @@ public class OpenApiToJsonSchema {
 			schemaObject = Json.mapper().convertValue(definitions.get(rootType), ObjectNode.class);
 		}
 
-		// Using Atlassian code here (with modifitications) - convert to
+		// Using Atlassian code here (with modifications) - convert to
 		// JSON schema. Use the transformers defined at the root of this
 		// class to complete the modifications.
 		final SchemaTransformationContext transformationContext = SchemaTransformationContext.create().forRequest(false)
@@ -267,7 +267,9 @@ public class OpenApiToJsonSchema {
 		// Remove unsupported notations
 		schema.setDeprecated(null);
 		schema.setExample(null);
-		schema.setFormat(null);
+		if (!"string".equalsIgnoreCase(schema.getType())) {
+			schema.setFormat(null);
+		}
 
 		// Process: properties, additionalProperties, array items, allOf, oneOf, anyOf
 		Map<String, Schema> properties = schema.getProperties();

@@ -2,6 +2,7 @@ package com.ebay.openapi.export.jsonschema;
 
 import com.atlassian.oai.validator.schema.transform.SchemaTransformationContext;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.swagger.v3.core.util.Json;
@@ -21,7 +22,7 @@ import java.util.Arrays;
 /**
  * This class is a complete copy of SchemaTransformer from Atlassian.
  * This was copied, because, of the need to access methods with
- * restricted permissions when modifying the the transformer classes.
+ * restricted permissions when modifying the transformer classes.
  * 
  * A base class for transformers that mutate the state of a parsed Swagger/OpenAPI schema object.
  * <p>
@@ -114,6 +115,14 @@ public abstract class EbaySchemaTransformer {
             return false;
         }
         final JsonNode type = n.get(TYPE_FIELD);
+        if (type instanceof ArrayNode) {
+            for (JsonNode node : (ArrayNode) type) {
+                if (node.textValue() != null && node.textValue().equalsIgnoreCase(ARRAY_TYPE)) {
+                    return true;
+                }
+            }
+            return false;
+        }
         return type != null && type.textValue() != null && type.textValue().equalsIgnoreCase(ARRAY_TYPE);
     }
 
