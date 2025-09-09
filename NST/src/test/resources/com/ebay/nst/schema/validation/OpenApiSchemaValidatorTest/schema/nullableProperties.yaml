@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Type Definitions
+  description: >-
+    Type Definitions
+  version: 1.0.0
+servers:
+  - url: 'http://ebay.com'
+    description: QATE
+paths:
+  /test:
+    get:
+      summary: placeholder summary
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NullablePropertyResponse'
+components:
+  schemas:
+    NullablePropertyResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/NullablePropertyObject'
+    NullablePropertyObject:
+      type: object
+      additionalProperties: true
+      required:
+        - rank
+        - price
+      properties:
+        rank:
+          type: integer
+          nullable: true
+        price:
+          type: number
+          minimum: 0
+        name:
+          type: string
+          nullable: true
+        rate:
+          type: number
+          nullable: true
+        url:
+          type: string
+          format: uri
+          nullable: true

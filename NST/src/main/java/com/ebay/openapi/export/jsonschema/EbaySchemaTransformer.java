@@ -78,15 +78,15 @@ public abstract class EbaySchemaTransformer {
     static void applyToChildSchemas(final JsonNode schemaObject, final Consumer<JsonNode> consumer) {
         if (isArrayDefinition(schemaObject)) {
             consumer.accept(itemsDefinition(schemaObject));
-            return;
+        } else {
+            properties(schemaObject).forEachRemaining(consumer);
+            allOf(schemaObject).forEachRemaining(consumer);
+            anyOf(schemaObject).forEachRemaining(consumer);
+            oneOf(schemaObject).forEachRemaining(consumer);
+            schemaComponents(schemaObject).forEachRemaining(consumer);
+            additionalProperties(schemaObject).forEachRemaining(consumer);
         }
-        properties(schemaObject).forEachRemaining(consumer);
-        allOf(schemaObject).forEachRemaining(consumer);
-        anyOf(schemaObject).forEachRemaining(consumer);
-        oneOf(schemaObject).forEachRemaining(consumer);
-        schemaComponents(schemaObject).forEachRemaining(consumer);
         definitions(schemaObject).forEachRemaining(consumer);
-        additionalProperties(schemaObject).forEachRemaining(consumer);
     }
 
     protected static boolean hasAllOfField(final JsonNode n) {
