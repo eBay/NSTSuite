@@ -188,8 +188,8 @@ public class OpenApiToJsonSchema {
 				throw new IllegalStateException(String.format("Status code [%s] is not present for request method [%s] and path [%s] in file: %s", statusCode, requestMethod, requestPath, openApiSpecFilePath));
 			}
 			
-		//added below check to fix NPE
-		       if(response.getContent() != null) {
+			//added below check to fix NPE
+			if(response.getContent() != null) {
 				MediaType mediaType = response.getContent().get(MEDIA_TYPE);
 				if (mediaType == null) {
 					throw new IllegalStateException(
